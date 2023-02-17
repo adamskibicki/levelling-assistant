@@ -1,0 +1,14 @@
+@import 'palette.scss';
+
+.character-panel {
+    padding: 0;
+    background-color: $quaternary-color;
+    height: 100%;
+}
+
+.character-panel .general-information {
+    position: fixed;
+    background-color: $tertiary-color;
+    color: white;
+    padding: 5px;
+}

@@ -1,9 +1,10 @@
-import './App.css';
+import './App.scss';
+import CharacterPanel from './CharacterPanel';
 
 function App() {
   return (
     <div className="App">
-      Test
+      <CharacterPanel></CharacterPanel>
     </div> 
   );
 }
