@@ -1,0 +1,31 @@
+@import 'palette.scss';
+
+button.disabled {
+    pointer-events: none;
+    opacity: .65;
+}
+
+.statpoint-property {
+    display: flex;
+    padding: 1rem;
+
+    .property-name {
+        flex: 6;
+        text-align: left;
+    }
+
+    .property-value {
+        flex: 3;
+        text-align: right;
+        padding-right: 1rem;
+    }
+
+    .property-increase,
+    .property-decrease {
+        flex: 1;
+        text-align: center;
+        background-color: inherit;
+        border: 2px solid $border-color;
+        margin: 0 1px;
+    }
+}

@@ -1,0 +1,13 @@
+.general-property {
+    display: flex;
+    padding: 1rem;
+    
+    .property-name {
+        flex: 2;
+        text-align: left;
+    }
+    .property-value {
+        flex: auto;
+        text-align: right;
+    }
+}

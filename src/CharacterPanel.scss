@@ -1,14 +1,21 @@
 @import 'palette.scss';
 
-.character-panel {
-    padding: 0;
-    background-color: $quaternary-color;
-    height: 100%;
+.navbar {
+    position: fixed;
+    height: 5rem;
+    width: 100%;
+    background-color: $secondary-color;
 }
 
-.character-panel .general-information {
+.general-information {
+    margin-top: 5rem;
     position: fixed;
     background-color: $tertiary-color;
-    color: white;
-    padding: 5px;
+    height: 100%;
+    width: 20rem;
+}
+
+.border-container {
+    margin: 0.4rem;
+    border: 1px solid white;
 }
