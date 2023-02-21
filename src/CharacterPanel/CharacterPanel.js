@@ -89,6 +89,7 @@ class CharacterPanel extends React.Component {
         };
     }
 
+    //TODO: move base url to environment settings
     componentDidMount() {
         axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: '6daa1ea5-9c21-45fc-ab05-447f30c8a0fc' } })
             .then(res => {
