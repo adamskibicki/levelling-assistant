@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React from 'react';
 import './CharacterPanel.scss'
-import GeneralProperty from '../GeneralProperty';
 import SkillsPanel from '../SkillsPanel';
-import StatpointProperty from '../StatpointProperty';
 import BasicInfo from './BasicInfo';
+import ResourcesStatus from './ResourcesStatus';
+import Stats from './Stats';
+import UnspentSkillpoints from './UnspentSkillpoints';
 
 class CharacterPanel extends React.Component {
     constructor(props) {
@@ -48,8 +49,6 @@ class CharacterPanel extends React.Component {
     }
 
     render() {
-        let basicInfo = this.state.generalInformation.basicInfo;
-
         return (
             <>
                 <div className='navbar'>
@@ -58,39 +57,19 @@ class CharacterPanel extends React.Component {
                 <div className='character-panel'>
                     <div className="general-information">
                         <div className='general-information-group'>
-                            <BasicInfo name={basicInfo.name} title={basicInfo.title}/>
+                            <BasicInfo {...this.state.generalInformation.basicInfo}/>
                         </div>
 
                         <div className='general-information-group'>
-                            <h4>Status</h4>
-                            <div className=''>
-                                <GeneralProperty name='Health' value={50} />
-                                <GeneralProperty name='Stamina' value={50} />
-                                <GeneralProperty name='Mana' value={50} />
-                            </div>
+                            <ResourcesStatus {...this.state.generalInformation.resourcesStatus}/>
                         </div>
 
                         <div className='general-information-group'>
-                            <h4>Stats</h4>
-                            <div className=''>
-                                <GeneralProperty name='Unspent statpoints' value='0' />
-                                <StatpointProperty name='Vitality' value={5} increaseEnabled={true} decreaseEnabled={false} />
-                                <StatpointProperty name='Endurance' value={5} increaseEnabled={true} decreaseEnabled={false} />
-                                <StatpointProperty name='Strength' value={5} increaseEnabled={true} decreaseEnabled={false} />
-                                <StatpointProperty name='Dexterity' value={5} increaseEnabled={true} decreaseEnabled={false} />
-                                <StatpointProperty name='Intelligence' value={5} increaseEnabled={true} decreaseEnabled={false} />
-                                <StatpointProperty name='Wisdom' value={5} increaseEnabled={true} decreaseEnabled={false} />
-                            </div>
+                            <Stats {...this.state.generalInformation.stats}/>
                         </div>
 
                         <div className='general-information-group'>
-                            <h4>Unspent skillpoints</h4>
-                            <div className=''>
-                                <GeneralProperty name='Core skillpoints' value={0} />
-                                <GeneralProperty name='4th tier skillpoints' value={0} />
-                                <GeneralProperty name='3rd tier general skillpoints' value={0} />
-                                <GeneralProperty name='4th tier general skillpoints' value={0} />
-                            </div>
+                            <UnspentSkillpoints {...this.state.generalInformation.skillpoints}/>
                         </div>
                     </div>
 
