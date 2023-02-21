@@ -90,6 +90,9 @@ class CharacterPanel extends React.Component {
             ],
             "generalSkills": null
         };
+
+        this.getPercentagePointsIncreaseInCategory = this.getPercentagePointsIncreaseInCategory.bind(this);
+        this.calculateValueOfIncreasedVariable = this.calculateValueOfIncreasedVariable.bind(this);
     }
 
     //TODO: move base url to environment settings
@@ -98,6 +101,38 @@ class CharacterPanel extends React.Component {
             .then(res => {
                 this.setState(res.data);
             });
+    }
+
+    calculateValueOfIncreasedVariable(baseValue, categoryIds, calculationType) {
+        let increase = categoryIds.map(c => {
+            return this.getPercentagePointsIncreaseInCategory(c);
+        }, this).reduce((a, c) => a + c, 0);
+
+        let increaseWithBase = 100 + increase;
+
+        switch (calculationType) {
+            case 'Multiplicative':
+                return baseValue * increaseWithBase / 100;
+            case 'Reciprocal':
+                return baseValue / (increaseWithBase / 100);
+            case 'Static':
+                return baseValue;
+            default:
+                console.error('calculationType \'' + calculationType + '\' is not known');
+        }
+    }
+
+    getPercentagePointsIncreaseInCategory(categoryId) {
+        let allClassModifiers = [];
+        this.state.classes.forEach(c => {
+            allClassModifiers = allClassModifiers.concat(c.modifiers);
+        });
+
+        let applyingModifiers = allClassModifiers.filter(m => {
+            return categoryId === m.category?.id;
+        });
+
+        return applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
     }
 
     render() {
@@ -125,7 +160,7 @@ class CharacterPanel extends React.Component {
                         </div>
                     </div>
 
-                    <SkillsPanel classes={this.state.classes} />
+                    <SkillsPanel classes={this.state.classes} calculateValueOfIncreasedVariable={this.calculateValueOfIncreasedVariable}/>
                 </div>
             </>
         );

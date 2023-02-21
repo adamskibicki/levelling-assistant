@@ -3,6 +3,7 @@
 .class-container {
     background-color: $tertiary-color;
     margin: 0.4rem;
+
     .class-name-container {
         padding: 1rem;
         display: flex;
@@ -14,6 +15,22 @@
     
         .expand {
             height: 1.5rem;
+        }
+    }
+
+    .modifiers-container {
+        .title-container {
+            display: flex;
+            padding-bottom: 0.5rem;
+            
+            .expand {
+                height: 1.5rem;
+                margin: 0 0.5rem;
+            }
+
+            .title {
+                padding-left: 0.5rem;
+            }
         }
     }
 

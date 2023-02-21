@@ -37,7 +37,7 @@ class SkillsPanel extends React.Component {
             {
                 this.props.classes.map((c,i) => 
                     <div key={i} className='tab' style={{display: i !== this.state.selectedTabIndex ? 'none' : ''}}>
-                        <Class {...c}/>
+                        <Class {...c} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
                     </div>
                 )
             }

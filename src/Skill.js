@@ -20,6 +20,47 @@ class Skill extends React.Component {
         ));
     }
 
+    replaceVariableMarkupsInTierDescriptions(tierDescription) {
+        let baseRegex = '<[\\S]*>';
+
+        let tierDescriptionVariablesMatches = [...tierDescription.matchAll(baseRegex)];
+
+        if(tierDescriptionVariablesMatches.length > 0){
+            let variableNames = tierDescriptionVariablesMatches.map(m => (m[0].slice(1, m[0].length-1)));
+            variableNames = [...new Set(variableNames)];
+            
+            let dictionary = {};
+            for (let i = 0; i < variableNames.length; i++) {
+                const vn = variableNames[i];
+                
+                const propVariable = this.props.variables.filter(v => v.name === vn)[0];
+
+                const calculatedIncreasedVariable = this.props.calculateValueOfIncreasedVariable(propVariable.baseValue, this.props.categories.map(c => (c.id)), propVariable.categoryCalculationType);
+
+                dictionary['<' + vn + '>'] = this.props.calculateValueOfIncreasedVariable(propVariable.baseValue, this.props.categories.map(c => (c.id)), propVariable.categoryCalculationType);
+
+                switch (propVariable.categoryCalculationType) {
+                    case 'Multiplicative':
+                    case 'Reciprocal':
+                        dictionary['<' + vn + '>'] = propVariable.baseValue + propVariable.unit + ' [' + calculatedIncreasedVariable + propVariable.unit + ']';
+                        break;
+                    case 'Static':
+                        dictionary['<' + vn + '>'] = propVariable.baseValue + propVariable.unit;
+                        break;
+                    default:
+                        console.error('calculationType \'' + propVariable.categoryCalculationType + '\' is not known');
+                }
+            }
+
+            for (const prop in dictionary) {
+                tierDescription = tierDescription.replace(prop, dictionary[prop]);
+            }
+            console.log(dictionary);
+        }
+
+        return tierDescription;
+    }
+
     render() {
         return (
             <div className='skill'>
@@ -40,7 +81,7 @@ class Skill extends React.Component {
                             {
                                 this.props.tierDescriptions
                                     .map((td, i) => (
-                                        <p key={i} className='tier-description'>Tier {i + 1}: {td}</p>
+                                        <p key={i} className='tier-description'>Tier {i + 1}: {this.replaceVariableMarkupsInTierDescriptions(td)}</p>
                                     ))
                             }
                         </div>

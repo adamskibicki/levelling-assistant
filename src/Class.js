@@ -9,14 +9,24 @@ class Class extends React.Component {
         super(props);
 
         this.state = {
-            expanded: true
+            expanded: true,
+            classModifiersExpanded: true,
         };
     }
 
     switchExpandVisibility() {
         this.setState((prevState) => (
             {
-                expanded: !prevState.expanded
+                expanded: !prevState.expanded,
+                classModifiersExpanded: !prevState.expanded
+            }
+        ));
+    }
+
+    switchClassModifiersExpandVisibility() {
+        this.setState((prevState) => (
+            {
+                classModifiersExpanded: !prevState.classModifiersExpanded
             }
         ));
     }
@@ -35,8 +45,17 @@ class Class extends React.Component {
                             {this.props.name} - lvl {this.props.level}
                         </h4>
                     </div>
-                    <div>
-                        {
+                    <div className='modifiers-container'>
+                        <div className='title-container'>
+                            <button className='button-std expand' onClick={() => this.switchClassModifiersExpandVisibility()}>
+                                {
+                                    this.state.classModifiersExpanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
+                                }
+                            </button>
+                            <div className='title'>Class modifiers:</div>
+                        </div>
+                        { 
+                            this.state.classModifiersExpanded &&
                             this.props.modifiers.map((m, i) => (
                                 <div className='modifier' key={i}>
                                     {
@@ -52,7 +71,7 @@ class Class extends React.Component {
                 <div>
                     {
                         this.props.skills.map((s, i) => (
-                            <Skill key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} />
+                            <Skill key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
                         ))
                     }
                 </div>
