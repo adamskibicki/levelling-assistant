@@ -24,13 +24,13 @@ class Skill extends React.Component {
         return (
             <div className='skill'>
                 <div className='skill-top-row'>
-                    <button className='button-std' onClick={() => this.switchExpandVisibility()}>
+                    <button className='button-std skill-expand' onClick={() => this.switchExpandVisibility()}>
                         {
                             this.state.expanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
                         }
                     </button>
-                    <div className='skill-name'>{this.props.name} {this.props.enhanced ? " [Enhanced]" : ""}</div>
-                    <div className='skill-level'>Level {this.props.level}</div>
+                    <div className='skill-name'>{this.props.type}: {this.props.name} {this.props.enhanced ? " [Enhanced]" : ""}</div>
+                    <div>Level {this.props.level}</div>
                     <div className='skill-tier'>Tier {this.props.tier}</div>
                 </div>
                 {
@@ -48,7 +48,7 @@ class Skill extends React.Component {
                             {
                                 this.props.categories
                                     .map((c, i) => (
-                                        <div className='skill-category' key={i}>{c}</div>
+                                        <div className='skill-category' key={i}>{c.name}</div>
                                     ))
                             }
                         </div>

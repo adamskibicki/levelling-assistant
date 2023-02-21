@@ -42,6 +42,7 @@ class CharacterPanel extends React.Component {
                 {
                     name: "None",
                     level: 0,
+                    modifiers: [],
                     skills: [
                         {
                             name: "None",
@@ -57,6 +58,7 @@ class CharacterPanel extends React.Component {
                 {
                     name: "None",
                     level: 0,
+                    modifiers: [],
                     skills: [
                         {
                             name: "None",
@@ -72,6 +74,7 @@ class CharacterPanel extends React.Component {
                 {
                     name: "None",
                     level: 0,
+                    modifiers: [],
                     skills: [
                         {
                             name: "None",

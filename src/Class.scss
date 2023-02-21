@@ -1,17 +1,37 @@
 @import './palette.scss';
 
-.class-name-container {
+.class-container {
     background-color: $tertiary-color;
     margin: 0.4rem;
-    padding: 1rem;
-    display: flex;
-
-    .class-name {
-        margin: 0;
-        flex: auto;
+    .class-name-container {
+        padding: 1rem;
+        display: flex;
+    
+        .class-name {
+            margin: 0;
+            flex: auto;
+        }
+    
+        .expand {
+            height: 1.5rem;
+        }
     }
 
-    .expand {
-        height: 1.5rem;
+    .modifier {
+        display: flex;
+        padding: 0.1rem;
+
+        .category {
+            padding: 0.4rem;
+            margin-right: 0;
+            margin-left: 0.4rem;
+            background-color: $secondary-color;
+            height: fit-content;
+        }
+
+        .description {
+            margin: 0.4rem;
+            text-align: left;
+        }
     }
 }

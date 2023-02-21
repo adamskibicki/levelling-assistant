@@ -32,10 +32,10 @@
     display: flex;
 
     .skill-expand {
-        flex-basis: 3rem;
+        height: 1.5rem;
     }
 
-    .skill-level, .skill-name {
+    .skill-name {
         flex: 1;
     }
 
