@@ -1,5 +1,5 @@
 import './App.scss';
-import CharacterPanel from './CharacterPanel';
+import CharacterPanel from './CharacterPanel/CharacterPanel';
 
 function App() {
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import Class from './Class';
 import './SkillsPanel.scss';
 
 class SkillsPanel extends React.Component {
@@ -11,7 +12,9 @@ class SkillsPanel extends React.Component {
     }
 
     openTab(tabIndex) {
-        console.log(tabIndex);
+        this.setState({
+            selectedTabIndex: tabIndex
+        });
     }
 
     renderTabLinks() {
@@ -28,18 +31,27 @@ class SkillsPanel extends React.Component {
         );
     }
 
+    renderTabs(){
+        return (
+            <>
+            {
+                this.props.classes.map((c,i) => 
+                    <div key={i} className='tab' style={{display: i !== this.state.selectedTabIndex ? 'none' : ''}}>
+                        <Class name={c}/>
+                    </div>
+                )
+            }
+            </>
+        );
+    }
+
     render() {
         return (
             <div className="skills-panel">
                 <div className='tab'>
                     {this.renderTabLinks()}
                 </div>
-
-
-
-                <div>
-                    This is skills panel
-                </div>
+                {this.renderTabs()}
             </div>
         );
     }

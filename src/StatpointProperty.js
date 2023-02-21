@@ -11,10 +11,10 @@ function StatpointProperty(props) {
             <div className='property-value'>
                 {props.value}
             </div>
-            <button className={'property-increase ' + (props.increaseEnabled ? '' : 'disabled')}>
+            <button className={(props.increaseEnabled ? '' : 'disabled') + ' property-increase button-std'}>
                 <FontAwesomeIcon icon={faPlus} />
             </button>
-            <button className={'property-decrease ' + (props.decreaseEnabled ? '' : 'disabled')}>
+            <button className={(props.decreaseEnabled ? '' : 'disabled') + ' property-decrease button-std'}>
                 <FontAwesomeIcon icon={faMinus} />
             </button>
         </div>

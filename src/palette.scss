@@ -5,10 +5,33 @@ $quaternary-color: #383838;
 $quinary-color: #6a6767;
 $text-color: white;
 $border-color: white;
+$interactable-hover-color: black;
+$interactable-disabled-color: $quinary-color;
 
-$font-family:  Verdana, Arial, Tahoma, sans-serif;
+$font-family: Verdana,
+Arial,
+Tahoma,
+sans-serif;
 
 * {
     font-family: $font-family;
     color: $text-color;
+}
+
+//TODO: move to separate file later
+.border-container {
+    margin: 0.4rem;
+    border: 1px solid white;
+}
+
+.button-std {
+    text-align: center;
+    background-color: inherit;
+    border: 2px solid $border-color;
+    margin: 0 1px;
+}
+
+.button-std.disabled {
+    pointer-events: none;
+    border-color: $interactable-disabled-color;
 }

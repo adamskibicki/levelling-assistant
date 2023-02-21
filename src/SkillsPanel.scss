@@ -1,8 +1,20 @@
 @import './palette.scss';
 
 .skills-panel {
-    margin: 0 0 0 20rem;
     padding: 5rem 0 0 0;
     background-color: $quaternary-color;
     height: 100%;
+    flex: auto;
+}
+
+.tablinks {
+    width: 33.33%;
+    height: 3rem;
+    background-color: $tertiary-color;
+    border: none;
+    font-size: 1rem;
+}
+
+.tablinks:hover {
+    background-color: $interactable-hover-color;
 }

@@ -1,0 +1,27 @@
+@import '../palette.scss';
+
+.navbar {
+    position: fixed;
+    height: 5rem;
+    width: 100%;
+    background-color: $secondary-color;
+}
+
+.general-information {
+    padding-top: 5rem;
+    background-color: $tertiary-color;
+    float: left;
+    flex-basis: 20rem;
+    min-width: 20rem;
+
+    .general-information-group {
+        background-color: $secondary-color;
+        padding: 0.4rem;
+        margin: 0.4rem;
+    }
+}
+
+.character-panel {
+    display: flex;
+    background-color: $quaternary-color;
+}
