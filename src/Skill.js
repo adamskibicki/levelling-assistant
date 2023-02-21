@@ -7,14 +7,18 @@ class Skill extends React.Component {
             <div className='skill'>
                 <div className='skill-top-row'>
                     <button className='button-std expand'>^</button>
-                    <div className='skill-name'>Skill name</div>
-                    <div className='skill-level'>Level 0</div>
-                    <div className='skill-tier'>Tier 0</div>
+                    <div className='skill-name'>{this.props.name}</div>
+                    <div className='skill-level'>Level {this.props.level}</div>
+                    <div className='skill-tier'>Tier {this.props.tier}</div>
                 </div>
                 <div>
-                    <p className='tier-description'>Tier 1: Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                    <p className='tier-description'>Tier 1: Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
-                    <p className='tier-description'>Tier 1: Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+                    {
+                        this.props.tierDescriptions
+                        // .map(td => td.replace('\n', '<br>'))
+                        .map((td, i) => (
+                            <p key={i} className='tier-description'>Tier {i+1}: {td}</p>
+                        ))
+                    }
                 </div>
             </div>
         );

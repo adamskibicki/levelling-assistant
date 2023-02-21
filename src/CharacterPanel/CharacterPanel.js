@@ -37,7 +37,55 @@ class CharacterPanel extends React.Component {
                     thirdTierGeneralSkillpoints: 0,
                     fourthTierGeneralSkillpoints: 0
                 }
-            }
+            },
+            classes: [
+                {
+                    name: "None",
+                    level: 0,
+                    skills: [
+                        {
+                            name: "None",
+                            level: 0,
+                            tier: 0,
+                            tierDescriptions: [],
+                            type: "None",
+                            categories: [],
+                            enhanced: false
+                        }
+                    ]
+                },
+                {
+                    name: "None",
+                    level: 0,
+                    skills: [
+                        {
+                            name: "None",
+                            level: 0,
+                            tier: 0,
+                            tierDescriptions: [],
+                            type: "None",
+                            categories: [],
+                            enhanced: false
+                        }
+                    ]
+                },
+                {
+                    name: "None",
+                    level: 0,
+                    skills: [
+                        {
+                            name: "None",
+                            level: 0,
+                            tier: 0,
+                            tierDescriptions: [],
+                            type: "None",
+                            categories: [],
+                            enhanced: false
+                        }
+                    ]
+                },
+            ],
+            "generalSkills": null
         };
     }
 
@@ -57,23 +105,23 @@ class CharacterPanel extends React.Component {
                 <div className='character-panel'>
                     <div className="general-information">
                         <div className='general-information-group'>
-                            <BasicInfo {...this.state.generalInformation.basicInfo}/>
+                            <BasicInfo {...this.state.generalInformation.basicInfo} />
                         </div>
 
                         <div className='general-information-group'>
-                            <ResourcesStatus {...this.state.generalInformation.resourcesStatus}/>
+                            <ResourcesStatus {...this.state.generalInformation.resourcesStatus} />
                         </div>
 
                         <div className='general-information-group'>
-                            <Stats {...this.state.generalInformation.stats}/>
+                            <Stats {...this.state.generalInformation.stats} />
                         </div>
 
                         <div className='general-information-group'>
-                            <UnspentSkillpoints {...this.state.generalInformation.skillpoints}/>
+                            <UnspentSkillpoints {...this.state.generalInformation.skillpoints} />
                         </div>
                     </div>
 
-                    <SkillsPanel classes={["Class 1", "Class 2", "General skills"]} />
+                    <SkillsPanel classes={this.state.classes} />
                 </div>
             </>
         );

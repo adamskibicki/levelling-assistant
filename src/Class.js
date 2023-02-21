@@ -10,9 +10,11 @@ class Class extends React.Component {
                     {this.props.name}
                 </div>
                 <div>
-                    <Skill/>
-                    <Skill/>
-                    <Skill/>
+                    {
+                        this.props.skills.map((s, i) => (
+                            <Skill key={i} {...s}/>
+                        ))
+                    }
                 </div>
             </>
         );
