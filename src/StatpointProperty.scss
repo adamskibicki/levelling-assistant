@@ -13,10 +13,27 @@
         flex: 3;
         text-align: right;
         padding-right: 1rem;
+
+        &:hover .property-tooltiptext {
+            visibility: visible;
+        }
     }
 
     .property-increase,
     .property-decrease {
         flex: 1;
+    }
+
+    .property-tooltiptext {
+        visibility: hidden;
+        width: fit-content;
+        background-color: $primary-color;
+        color: $text-color;
+        text-align: center;
+        padding: 5px;
+      
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
     }
 }

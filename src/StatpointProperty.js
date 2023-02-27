@@ -10,6 +10,9 @@ function StatpointProperty(props) {
             </div>
             <div className='property-value'>
                 {props.value}
+                <div className='property-tooltiptext'>
+                    Final value: {Math.round(props.calculatedValue)}
+                </div>
             </div>
             <button className={(props.increaseEnabled ? '' : 'disabled') + ' property-increase button-std'}>
                 <FontAwesomeIcon icon={faPlus} />
