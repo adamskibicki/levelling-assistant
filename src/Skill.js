@@ -35,27 +35,28 @@ class Skill extends React.Component {
                 
                 const propVariable = this.props.variables.filter(v => v.name === vn)[0];
 
-                const calculatedIncreasedVariable = this.props.calculateValueOfIncreasedVariable(propVariable.baseValue, this.props.categories.map(c => (c.id)), propVariable.categoryCalculationType);
+                const calculatedIncreasedVariable = this.props.calculateValueOfIncreasedVariable(propVariable, this.props);
 
-                dictionary['<' + vn + '>'] = this.props.calculateValueOfIncreasedVariable(propVariable.baseValue, this.props.categories.map(c => (c.id)), propVariable.categoryCalculationType);
+                dictionary['<' + vn + '>'] = this.props.calculateValueOfIncreasedVariable(propVariable, this.props);
 
-                switch (propVariable.categoryCalculationType) {
-                    case 'Multiplicative':
-                    case 'Reciprocal':
+                switch (propVariable.variableCalculationType) {
+                    case 'Additive':
                         dictionary['<' + vn + '>'] = propVariable.baseValue + propVariable.unit + ' [' + calculatedIncreasedVariable + propVariable.unit + ']';
                         break;
-                    case 'Static':
-                        dictionary['<' + vn + '>'] = propVariable.baseValue + propVariable.unit;
+                    case 'None':
+                    case 'Multiplicative':
+                    case 'Reciprocal':
+                    case 'StaticAdditiveOtherVariableBased':
+                        dictionary['<' + vn + '>'] = propVariable.baseValue + propVariable.unit + ' [' + calculatedIncreasedVariable + propVariable.unit + ']';
                         break;
                     default:
-                        console.error('calculationType \'' + propVariable.categoryCalculationType + '\' is not known');
+                        console.error('calculationType \'' + propVariable.variableCalculationType + '\' is not known');
                 }
             }
 
             for (const prop in dictionary) {
                 tierDescription = tierDescription.replace(prop, dictionary[prop]);
             }
-            console.log(dictionary);
         }
 
         return tierDescription;

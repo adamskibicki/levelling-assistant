@@ -9,7 +9,7 @@ function Stats(props) {
                 <GeneralProperty name='Unspent statpoints' value={props.unspentStatpoints} />
                 {
                     props.stats.map((s, i) => (
-                        <StatpointProperty key={i} name={s.name} value={s.value} increaseEnabled={true} decreaseEnabled={false} />
+                        <StatpointProperty key={i} name={s.name} value={s.value} increaseEnabled={true} decreaseEnabled={false} calculatedValue={props.calculateFinalStatValue(s)}/>
                     ))
                 }
             </div>
