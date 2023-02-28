@@ -22,7 +22,7 @@ class SkillsPanel extends React.Component {
             <>
                 {
                     this.props.classes.map((c, i) => 
-                        <button key={i} className='tablinks' onClick={() => this.openTab(i)}>
+                        <button key={i} className='skills-panel__tablinks' onClick={() => this.openTab(i)}>
                             {c.name}
                         </button>
                     )
@@ -36,8 +36,9 @@ class SkillsPanel extends React.Component {
             <>
             {
                 this.props.classes.map((c,i) => 
-                    <div key={i} className='tab' style={{display: i !== this.state.selectedTabIndex ? 'none' : ''}}>
-                        <Class {...c} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
+                    <div key={i} style={{display: i !== this.state.selectedTabIndex ? 'none' : ''}}>
+                        {/* TODO: change allowEdit later */}
+                        <Class allowEdit={i===0} {...c} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
                     </div>
                 )
             }

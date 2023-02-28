@@ -2,6 +2,7 @@ import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import './Skill.scss';
+import SkillEdit from './SkillEdit';
 
 class Skill extends React.Component {
     constructor(props) {
@@ -66,7 +67,7 @@ class Skill extends React.Component {
         return (
             <div className='skill'>
                 <div className='skill-top-row'>
-                    <button className='button-std skill-expand' onClick={() => this.switchExpandVisibility()}>
+                    <button className='skill-expand' onClick={() => this.switchExpandVisibility()}>
                         {
                             this.state.expanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
                         }
@@ -96,6 +97,9 @@ class Skill extends React.Component {
                         </div>
                     </>
                 }
+                {
+                    this.props.allowEdit && <SkillEdit {...this.props}/> 
+                }                
             </div>
         );
     }

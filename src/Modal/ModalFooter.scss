@@ -1,0 +1,12 @@
+@import '../palette.scss';
+
+.modal-footer {
+    padding-top: $padding;
+
+    &__close,
+    &__accept {
+        color: $text-color;
+        border: 2px solid $border-color;
+        background-color: inherit;
+    }
+}

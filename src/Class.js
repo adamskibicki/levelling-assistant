@@ -36,7 +36,7 @@ class Class extends React.Component {
             <>
                 <div className='class-container'>
                     <div className='class-name-container'>
-                        <button className='button-std expand' onClick={() => this.switchExpandVisibility()}>
+                        <button className='expand' onClick={() => this.switchExpandVisibility()}>
                             {
                                 this.state.expanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
                             }
@@ -47,7 +47,7 @@ class Class extends React.Component {
                     </div>
                     <div className='modifiers-container'>
                         <div className='title-container'>
-                            <button className='button-std expand' onClick={() => this.switchClassModifiersExpandVisibility()}>
+                            <button className='expand' onClick={() => this.switchClassModifiersExpandVisibility()}>
                                 {
                                     this.state.classModifiersExpanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
                                 }
@@ -71,7 +71,8 @@ class Class extends React.Component {
                 <div>
                     {
                         this.props.skills.map((s, i) => (
-                            <Skill key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
+                            //TODO: Change allowEdit condition later
+                            <Skill allowEdit={i===0 && this.props.allowEdit} key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
                         ))
                     }
                 </div>

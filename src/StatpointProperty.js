@@ -14,10 +14,10 @@ function StatpointProperty(props) {
                     Final value: {Math.round(props.calculatedValue)}
                 </div>
             </div>
-            <button className={(props.increaseEnabled ? '' : 'disabled') + ' property-increase button-std'}>
+            <button className={(props.increaseEnabled ? '' : 'disabled') + ' property-increase'}>
                 <FontAwesomeIcon icon={faPlus} />
             </button>
-            <button className={(props.decreaseEnabled ? '' : 'disabled') + ' property-decrease button-std'}>
+            <button className={(props.decreaseEnabled ? '' : 'disabled') + ' property-decrease'}>
                 <FontAwesomeIcon icon={faMinus} />
             </button>
         </div>

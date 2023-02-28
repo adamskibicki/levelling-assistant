@@ -1,0 +1,10 @@
+@import '../palette.scss';
+
+.modal-header {
+    display: flex;
+    padding-bottom: $padding;
+
+    &__content {
+        flex: auto;
+    }
+}

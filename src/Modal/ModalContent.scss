@@ -1,0 +1,8 @@
+@import '../palette.scss';
+
+.modal-content {
+    border-top: $border;
+    border-bottom: $border;
+    padding-top: $padding;
+    padding-bottom: $padding;
+}
