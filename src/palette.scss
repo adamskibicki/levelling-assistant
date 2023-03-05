@@ -28,9 +28,17 @@ button {
     background-color: inherit;
     border: $border;
     margin: 0 1px;
+    font-size: 1rem;
+    height: fit-content;
 
     &.disabled {
         pointer-events: none;
         border-color: $interactable-disabled-color;
     }
+}
+
+input, textarea {
+    background-color: $secondary-color;
+    font-size: 1rem;
+    border: none;
 }

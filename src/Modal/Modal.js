@@ -28,7 +28,7 @@ class Modal extends React.Component {
         return (
             <div className={'modal ' + visibilityClass}>
                 <div className='modal__content' ref={this.wrapperRef}>
-                    {Children.toArray(this.props.children)}
+                    {this.props.show && Children.toArray(this.props.children)}
                 </div>
             </div>
         );

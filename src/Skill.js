@@ -26,14 +26,14 @@ class Skill extends React.Component {
 
         let tierDescriptionVariablesMatches = [...tierDescription.matchAll(baseRegex)];
 
-        if(tierDescriptionVariablesMatches.length > 0){
-            let variableNames = tierDescriptionVariablesMatches.map(m => (m[0].slice(1, m[0].length-1)));
+        if (tierDescriptionVariablesMatches.length > 0) {
+            let variableNames = tierDescriptionVariablesMatches.map(m => (m[0].slice(1, m[0].length - 1)));
             variableNames = [...new Set(variableNames)];
-            
+
             let dictionary = {};
             for (let i = 0; i < variableNames.length; i++) {
                 const vn = variableNames[i];
-                
+
                 const propVariable = this.props.variables.filter(v => v.name === vn)[0];
 
                 const calculatedIncreasedVariable = this.props.calculateValueOfIncreasedVariable(propVariable, this.props);
@@ -95,11 +95,11 @@ class Skill extends React.Component {
                                     ))
                             }
                         </div>
+                        {
+                            this.props.allowEdit && <SkillEdit {...this.props} />
+                        }
                     </>
                 }
-                {
-                    this.props.allowEdit && <SkillEdit {...this.props}/> 
-                }                
             </div>
         );
     }

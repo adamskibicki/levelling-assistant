@@ -1,3 +1,5 @@
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Children } from "react";
 import './ModalHeader.scss';
 
@@ -10,7 +12,7 @@ class ModalHeader extends React.Component {
                 </div>
                 <div>
                     <button onClick={this.props.onClose}>
-                        X
+                        <FontAwesomeIcon icon={faClose} />
                     </button>
                 </div>
             </div>
