@@ -65,7 +65,7 @@ class SkillEdit extends React.Component {
         event.preventDefault();
         this.setState((prevState) => {
             return {
-                tierDescriptions: prevState.tierDescriptions.filter((td, i) => i !== index)
+                tierDescriptions: prevState.tierDescriptions.filter((_, i) => i !== index)
             };
         });
     }

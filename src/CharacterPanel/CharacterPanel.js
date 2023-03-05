@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import './CharacterPanel.scss'
 import SkillsPanel from '../SkillsPanel';
@@ -6,94 +5,12 @@ import BasicInfo from './BasicInfo';
 import ResourcesStatus from './ResourcesStatus';
 import Stats from './Stats';
 import UnspentSkillpoints from './UnspentSkillpoints';
+import { connect } from 'react-redux';
+import { fetchCharacterData } from './characterPanelSlice';
 
 class CharacterPanel extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            loaded: false,
-            generalInformation: {
-                basicInfo: {
-                    name: "None",
-                    title: "None"
-                },
-                resources: [
-                    {
-                        displayName: "Health",
-                        calculationName: "Health",
-                        baseStatName: "Vitality",
-                        resourcePointsPerBaseStatPoint: 10
-                    },
-                ],
-                stats: {
-                    unspentStatpoints: 0,
-                    stats: [
-                        {
-                            name: "None",
-                            value: 0
-                        }
-                    ]
-                },
-                skillpoints: {
-                    coreSkillpoints: 0,
-                    fourthTierSkillpoints: 0,
-                    thirdTierGeneralSkillpoints: 0,
-                    fourthTierGeneralSkillpoints: 0
-                }
-            },
-            classes: [
-                {
-                    name: "None",
-                    level: 0,
-                    modifiers: [],
-                    skills: [
-                        {
-                            name: "None",
-                            level: 0,
-                            tier: 0,
-                            tierDescriptions: [],
-                            type: "None",
-                            categories: [],
-                            enhanced: false
-                        }
-                    ]
-                },
-                {
-                    name: "None",
-                    level: 0,
-                    modifiers: [],
-                    skills: [
-                        {
-                            name: "None",
-                            level: 0,
-                            tier: 0,
-                            tierDescriptions: [],
-                            type: "None",
-                            categories: [],
-                            enhanced: false
-                        }
-                    ]
-                },
-                {
-                    name: "None",
-                    level: 0,
-                    modifiers: [],
-                    skills: [
-                        {
-                            name: "None",
-                            level: 0,
-                            tier: 0,
-                            tierDescriptions: [],
-                            type: "None",
-                            categories: [],
-                            enhanced: false
-                        }
-                    ]
-                },
-            ],
-            "generalSkills": null
-        };
 
         this.calculateValueOfIncreasedVariable = this.calculateValueOfIncreasedVariable.bind(this);
         this.calculateResourceValue = this.calculateResourceValue.bind(this);
@@ -107,12 +24,9 @@ class CharacterPanel extends React.Component {
         this.getSkillsAffectingProvidedStat = this.getSkillsAffectingProvidedStat.bind(this);
     }
 
-    //TODO: move base url to environment settings
     componentDidMount() {
-        axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: '6daa1ea5-9c21-45fc-ab05-447f30c8a0fc' } })
-            .then(res => {
-                this.setState({ ...res.data, loaded: true });
-            });
+        if (this.props.loaded === false)
+            this.props.loadData();
     }
 
     getSkillsAffectingProvidedStat(stat, skills) {
@@ -122,7 +36,7 @@ class CharacterPanel extends React.Component {
     }
 
     getAllClassSkills() {
-        return this.state.classes.map(c => c.skills).flat();
+        return this.props.classes.map(c => c.skills).flat();
     }
 
     calculateFinalStatValue(stat) {
@@ -203,7 +117,7 @@ class CharacterPanel extends React.Component {
 
     getPercentagePointsIncreaseInCategoryFromClassModifiers(categoryId) {
         let allClassModifiers = [];
-        this.state.classes.forEach(c => {
+        this.props.classes.forEach(c => {
             allClassModifiers = allClassModifiers.concat(c.modifiers);
         });
 
@@ -215,11 +129,11 @@ class CharacterPanel extends React.Component {
     }
 
     getFinalStats() {
-        return this.state.generalInformation.stats.stats.map(s => ({ name: s.name, value: this.calculateFinalStatValue(s) }));
+        return this.props.generalInformation.stats.stats.map(s => ({ name: s.name, value: this.calculateFinalStatValue(s) }));
     }
 
     getCalculatedResources() {
-        return this.state.generalInformation.resources.map(r => ({
+        return this.props.generalInformation.resources.map(r => ({
             name: r.displayName,
             value: this.calculateResourceValue(r)
         }));
@@ -227,7 +141,7 @@ class CharacterPanel extends React.Component {
 
     calculateResourceValue(resource) {
         let affectingClassModifiers = this.getAllClassModifiers().filter(m => m.affectedResourceName === resource.calculationName);
-        let resourceStat = this.state.generalInformation.stats.stats.filter(s => s.name === resource.baseStatName)[0];
+        let resourceStat = this.props.generalInformation.stats.stats.filter(s => s.name === resource.baseStatName)[0];
         let finalStatValue = this.calculateFinalStatValue(resourceStat);
 
         let baseResourceValue = finalStatValue * resource.resourcePointsPerBaseStatPoint;
@@ -262,7 +176,7 @@ class CharacterPanel extends React.Component {
     }
 
     getAllClassModifiers() {
-        return this.state.classes.map(c => c.modifiers).flat();
+        return this.props.classes.map(c => c.modifiers).flat();
     }
 
     render() {
@@ -274,29 +188,40 @@ class CharacterPanel extends React.Component {
                 <div className='character-panel'>
                     <div className="general-information">
                         <div className='general-information-group'>
-                            <BasicInfo {...this.state.generalInformation.basicInfo} />
+                            <BasicInfo {...this.props.generalInformation.basicInfo} />
                         </div>
 
                         {
-                            this.state.loaded &&
+                            this.props.loaded &&
                             <div className='general-information-group'>
                                 <ResourcesStatus resources={this.getCalculatedResources()} />
                             </div>
                         }
                         <div className='general-information-group'>
-                            <Stats {...this.state.generalInformation.stats} calculateFinalStatValue={this.calculateFinalStatValue} />
+                            <Stats {...this.props.generalInformation.stats} calculateFinalStatValue={this.calculateFinalStatValue} />
                         </div>
 
                         <div className='general-information-group'>
-                            <UnspentSkillpoints {...this.state.generalInformation.skillpoints} />
+                            <UnspentSkillpoints {...this.props.generalInformation.skillpoints} />
                         </div>
                     </div>
 
-                    <SkillsPanel classes={this.state.classes} calculateValueOfIncreasedVariable={this.calculateValueOfIncreasedVariable} />
+                    <SkillsPanel classes={this.props.classes} calculateValueOfIncreasedVariable={this.calculateValueOfIncreasedVariable} />
                 </div>
             </>
         );
     }
 }
 
-export default CharacterPanel;
+
+const mapStateToProps = state => {
+    return state.characterPanel;
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        loadData: () => dispatch(fetchCharacterData())
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CharacterPanel);
