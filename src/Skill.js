@@ -96,7 +96,7 @@ class Skill extends React.Component {
                             }
                         </div>
                         {
-                            this.props.allowEdit && <SkillEdit {...this.props} />
+                            this.props.allowEdit && <SkillEdit {...this.props} skillId={0} classId={0}/>
                         }
                     </>
                 }

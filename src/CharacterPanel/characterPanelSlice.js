@@ -89,6 +89,10 @@ export const characterPanelSlice = createSlice({
     name: 'characterPanel',
     initialState: initialState,
     reducers: {
+        updateSkillTierDescriptions: (state, action) => {
+            const {skillId, classId} = action.payload;
+            state.classes[classId].skills[skillId].tierDescriptions = action.payload.tierDescriptions;
+        }
     },
     extraReducers(builder) {
         builder
@@ -112,6 +116,6 @@ export const fetchCharacterData = createAsyncThunk('character/getData', async ()
     return response.data;
 })
 
-export const { updateTierDescriptions } = characterPanelSlice.actions;
+export const { updateSkillTierDescriptions } = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;
