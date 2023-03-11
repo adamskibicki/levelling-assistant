@@ -23,7 +23,7 @@ class InputText extends React.Component {
     }
 
     resizeTextArea = () => {
-        if (this.props.multiline === false)
+        if (!this.props.multiline)
             return;
         this.textareaRef.current.style.height = '0px';
         const scrollHeight = this.textareaRef.current.scrollHeight;
@@ -32,13 +32,13 @@ class InputText extends React.Component {
 
     render() {
         return (
-            <div className='input-text'>
-                <label className='input-text__label'>{this.props.label}</label>
+            <div className='input'>
+                <label className='input__label'>{this.props.label}</label>
                 {
                     this.props.multiline ?
-                        <textarea ref={this.textareaRef} rows={1} className='input-text__input input-text__input--multiline' value={this.props.value} onChange={this.onChange}></textarea>
+                        <textarea ref={this.textareaRef} rows={1} className='input__input input-text__input--multiline' value={this.props.value} onChange={this.onChange}></textarea>
                         :
-                        <input className='input-text__input' type='text' value={this.props.value} onChange={this.props.onChange} />
+                        <input className='input__input' type='text' value={this.props.value} onChange={this.props.onChange} />
                 }
             </div>
         );

@@ -2,23 +2,28 @@ import { faCaretDown, faCaretUp, faClose } from "@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateSkillTierDescriptions } from "./CharacterPanel/characterPanelSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserCategories, updateSkill } from "./CharacterPanel/characterPanelSlice";
 import InputText from "./Inputs/InputText";
 import Modal from "./Modal/Modal";
 import ModalContent from "./Modal/ModalContent";
 import ModalFooter from "./Modal/ModalFooter";
 import ModalHeader from "./Modal/ModalHeader";
 import './SkillEdit.scss';
+import SkillCategoriesEdit from "./SkillsPanel/SkillCategoriesEdit";
 
 function SkillEdit(props) {
     const [show, setShow] = useState(false);
     const [tierDescriptions, setTierDescriptions] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const userCategories = useSelector((state) => state.characterPanel.userCategories);
     const dispatch = useDispatch();
 
     const showModal = () => {
         setShow(true);
         setTierDescriptions(props.tierDescriptions);
+        setCategories(props.categories);
+        dispatch(fetchUserCategories());
     };
 
     const hideModal = () => {
@@ -90,11 +95,16 @@ function SkillEdit(props) {
         const dataToDispatch = {
             tierDescriptions: tierDescriptions,
             skillId: props.skillId,
-            classId: props.classId
+            classId: props.classId,
+            categories: categories
         };
 
-        dispatch(updateSkillTierDescriptions(dataToDispatch));
+        dispatch(updateSkill(dataToDispatch));
         hideModal();
+    }
+
+    const onCategoriesChange = (categories) => {
+        setCategories(categories);
     }
 
     return (
@@ -119,6 +129,7 @@ function SkillEdit(props) {
                             </div>
                         ))}
                         <button onClick={addTier}>Add tier</button>
+                        <SkillCategoriesEdit categories={categories} userCategories={userCategories} onChange={(categories) => onCategoriesChange(categories)} />
                     </form>
                 </ModalContent>
                 <ModalFooter onAccept={acceptForm} onClose={hideModal} />

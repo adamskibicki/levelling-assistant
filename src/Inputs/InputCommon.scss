@@ -1,0 +1,15 @@
+@import '../palette.scss';
+
+.input {
+    display: flex;
+
+    &__label {
+        margin-right: $padding;
+    }
+
+    &__input {
+        flex: auto;
+        margin: 0 0 2px 2px;
+        padding: 0 2px;
+    }
+}

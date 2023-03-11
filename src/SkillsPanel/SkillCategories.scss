@@ -1,0 +1,53 @@
+@import '../palette.scss';
+
+.skill-categories {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+
+    &__category {
+        padding: 0.4rem;
+        margin-right: 0.4rem;
+        margin-left: 0;
+        background-color: $secondary-color;
+        position: relative;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &--removable {
+            &:hover {
+                background-color: $remove-color;
+            }
+        }
+
+        &--selectable {
+            &:hover {
+                background-color: $add-color;
+            }
+        }
+
+        &--selectable, &--removable {
+            cursor: pointer;
+
+            &:hover {
+                .skill-categories__category-overlap {
+                    opacity: 1;
+                }
+
+                .skill-categories__category-name {
+                    opacity: 0.3;
+                }
+            }
+        }
+    }
+
+    &__category-overlap{
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}

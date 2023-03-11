@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import './Skill.scss';
 import SkillEdit from './SkillEdit';
+import SkillCategories from './SkillsPanel/SkillCategories';
 
 class Skill extends React.Component {
     constructor(props) {
@@ -87,14 +88,7 @@ class Skill extends React.Component {
                                     ))
                             }
                         </div>
-                        <div className='skill-categories-container'>
-                            {
-                                this.props.categories
-                                    .map((c, i) => (
-                                        <div className='skill-category' key={i}>{c.name}</div>
-                                    ))
-                            }
-                        </div>
+                        <SkillCategories categories={this.props.categories}/>
                         {
                             this.props.allowEdit && <SkillEdit {...this.props} skillId={0} classId={0}/>
                         }
