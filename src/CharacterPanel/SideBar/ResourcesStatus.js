@@ -1,4 +1,4 @@
-import GeneralProperty from "../GeneralProperty";
+import GeneralProperty from "../../GeneralProperty";
 
 function numberToStringWithThousandSeparator(number, separator) {
     return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, separator);

@@ -1,5 +1,5 @@
-import GeneralProperty from "../GeneralProperty";
-import StatpointProperty from "../StatpointProperty";
+import GeneralProperty from "../../GeneralProperty";
+import StatpointProperty from "../../StatpointProperty";
 
 function Stats(props) {
     return (

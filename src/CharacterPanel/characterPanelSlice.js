@@ -94,6 +94,11 @@ export const characterPanelSlice = createSlice({
             const {skillId, classId} = action.payload;
             state.classes[classId].skills[skillId].tierDescriptions = action.payload.tierDescriptions;
             state.classes[classId].skills[skillId].categories = action.payload.categories;
+        },
+        editBasicInfo: (state, action) => {
+            const {name, title} = action.payload;
+            state.generalInformation.basicInfo.name = name;
+            state.generalInformation.basicInfo.title = title;
         }
     },
     extraReducers(builder) {
@@ -138,6 +143,6 @@ export const addNewCategory = createAsyncThunk('character/addNewCategory', async
     return response.data;
 })
 
-export const { updateSkill } = characterPanelSlice.actions;
+export const { updateSkill, editBasicInfo } = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;

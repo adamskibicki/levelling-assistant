@@ -1,10 +1,10 @@
 import React from 'react';
 import './CharacterPanel.scss'
 import SkillsPanel from '../SkillsPanel';
-import BasicInfo from './BasicInfo';
-import ResourcesStatus from './ResourcesStatus';
-import Stats from './Stats';
-import UnspentSkillpoints from './UnspentSkillpoints';
+import BasicInfo from './SideBar/BasicInfo';
+import ResourcesStatus from './SideBar/ResourcesStatus';
+import Stats from './SideBar/Stats';
+import UnspentSkillpoints from './SideBar/UnspentSkillpoints';
 import { connect } from 'react-redux';
 import { fetchCharacterData } from './characterPanelSlice';
 

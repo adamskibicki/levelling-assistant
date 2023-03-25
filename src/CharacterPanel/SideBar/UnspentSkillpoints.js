@@ -1,4 +1,4 @@
-import GeneralProperty from "../GeneralProperty";
+import GeneralProperty from "../../GeneralProperty";
 
 function UnspentSkillpoints(props) {
     return (
