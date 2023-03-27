@@ -33,7 +33,10 @@ class InputText extends React.Component {
     render() {
         return (
             <div className='input'>
-                <label className='input__label'>{this.props.label}</label>
+                {
+                    this.props.label &&
+                    <label className='input__label'>{this.props.label}</label>
+                }
                 {
                     this.props.multiline ?
                         <textarea ref={this.textareaRef} rows={1} className='input__input input-text__input--multiline' value={this.props.value} onChange={this.onChange}></textarea>

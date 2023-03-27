@@ -99,6 +99,10 @@ export const characterPanelSlice = createSlice({
             const {name, title} = action.payload;
             state.generalInformation.basicInfo.name = name;
             state.generalInformation.basicInfo.title = title;
+        },
+        editStats: (state, action) => {
+            const {stats} = action.payload;
+            state.generalInformation.stats.stats = stats;
         }
     },
     extraReducers(builder) {
@@ -143,6 +147,6 @@ export const addNewCategory = createAsyncThunk('character/addNewCategory', async
     return response.data;
 })
 
-export const { updateSkill, editBasicInfo } = characterPanelSlice.actions;
+export const { updateSkill, editBasicInfo, editStats } = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;

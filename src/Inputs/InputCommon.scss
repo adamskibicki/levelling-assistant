@@ -5,11 +5,12 @@
 
     &__label {
         margin-right: $padding;
+        margin-left: 2px;
     }
 
     &__input {
         flex: auto;
-        margin: 0 0 2px 2px;
+        margin: 0 0 2px 0;
         padding: 0 2px;
     }
 }

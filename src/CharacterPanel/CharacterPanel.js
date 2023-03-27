@@ -32,7 +32,7 @@ class CharacterPanel extends React.Component {
     getSkillsAffectingProvidedStat(stat, skills) {
         return skills.filter(s => {
             return s.variables?.filter(v => v.affectedStatNames?.includes(stat.name)).length > 0;
-        })
+        });
     }
 
     getAllClassSkills() {
@@ -142,6 +142,10 @@ class CharacterPanel extends React.Component {
     calculateResourceValue(resource) {
         let affectingClassModifiers = this.getAllClassModifiers().filter(m => m.affectedResourceName === resource.calculationName);
         let resourceStat = this.props.generalInformation.stats.stats.filter(s => s.name === resource.baseStatName)[0];
+        
+        //TODO: check later - this error with undefined resourceStat will stop happening after changing to looking for resource stat above by id, rather by name
+        if(typeof resourceStat === 'undefined')
+            debugger;
         let finalStatValue = this.calculateFinalStatValue(resourceStat);
 
         let baseResourceValue = finalStatValue * resource.resourcePointsPerBaseStatPoint;
