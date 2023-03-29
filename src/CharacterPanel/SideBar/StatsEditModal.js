@@ -6,7 +6,7 @@ import Modal from "../../Modal/Modal";
 import ModalContent from "../../Modal/ModalContent";
 import ModalFooter from "../../Modal/ModalFooter";
 import ModalHeader from "../../Modal/ModalHeader";
-import EditableList from "./EditableList";
+import ReorderableList from "../../Lists/ReorderableList";
 
 export default function StatsEditModal(props) {
     const [stats, setStats] = useState([]);
@@ -38,19 +38,69 @@ export default function StatsEditModal(props) {
         });
     }
 
+    const moveItemUp = (event, index) => {
+        setStats((prevState) => {
+            const itemToMove = prevState[index];
+            const itemReplaced = prevState[index - 1];
+
+            return prevState.map((s, i) => {
+                if (i === index)
+                    return itemReplaced;
+                if (i === index - 1)
+                    return itemToMove;
+                return s;
+            });
+        });
+    }
+
+    const moveItemDown = (event, index) => {
+        setStats((prevState) => {
+            const itemToMove = prevState[index];
+            const itemReplaced = prevState[index + 1];
+
+            return prevState.map((s, i) => {
+                if (i === index)
+                    return itemReplaced;
+                if (i === index + 1)
+                    return itemToMove;
+                return s;
+            });
+        });
+    }
+
+    const deleteItem = (event, index) => {
+        setStats((prevState) => {
+            return prevState.filter((_, i) => i !== index);
+        });
+    }
+
+    const onClose = () => {
+        props.onClose();
+        resetForm();
+    }
+
+    const onHide = () => {
+        props.onHide();
+        resetForm();
+    }
+
+    const resetForm = () => {
+        setStats(props.stats);
+    }
+
     return (
-        <Modal show={props.show} onHide={props.onHide}>
-            <ModalHeader onClose={props.onClose}>
+        <Modal show={props.show} onHide={onHide}>
+            <ModalHeader onClose={onClose}>
                 Add category
             </ModalHeader>
             <ModalContent>
-                <EditableList>
+                <ReorderableList moveItemUp={moveItemUp} moveItemDown={moveItemDown} deleteItem={deleteItem}>
                     {
                         stats.map((s, i) => <InputText key={i} value={s.name} onChange={(event) => onChange(event.target.value, i)} />)
                     }
-                </EditableList>
+                </ReorderableList>
             </ModalContent>
-            <ModalFooter onClose={props.onClose} onAccept={onAccept}>
+            <ModalFooter onClose={onClose} onAccept={onAccept}>
 
             </ModalFooter>
         </Modal>

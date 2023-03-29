@@ -1,0 +1,17 @@
+@import '../palette.scss';
+
+.reorderable-list {
+    :first-child {
+        margin-top: 0;
+    }
+
+    &__item {
+        display: flex;
+        margin-top: 2px;
+    }
+
+    &__child {
+        margin-right: auto;
+        flex: 1;
+    }
+}
