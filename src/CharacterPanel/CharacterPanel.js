@@ -140,12 +140,10 @@ class CharacterPanel extends React.Component {
     }
 
     calculateResourceValue(resource) {
-        let affectingClassModifiers = this.getAllClassModifiers().filter(m => m.affectedResourceName === resource.calculationName);
-        let resourceStat = this.props.generalInformation.stats.stats.filter(s => s.name === resource.baseStatName)[0];
+        const allClassModifiers = this.getAllClassModifiers();
+        let affectingClassModifiers = allClassModifiers.filter(m => m.affectedResourceId === resource.id);
+        let resourceStat = this.props.generalInformation.stats.stats.filter(s => s.id === resource.baseStatId)[0];
         
-        //TODO: check later - this error with undefined resourceStat will stop happening after changing to looking for resource stat above by id, rather by name
-        if(typeof resourceStat === 'undefined')
-            debugger;
         let finalStatValue = this.calculateFinalStatValue(resourceStat);
 
         let baseResourceValue = finalStatValue * resource.resourcePointsPerBaseStatPoint;

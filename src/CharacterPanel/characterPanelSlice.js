@@ -9,22 +9,10 @@ const initialState = {
             name: "None",
             title: "None"
         },
-        resources: [
-            {
-                displayName: "Health",
-                calculationName: "Health",
-                baseStatName: "Vitality",
-                resourcePointsPerBaseStatPoint: 10
-            },
-        ],
+        resources: [],
         stats: {
             unspentStatpoints: 0,
-            stats: [
-                {
-                    name: "Vitality",
-                    value: 0
-                }
-            ]
+            stats: []
         },
         skillpoints: {
             coreSkillpoints: 0,
@@ -133,7 +121,7 @@ export const characterPanelSlice = createSlice({
 });
 
 export const fetchCharacterData = createAsyncThunk('character/getData', async () => {
-    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: '6daa1ea5-9c21-45fc-ab05-447f30c8a0fc' } });
+    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: 'afa42078-a071-4bea-978e-f439c713848c' } });
     return response.data;
 })
 
