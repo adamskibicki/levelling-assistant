@@ -1,4 +1,26 @@
-.App {
-  text-align: center;
-  height: 100%;
+@import './palette.scss';
+
+.app {
+    background-color: $quaternary-color;
+    text-align: center;
+    height: 100%;
+
+    &__navbar {
+        display: flex;
+        position: fixed;
+        height: 5rem;
+        width: 100%;
+        background-color: $secondary-color;
+    }
+
+    &__link {
+        font-size: 1.5rem;
+        padding: 1.5rem;
+        text-decoration: none;
+
+        &:hover {
+            background-color: $primary-color;
+
+        }
+    }
 }

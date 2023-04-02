@@ -7,6 +7,7 @@ import ModalContent from "../../Modal/ModalContent";
 import ModalFooter from "../../Modal/ModalFooter";
 import ModalHeader from "../../Modal/ModalHeader";
 import ReorderableList from "../../Lists/ReorderableList";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function StatsEditModal(props) {
     const [stats, setStats] = useState([]);
@@ -74,6 +75,16 @@ export default function StatsEditModal(props) {
         });
     }
 
+    const addNewItem = () => {
+        setStats((prevState) => {
+            return [...prevState, {
+                id: uuidv4(),
+                name: "New stat",
+                value: 5
+            }];
+        })
+    }
+
     const onClose = () => {
         props.onClose();
         resetForm();
@@ -91,7 +102,7 @@ export default function StatsEditModal(props) {
     return (
         <Modal show={props.show} onHide={onHide}>
             <ModalHeader onClose={onClose}>
-                Add category
+                Stats
             </ModalHeader>
             <ModalContent>
                 <ReorderableList moveItemUp={moveItemUp} moveItemDown={moveItemDown} deleteItem={deleteItem}>
@@ -99,6 +110,7 @@ export default function StatsEditModal(props) {
                         stats.map((s, i) => <InputText key={i} value={s.name} onChange={(event) => onChange(event.target.value, i)} />)
                     }
                 </ReorderableList>
+                <button onClick={addNewItem}>Add new stat</button>
             </ModalContent>
             <ModalFooter onClose={onClose} onAccept={onAccept}>
 

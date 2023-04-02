@@ -6,7 +6,8 @@ import ResourcesStatus from './SideBar/ResourcesStatus';
 import Stats from './SideBar/Stats';
 import UnspentSkillpoints from './SideBar/UnspentSkillpoints';
 import { connect } from 'react-redux';
-import { fetchCharacterData } from './characterPanelSlice';
+import { getStatus } from './characterPanelSlice';
+import withRouter from '../components/withRouter';
 
 class CharacterPanel extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class CharacterPanel extends React.Component {
 
     componentDidMount() {
         if (this.props.loaded === false)
-            this.props.loadData();
+            this.props.getStatus(this.props.params.statusId);
     }
 
     getSkillsAffectingProvidedStat(stat, skills) {
@@ -184,9 +185,6 @@ class CharacterPanel extends React.Component {
     render() {
         return (
             <>
-                <div className='navbar'>
-                    Navigation bar
-                </div>
                 <div className='character-panel'>
                     <div className="general-information">
                         <div className='general-information-group'>
@@ -222,8 +220,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        loadData: () => dispatch(fetchCharacterData())
+        getStatus: (statusId) => dispatch(getStatus({statusId: statusId}))
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CharacterPanel);
+const characterPanelWithRouter = connect(mapStateToProps, mapDispatchToProps)(withRouter(CharacterPanel));
+
+export default characterPanelWithRouter;

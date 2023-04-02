@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { editBasicInfo } from "../characterPanelSlice";
-import InputText from "../../Inputs/InputText";
-import Modal from "../../Modal/Modal";
-import ModalContent from "../../Modal/ModalContent";
-import ModalFooter from "../../Modal/ModalFooter";
-import ModalHeader from "../../Modal/ModalHeader";
+import InputText from "../Inputs/InputText";
+import Modal from "../Modal/Modal";
+import ModalContent from "../Modal/ModalContent";
+import ModalFooter from "../Modal/ModalFooter";
+import ModalHeader from "../Modal/ModalHeader";
+import "./BasicInfoEditModal.scss";
 
 export default function BasicInfoEditModal(props) {
     const [title, setTitle] = useState('Title');
     const [name, setName] = useState('Name Surname');
-    const dispatch = useDispatch();
 
     useEffect(() => {
         setTitle(props.title);
@@ -19,20 +17,19 @@ export default function BasicInfoEditModal(props) {
 
     const onAccept = (event) => {
         event.preventDefault();
-        dispatch(editBasicInfo({
+        props.onAccept({
             name: name,
             title: title
-        }));
-        props.onAccept();
+        });
     }
 
     return (
         <Modal show={props.show} onHide={props.onHide}>
             <ModalHeader onClose={props.onClose}>
-                Add category
+                {props.modalTitle}
             </ModalHeader>
             <ModalContent>
-                <InputText label={'Name'} value={name} onChange={(event) => setName(event.target.value)}/>
+                <InputText className={"basic-info-edit-modal__input"} label={'Name'} value={name} onChange={(event) => setName(event.target.value)}/>
                 <InputText label={'Title'} value={title} onChange={(event) => setTitle(event.target.value)}/>
             </ModalContent>
             <ModalFooter onClose={props.onClose} onAccept={onAccept}>

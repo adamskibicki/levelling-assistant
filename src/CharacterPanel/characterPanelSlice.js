@@ -95,16 +95,16 @@ export const characterPanelSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchCharacterData.pending, (state, action) => {
+            .addCase(getStatus.pending, (state, action) => {
                 state.loaded = false;
             })
-            .addCase(fetchCharacterData.fulfilled, (state, action) => {
+            .addCase(getStatus.fulfilled, (state, action) => {
                 state.loaded = true;
                 state.generalInformation = action.payload.generalInformation;
                 state.classes = action.payload.classes;
                 state.generalSkills = action.payload.generalSkills;
             })
-            .addCase(fetchCharacterData.rejected, (state, action) => {
+            .addCase(getStatus.rejected, (state, action) => {
                 state.loaded = false;
             });
 
@@ -120,8 +120,8 @@ export const characterPanelSlice = createSlice({
     }
 });
 
-export const fetchCharacterData = createAsyncThunk('character/getData', async () => {
-    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: 'afa42078-a071-4bea-978e-f439c713848c' } });
+export const getStatus = createAsyncThunk('characterStatus/get', async (action) => {
+    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: action.statusId } });
     return response.data;
 })
 

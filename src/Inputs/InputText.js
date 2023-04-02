@@ -32,7 +32,7 @@ class InputText extends React.Component {
 
     render() {
         return (
-            <div className='input'>
+            <div className={"input " + this.props.className}>
                 {
                     this.props.label &&
                     <label className='input__label'>{this.props.label}</label>

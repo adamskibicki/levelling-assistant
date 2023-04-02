@@ -1,0 +1,42 @@
+@import '../palette.scss';
+
+.user-characters {
+    padding-top: 5rem;
+
+    &__link {
+        text-decoration: none;
+    }
+
+    &__item {
+        display: flex;
+        background-color: $tertiary-color;
+        padding: $padding;
+        margin: 0.4rem;
+
+        &:hover {
+            background-color: $primary-color;
+            cursor: pointer;
+        }
+    }
+
+    &__item-add {
+        margin: auto;
+    }
+
+    &__name {
+        flex: 1;
+        text-align: left;
+    }
+
+    &__title {
+        flex: 1;
+        text-align: left;
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+    }
+
+    &__lastEdited {
+        flex: 4;
+        text-align: right;
+    }
+}
