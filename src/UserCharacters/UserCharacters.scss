@@ -19,6 +19,18 @@
         }
     }
 
+    &__loader {
+        display: flex;
+        background-color: $tertiary-color;
+        padding: $padding;
+        margin: 0.4rem;
+    }
+
+    &__loader-spinner {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     &__item-add {
         margin: auto;
     }

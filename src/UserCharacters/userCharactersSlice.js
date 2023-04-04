@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const initialState = {
+    loaded: false,
     userCharacters: []
 };
 
@@ -14,6 +15,7 @@ export const userCharactersSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(getUserCharacters.fulfilled, (state, action) => {
+                state.loaded = true;
                 state.userCharacters = action.payload;
             });
             
