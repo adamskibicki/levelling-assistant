@@ -84,9 +84,9 @@ class Skill extends React.Component {
                     <>
                         <div>
                             {
-                                this.props.tierDescriptions
-                                    .map((td, i) => (
-                                        <p key={i} className='tier-description'>Tier {i + 1}: {this.replaceVariableMarkupsInTierDescriptions(td)}</p>
+                                this.props.tierDescriptions.map(x => x).sort((a, b) => a.tier - b.tier)
+                                    .map(td => (
+                                        <p key={td.id} className='tier-description'>Tier {td.tier}: {this.replaceVariableMarkupsInTierDescriptions(td)}</p>
                                     ))
                             }
                         </div>
