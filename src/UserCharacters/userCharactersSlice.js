@@ -17,6 +17,12 @@ export const userCharactersSlice = createSlice({
             .addCase(getUserCharacters.fulfilled, (state, action) => {
                 state.loaded = true;
                 state.userCharacters = action.payload;
+            })
+            .addCase(getUserCharacters.pending, (state) => {
+                state.loaded = false;
+            })
+            .addCase(getUserCharacters.rejected, (state) => {
+                state.loaded = false;
             });
             
         builder

@@ -71,8 +71,7 @@ class Class extends React.Component {
                 <div>
                     {
                         this.props.skills.map((s, i) => (
-                            //TODO: Change allowEdit condition later
-                            <Skill allowEdit={i===0 && this.props.allowEdit} key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
+                            <Skill allowEdit={this.props.allowEdit} key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
                         ))
                     }
                 </div>

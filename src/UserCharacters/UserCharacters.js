@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddUserCharacterModal from "./AddUserCharacterModal";
 import ConfirmationModal from "./ConfirmationModal";
-import Loader from "./Loader";
+import Loader from "../components/Loader";
 
 export default function UserCharacters(props) {
     const userCharacters = useSelector((state) => state.userCharacters.userCharacters);
@@ -19,10 +19,8 @@ export default function UserCharacters(props) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (loaded)
-            return;
         dispatch(getUserCharacters());
-    }, [loaded, dispatch]);
+    }, [dispatch]);
 
     const onModalAccept = (userCharacter) => {
         setShowAddUserCharacterModal(false);
@@ -50,7 +48,7 @@ export default function UserCharacters(props) {
         <div className="user-characters">
             {!loaded &&
                 <div className="user-characters__loader">
-                    <Loader className="user-characters__loader-spinner"/>
+                    <Loader className="user-characters__loader-spinner" />
                 </div>
             }
             {loaded &&

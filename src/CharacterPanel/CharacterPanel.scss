@@ -24,4 +24,10 @@
 .character-panel {
     display: flex;
     background-color: $quaternary-color;
+
+    &__loader {
+        padding-top: 5rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

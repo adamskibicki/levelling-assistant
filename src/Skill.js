@@ -25,7 +25,7 @@ class Skill extends React.Component {
     replaceVariableMarkupsInTierDescriptions(tierDescription) {
         let baseRegex = '<[\\S]*>';
 
-        let tierDescriptionVariablesMatches = [...tierDescription.matchAll(baseRegex)];
+        let tierDescriptionVariablesMatches = [...tierDescription.description.matchAll(baseRegex)];
 
         if (tierDescriptionVariablesMatches.length > 0) {
             let variableNames = tierDescriptionVariablesMatches.map(m => (m[0].slice(1, m[0].length - 1)));
@@ -56,12 +56,14 @@ class Skill extends React.Component {
                 }
             }
 
+            let description = tierDescription.description;
+
             for (const prop in dictionary) {
-                tierDescription = tierDescription.replace(prop, dictionary[prop]);
+                description = description.replace(prop, dictionary[prop]);
             }
         }
 
-        return tierDescription;
+        return tierDescription.description;
     }
 
     render() {

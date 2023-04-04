@@ -120,8 +120,8 @@ export const characterPanelSlice = createSlice({
     }
 });
 
-export const getStatus = createAsyncThunk('characterStatus/get', async (action) => {
-    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: action.statusId } });
+export const getStatus = createAsyncThunk('characterStatus/get', async (data) => {
+    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: data } });
     return response.data;
 })
 

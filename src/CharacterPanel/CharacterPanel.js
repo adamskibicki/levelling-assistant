@@ -1,47 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './CharacterPanel.scss'
 import SkillsPanel from '../SkillsPanel';
 import BasicInfo from './SideBar/BasicInfo';
 import ResourcesStatus from './SideBar/ResourcesStatus';
 import Stats from './SideBar/Stats';
 import UnspentSkillpoints from './SideBar/UnspentSkillpoints';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getStatus } from './characterPanelSlice';
-import withRouter from '../components/withRouter';
+import { useParams } from 'react-router-dom';
+import Loader from "../components/Loader";
 
-class CharacterPanel extends React.Component {
-    constructor(props) {
-        super(props);
+export default function CharacterPanel() {
+    const characterStatus = useSelector(state => state.characterPanel);
+    const loaded = useSelector(state => state.characterPanel.loaded);
+    const { statusId } = useParams();
+    const dispatch = useDispatch();
 
-        this.calculateValueOfIncreasedVariable = this.calculateValueOfIncreasedVariable.bind(this);
-        this.calculateResourceValue = this.calculateResourceValue.bind(this);
-        this.calculateFinalStatValue = this.calculateFinalStatValue.bind(this);
+    useEffect(() => {
+        dispatch(getStatus(statusId));
+    }, [statusId, dispatch]);
 
-        this.getPercentagePointsIncreaseInCategoryFromClassModifiers = this.getPercentagePointsIncreaseInCategoryFromClassModifiers.bind(this);
-        this.getAllClassSkills = this.getAllClassSkills.bind(this);
-        this.getFinalStats = this.getFinalStats.bind(this);
-        this.getCalculatedResources = this.getCalculatedResources.bind(this);
-        this.getAllClassModifiers = this.getAllClassModifiers.bind(this);
-        this.getSkillsAffectingProvidedStat = this.getSkillsAffectingProvidedStat.bind(this);
-    }
-
-    componentDidMount() {
-        if (this.props.loaded === false)
-            this.props.getStatus(this.props.params.statusId);
-    }
-
-    getSkillsAffectingProvidedStat(stat, skills) {
+    const getSkillsAffectingProvidedStat = (stat, skills) => {
         return skills.filter(s => {
             return s.variables?.filter(v => v.affectedStatNames?.includes(stat.name)).length > 0;
         });
     }
 
-    getAllClassSkills() {
-        return this.props.classes.map(c => c.skills).flat();
+    const getAllClassSkills = () => {
+        return characterStatus.classes.map(c => c.skills).flat();
     }
 
-    calculateFinalStatValue(stat) {
-        let statAffectingSkills = this.getSkillsAffectingProvidedStat(stat, this.getAllClassSkills());
+    const calculateFinalStatValue = (stat) => {
+        let statAffectingSkills = getSkillsAffectingProvidedStat(stat, getAllClassSkills());
 
         let statIncreases = [];
         let statMultipliers = [];
@@ -53,7 +43,7 @@ class CharacterPanel extends React.Component {
             for (let j = 0; j < affectingVariables.length; j++) {
                 const skillVariable = affectingVariables[j];
 
-                let variableIncreaseValue = this.calculateValueOfIncreasedVariable(skillVariable, skill);
+                let variableIncreaseValue = calculateValueOfIncreasedVariable(skillVariable, skill);
 
                 switch (skillVariable.categoryCalculationType) {
                     case 'None':
@@ -80,13 +70,13 @@ class CharacterPanel extends React.Component {
         return stat.value * calculatedStatIncreases * calculatedStatMultipliers;
     }
 
-    calculateValueOfIncreasedVariable(variable, skill) {
+    const calculateValueOfIncreasedVariable = (variable, skill) => {
         const baseValue = variable.baseValue;
         const calculationType = variable.variableCalculationType;
         const categoryIds = skill.categories.map(c => (c.id));
 
         let increase = categoryIds.map(c => {
-            return this.getPercentagePointsIncreaseInCategoryFromClassModifiers(c);
+            return getPercentagePointsIncreaseInCategoryFromClassModifiers(c);
         }, this).reduce((a, c) => a + c, 0);
 
         switch (calculationType) {
@@ -103,7 +93,7 @@ class CharacterPanel extends React.Component {
             case 'StaticAdditiveOtherVariableBased':
                 {
                     let otherVariable = skill.variables.filter(v => v.name === variable.baseVariableName)[0];
-                    let otherVariableIncrease = this.calculateValueOfIncreasedVariable(otherVariable, skill);
+                    let otherVariableIncrease = calculateValueOfIncreasedVariable(otherVariable, skill);
 
                     return otherVariableIncrease * variable.baseValue / 100;
                 }
@@ -116,9 +106,9 @@ class CharacterPanel extends React.Component {
         }
     }
 
-    getPercentagePointsIncreaseInCategoryFromClassModifiers(categoryId) {
+    const getPercentagePointsIncreaseInCategoryFromClassModifiers = (categoryId) => {
         let allClassModifiers = [];
-        this.props.classes.forEach(c => {
+        characterStatus.classes.forEach(c => {
             allClassModifiers = allClassModifiers.concat(c.modifiers);
         });
 
@@ -129,23 +119,19 @@ class CharacterPanel extends React.Component {
         return applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
     }
 
-    getFinalStats() {
-        return this.props.generalInformation.stats.stats.map(s => ({ name: s.name, value: this.calculateFinalStatValue(s) }));
-    }
-
-    getCalculatedResources() {
-        return this.props.generalInformation.resources.map(r => ({
+    const getCalculatedResources = () => {
+        return characterStatus.generalInformation.resources.map(r => ({
             name: r.displayName,
-            value: this.calculateResourceValue(r)
+            value: calculateResourceValue(r)
         }));
     }
 
-    calculateResourceValue(resource) {
-        const allClassModifiers = this.getAllClassModifiers();
+    const calculateResourceValue = (resource) => {
+        const allClassModifiers = getAllClassModifiers();
         let affectingClassModifiers = allClassModifiers.filter(m => m.affectedResourceId === resource.id);
-        let resourceStat = this.props.generalInformation.stats.stats.filter(s => s.id === resource.baseStatId)[0];
-        
-        let finalStatValue = this.calculateFinalStatValue(resourceStat);
+        let resourceStat = characterStatus.generalInformation.stats.stats.filter(s => s.id === resource.baseStatId)[0];
+
+        let finalStatValue = calculateFinalStatValue(resourceStat);
 
         let baseResourceValue = finalStatValue * resource.resourcePointsPerBaseStatPoint;
 
@@ -178,52 +164,40 @@ class CharacterPanel extends React.Component {
         return baseResourceValue * (increases.reduce((a, c) => a + c, 100) / 100) * calculatedMultipliers;
     }
 
-    getAllClassModifiers() {
-        return this.props.classes.map(c => c.modifiers).flat();
+    const getAllClassModifiers = () => {
+        return characterStatus.classes.map(c => c.modifiers).flat();
     }
 
-    render() {
-        return (
-            <>
-                <div className='character-panel'>
+    return (
+        <div className='character-panel'>
+            {!loaded &&
+                <div className="character-panel__loader">
+                    <Loader />
+                </div>
+            }
+            {loaded &&
+                <>
                     <div className="general-information">
                         <div className='general-information-group'>
-                            <BasicInfo {...this.props.generalInformation.basicInfo} />
-                        </div>
-
-                        {
-                            this.props.loaded &&
-                            <div className='general-information-group'>
-                                <ResourcesStatus resources={this.getCalculatedResources()} />
-                            </div>
-                        }
-                        <div className='general-information-group'>
-                            <Stats {...this.props.generalInformation.stats} calculateFinalStatValue={this.calculateFinalStatValue} />
+                            <BasicInfo {...characterStatus.generalInformation.basicInfo} />
                         </div>
 
                         <div className='general-information-group'>
-                            <UnspentSkillpoints {...this.props.generalInformation.skillpoints} />
+                            <ResourcesStatus resources={getCalculatedResources()} />
+                        </div>
+
+                        <div className='general-information-group'>
+                            <Stats {...characterStatus.generalInformation.stats} calculateFinalStatValue={calculateFinalStatValue} />
+                        </div>
+
+                        <div className='general-information-group'>
+                            <UnspentSkillpoints {...characterStatus.generalInformation.skillpoints} />
                         </div>
                     </div>
 
-                    <SkillsPanel classes={this.props.classes} calculateValueOfIncreasedVariable={this.calculateValueOfIncreasedVariable} />
-                </div>
-            </>
-        );
-    }
+                    <SkillsPanel classes={characterStatus.classes} calculateValueOfIncreasedVariable={calculateValueOfIncreasedVariable} />
+                </>
+            }
+        </div>
+    );
 }
-
-
-const mapStateToProps = state => {
-    return state.characterPanel;
-}
-
-const mapDispatchToProps = dispatch => {
-    return {
-        getStatus: (statusId) => dispatch(getStatus({statusId: statusId}))
-    };
-}
-
-const characterPanelWithRouter = connect(mapStateToProps, mapDispatchToProps)(withRouter(CharacterPanel));
-
-export default characterPanelWithRouter;
