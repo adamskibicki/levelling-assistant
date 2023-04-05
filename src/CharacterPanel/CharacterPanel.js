@@ -22,7 +22,7 @@ export default function CharacterPanel() {
 
     const getSkillsAffectingProvidedStat = (stat, skills) => {
         return skills.filter(s => {
-            return s.variables?.filter(v => v.affectedStatNames?.includes(stat.name)).length > 0;
+            return s.variables?.filter(v => v.affectedStatIds.includes(stat.id)).length > 0;
         });
     }
 
@@ -38,7 +38,7 @@ export default function CharacterPanel() {
 
         for (let i = 0; i < statAffectingSkills.length; i++) {
             const skill = statAffectingSkills[i];
-            const affectingVariables = skill.variables.filter(v => v.affectedStatNames?.includes(stat.name));
+            const affectingVariables = skill.variables.filter(v => v.affectedStatIds.includes(stat.id));
 
             for (let j = 0; j < affectingVariables.length; j++) {
                 const skillVariable = affectingVariables[j];
