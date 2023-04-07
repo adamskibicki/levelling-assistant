@@ -1,0 +1,14 @@
+@import "../../palette.scss";
+
+.stats-edit-modal {
+
+    &__stat {
+        display: flex;
+        margin-right: 1rem;
+    }
+
+    &__stat-name {
+        flex: 1;
+        height: inherit;
+    }
+}
