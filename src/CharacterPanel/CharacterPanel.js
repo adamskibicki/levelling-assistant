@@ -18,6 +18,8 @@ export default function CharacterPanel() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+
+    //TODO: fix error when loading CharacterPanel second time after first was loaded
     useEffect(() => {
         if (displayedCharacterStatusId !== null && displayedCharacterStatusId !== statusId) {
             navigate(`/character/${displayedCharacterStatusId}`);

@@ -1,14 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const initialState = {
-    loaded: false,
-    userCharacters: []
-};
+import { createSlice } from "@reduxjs/toolkit";
+import { initialState } from "./state/UserCharacterSliceState";
+import { getUserCharacters } from "./thunks/getUserCharacters";
+import { postUserCharacter } from "./thunks/postUserCharacter";
+import { deleteUserCharacter } from "./thunks/deleteUserCharacter";
 
 export const userCharactersSlice = createSlice({
     name: "userCharacters",
-    initialState:initialState,
+    initialState: initialState,
     reducers: {
 
     },
@@ -35,21 +33,6 @@ export const userCharactersSlice = createSlice({
                 state.userCharacters = state.userCharacters.filter(uc => uc.id !== action.meta.arg);
             });
     }
-});
-
-export const getUserCharacters = createAsyncThunk('userCharacters/get', async () => {
-    const response = await axios.get('https://localhost:7119/api/UserCharacters');
-    return response.data;
-});
-
-export const postUserCharacter = createAsyncThunk('userCharacters/post', async (data) => {
-    const response = await axios.post('https://localhost:7119/api/UserCharacters', {...data});
-    return response.data;
-});
-
-export const deleteUserCharacter = createAsyncThunk('userCharacters/delete', async (data) => {
-    const response = await axios.delete('https://localhost:7119/api/UserCharacters', { params: { id: data } });
-    return response.data;
 });
 
 export default userCharactersSlice.reducer;

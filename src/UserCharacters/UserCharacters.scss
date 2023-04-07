@@ -19,6 +19,10 @@
         }
     }
 
+    &__item--old-status {
+        margin-left: 0.8rem;
+    }
+
     &__loader {
         display: flex;
         background-color: $tertiary-color;
@@ -33,6 +37,10 @@
 
     &__item-add {
         margin: auto;
+    }
+
+    &__bottom-spacer {
+        min-height: 1rem;
     }
 
     &__name {
