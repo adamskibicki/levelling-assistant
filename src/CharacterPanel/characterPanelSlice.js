@@ -4,6 +4,7 @@ import axios from "axios";
 const initialState = {
     loaded: false,
     userCategories: [],
+    displayedCharacterStatusId: null,
     generalInformation: {
         basicInfo: {
             name: "None",
@@ -103,6 +104,7 @@ export const characterPanelSlice = createSlice({
                 state.generalInformation = action.payload.generalInformation;
                 state.classes = action.payload.classes;
                 state.generalSkills = action.payload.generalSkills;
+                state.displayedCharacterStatusId = action.payload.id; 
             })
             .addCase(getStatus.rejected, (state, action) => {
                 state.loaded = false;
@@ -117,11 +119,17 @@ export const characterPanelSlice = createSlice({
             .addCase(addNewCategory.fulfilled, (state, action) => {
                 state.userCategories = [...state.userCategories, action.payload];
             });
+
+        builder
+            .addCase(saveCharacterStatusChanges.fulfilled, (state, action) => {
+                console.log(action.payload);
+                state.displayedCharacterStatusId = action.payload.id;
+            });
     }
 });
 
 export const getStatus = createAsyncThunk('characterStatus/get', async (data) => {
-    const response = await axios.get('https://localhost:7119/api/Status/GetStatus', { params: { statusId: data } });
+    const response = await axios.get('https://localhost:7119/api/CharacterStatus', { params: { statusId: data } });
     return response.data;
 })
 
@@ -132,6 +140,12 @@ export const fetchUserCategories = createAsyncThunk('character/getUserCategories
 
 export const addNewCategory = createAsyncThunk('character/addNewCategory', async (data) => {
     const response = await axios.post('https://localhost:7119/api/Categories/AddNewCategory', {...data});
+    return response.data;
+})
+
+export const saveCharacterStatusChanges = createAsyncThunk('character/post', async (data) => {
+    console.log(data);
+    const response = await axios.post('https://localhost:7119/api/CharacterStatus', data);
     return response.data;
 })
 

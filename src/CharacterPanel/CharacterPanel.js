@@ -6,15 +6,23 @@ import ResourcesStatus from './SideBar/ResourcesStatus';
 import Stats from './SideBar/Stats';
 import UnspentSkillpoints from './SideBar/UnspentSkillpoints';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStatus } from './characterPanelSlice';
-import { useParams } from 'react-router-dom';
+import { getStatus, saveCharacterStatusChanges } from './characterPanelSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 import Loader from "../components/Loader";
 
 export default function CharacterPanel() {
     const characterStatus = useSelector(state => state.characterPanel);
     const loaded = useSelector(state => state.characterPanel.loaded);
+    const displayedCharacterStatusId = useSelector(state => state.characterPanel.displayedCharacterStatusId);
     const { statusId } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (displayedCharacterStatusId !== null && displayedCharacterStatusId !== statusId) {
+            navigate(`/character/${displayedCharacterStatusId}`);
+        }
+    }, [statusId, displayedCharacterStatusId, navigate]);
 
     useEffect(() => {
         dispatch(getStatus(statusId));
@@ -168,6 +176,17 @@ export default function CharacterPanel() {
         return characterStatus.classes.map(c => c.modifiers).flat();
     }
 
+    const saveChangesOnClick = () => {
+        dispatch(saveCharacterStatusChanges({
+            characterStatusId: statusId,
+            characterStatus: {
+                classes: characterStatus.classes,
+                generalInformation: characterStatus.generalInformation,
+                generalSkills: characterStatus.generalSkills
+            }
+        }));
+    }
+
     return (
         <div className='character-panel'>
             {!loaded &&
@@ -178,6 +197,11 @@ export default function CharacterPanel() {
             {loaded &&
                 <>
                     <div className="general-information">
+                        <div className='general-information-group'>
+                            <button onClick={saveChangesOnClick}>Save changes</button>
+                            <button>Discard changes</button>
+                        </div>
+
                         <div className='general-information-group'>
                             <BasicInfo {...characterStatus.generalInformation.basicInfo} />
                         </div>
