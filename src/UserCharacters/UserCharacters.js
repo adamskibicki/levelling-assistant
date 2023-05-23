@@ -11,8 +11,6 @@ import { getUserCharacters } from "./slice/thunks/getUserCharacters";
 import { postUserCharacter } from "./slice/thunks/postUserCharacter";
 import { deleteUserCharacter } from "./slice/thunks/deleteUserCharacter";
 
-//TODO: fix delete (separate user character and character status delete operations)
-//TODO: fix add (backend 500 http error)
 export default function UserCharacters() {
     const userCharacters = useSelector((state) => state.userCharacters.userCharacters);
     const loaded = useSelector((state) => state.userCharacters.loaded);
