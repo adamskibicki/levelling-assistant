@@ -10,6 +10,8 @@ import Loader from "../components/Loader";
 import { getUserCharacters } from "./slice/thunks/getUserCharacters";
 import { postUserCharacter } from "./slice/thunks/postUserCharacter";
 import { deleteUserCharacter } from "./slice/thunks/deleteUserCharacter";
+import { toReadableDate } from "../common/DateExtensions";
+import CharacterStatuses from "./CharacterStatuses";
 
 export default function UserCharacters() {
     const userCharacters = useSelector((state) => state.userCharacters.userCharacters);
@@ -17,7 +19,7 @@ export default function UserCharacters() {
     const [showAddUserCharacterModal, setShowAddUserCharacterModal] = useState(false);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [deleteConfirmationModalMessage, setDeleteConfirmationModalMessage] = useState("");
-    const [userCharacterToDelete, setUserCharacterToDelete] = useState(null);
+    const [userCharacterIdToDelete, setUserCharacterIdToDelete] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -29,20 +31,17 @@ export default function UserCharacters() {
         dispatch(postUserCharacter(userCharacter));
     }
 
-    const onDeleteButtonClick = (event, userCharacter) => {
+    const onUserCharacterDeleteButtonClick = (event, userCharacter) => {
+        const newestCharacterStatus = getNewestCharacterStatus(userCharacter.characterStatuses);
         event.preventDefault();
         setShowDeleteConfirmationModal(true);
-        setDeleteConfirmationModalMessage(`${userCharacter.name}\n${userCharacter.title}\n${toReadableDate(userCharacter.lastEdited)}`);
-        setUserCharacterToDelete(userCharacter);
-    }
-
-    const toReadableDate = (date) => {
-        return new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeStyle: "medium" }).format(new Date(date));
+        setDeleteConfirmationModalMessage(`${newestCharacterStatus.name}\n${newestCharacterStatus.title}\n${toReadableDate(newestCharacterStatus.createdAt)}`);
+        setUserCharacterIdToDelete(userCharacter.id);
     }
 
     const onDeleteConfirmationModalAccept = () => {
-        dispatch(deleteUserCharacter(userCharacterToDelete.id));
-        setUserCharacterToDelete(null);
+        dispatch(deleteUserCharacter(userCharacterIdToDelete));
+        setUserCharacterIdToDelete(null);
         setShowDeleteConfirmationModal(false);
     }
 
@@ -68,19 +67,10 @@ export default function UserCharacters() {
                                     <div className="user-characters__name">{newestCharacterStatus.name}</div>
                                     <div className="user-characters__title">{newestCharacterStatus.title}</div>
                                     <div className="user-characters__lastEdited">{toReadableDate(newestCharacterStatus.createdAt)}</div>
-                                    <button onClick={(event) => onDeleteButtonClick(event, newestCharacterStatus)}><FontAwesomeIcon icon={faClose} /></button>
+                                    <button onClick={(event) => onUserCharacterDeleteButtonClick(event, uc)}><FontAwesomeIcon icon={faClose} /></button>
                                 </div>
                             </Link>
-                            {uc.characterStatuses.map(cs => cs).sort((a, b) => (new Date(b.createdAt) - new Date(a.createdAt))).map((cs) =>
-                                <Link to={"/character/" + cs.id} key={cs.id} className="user-characters__link">
-                                    <div className="user-characters__item user-characters__item--old-status">
-                                        <div className="user-characters__name">{cs.name}</div>
-                                        <div className="user-characters__title">{cs.title}</div>
-                                        <div className="user-characters__lastEdited">{toReadableDate(cs.createdAt)}</div>
-                                        <button onClick={(event) => onDeleteButtonClick(event, cs)}><FontAwesomeIcon icon={faClose} /></button>
-                                    </div>
-                                </Link>
-                            )}
+                            <CharacterStatuses characterStatuses={uc.characterStatuses}/> 
                         </div>
                     )
                 })

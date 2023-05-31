@@ -1,8 +1,6 @@
 @import '../palette.scss';
 
-.user-characters {
-    padding-top: 5rem;
-
+.character-statuses {
     &__link {
         text-decoration: none;
     }
@@ -17,6 +15,10 @@
             background-color: $primary-color;
             cursor: pointer;
         }
+    }
+
+    &__item--old-status {
+        margin-left: 0.8rem;
     }
 
     &__loader {

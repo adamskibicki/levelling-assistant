@@ -13,7 +13,7 @@ export interface UserCharacter {
     characterStatuses: Array<CharacterStatusSimplified>
 }
 
-interface CharacterStatusSimplified {
+export interface CharacterStatusSimplified {
     id: string,
     createdAt: Date,
     name: string,
