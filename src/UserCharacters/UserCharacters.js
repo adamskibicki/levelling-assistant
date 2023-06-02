@@ -57,7 +57,14 @@ export default function UserCharacters() {
                 </div>
             }
             {loaded &&
-                userCharacters.map(uc => {
+                userCharacters
+                .map(uc => ({
+                    newestCharacterStatus: getNewestCharacterStatus(uc.characterStatuses),
+                    userCharacter: uc
+                }))
+                .sort((a, b) => (new Date(b.newestCharacterStatus.createdAt).getTime() - new Date(a.newestCharacterStatus.createdAt).getTime()))
+                .map(ucs => ucs.userCharacter)
+                .map(uc => {
                     const newestCharacterStatus = getNewestCharacterStatus(uc.characterStatuses);
 
                     return (
