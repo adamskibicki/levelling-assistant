@@ -7,7 +7,7 @@ export const postUserCharacter = createAsyncThunk<PostUserCharacterResponseData,
     return response.data as PostUserCharacterResponseData;
 });
 
-interface PostUserCharacterRequestData {
+export interface PostUserCharacterRequestData {
     name: string;
     title: string;
 }

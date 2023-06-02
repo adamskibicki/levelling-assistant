@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import characterPanelReducer from '../CharacterPanel/characterPanelSlice';
+import characterPanelReducer from '../CharacterPanel/slice/characterPanelSlice';
 import userCharactersReducer from '../UserCharacters/slice/userCharactersSlice';
 import { useDispatch } from "react-redux";
 

@@ -3,7 +3,7 @@ export const initialState: UserCharacterSliceState = {
     userCharacters: []
 };
 
-interface UserCharacterSliceState {
+export interface UserCharacterSliceState {
     loaded: boolean,
     userCharacters: Array<UserCharacter>
 }

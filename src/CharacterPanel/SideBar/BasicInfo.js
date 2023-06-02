@@ -3,7 +3,7 @@ import GeneralProperty from "../../GeneralProperty";
 import BasicInfoEditModal from "../../components/BasicInfoEditModal";
 import TitleWithEditButton from "./TitleWithEditButton";
 import { useDispatch } from "react-redux";
-import { editBasicInfo } from "../characterPanelSlice";
+import { editBasicInfo } from "../slice/characterPanelSlice";
 
 function BasicInfo(props) {
     const [showEditModal, setShowEditModal] = useState(false);

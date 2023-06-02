@@ -8,44 +8,48 @@ import AddUserCharacterModal from "./AddUserCharacterModal";
 import ConfirmationModal from "./ConfirmationModal";
 import Loader from "../components/Loader";
 import { getUserCharacters } from "./slice/thunks/getUserCharacters";
-import { postUserCharacter } from "./slice/thunks/postUserCharacter";
+import { PostUserCharacterRequestData, postUserCharacter } from "./slice/thunks/postUserCharacter";
 import { deleteUserCharacter } from "./slice/thunks/deleteUserCharacter";
 import { toReadableDate } from "../common/DateExtensions";
 import CharacterStatuses from "./CharacterStatuses";
+import { AppDispatch } from "../store/store";
+import { CharacterStatusSimplified, UserCharacter, UserCharacterSliceState } from "./slice/state/UserCharacterSliceState";
 
 export default function UserCharacters() {
-    const userCharacters = useSelector((state) => state.userCharacters.userCharacters);
-    const loaded = useSelector((state) => state.userCharacters.loaded);
+    const userCharacters = useSelector((state: {userCharacters: UserCharacterSliceState}) => state.userCharacters.userCharacters);
+    const loaded = useSelector((state: any) => state.userCharacters.loaded);
     const [showAddUserCharacterModal, setShowAddUserCharacterModal] = useState(false);
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
     const [deleteConfirmationModalMessage, setDeleteConfirmationModalMessage] = useState("");
-    const [userCharacterIdToDelete, setUserCharacterIdToDelete] = useState(null);
-    const dispatch = useDispatch();
+    const [userCharacterIdToDelete, setUserCharacterIdToDelete] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         dispatch(getUserCharacters());
     }, [dispatch]);
 
-    const onModalAccept = (userCharacter) => {
+    const onModalAccept = (userCharacter: PostUserCharacterRequestData) => {
         setShowAddUserCharacterModal(false);
         dispatch(postUserCharacter(userCharacter));
     }
 
-    const onUserCharacterDeleteButtonClick = (event, userCharacter) => {
-        const newestCharacterStatus = getNewestCharacterStatus(userCharacter.characterStatuses);
+    const onUserCharacterDeleteButtonClick = (event: React.MouseEvent<HTMLButtonElement>, userCharacter: UserCharacter) => {
         event.preventDefault();
+
+        const newestCharacterStatus = getNewestCharacterStatus(userCharacter.characterStatuses);
+
+        setUserCharacterIdToDelete(userCharacter.id);
         setShowDeleteConfirmationModal(true);
         setDeleteConfirmationModalMessage(`${newestCharacterStatus.name}\n${newestCharacterStatus.title}\n${toReadableDate(newestCharacterStatus.createdAt)}`);
-        setUserCharacterIdToDelete(userCharacter.id);
     }
 
     const onDeleteConfirmationModalAccept = () => {
         dispatch(deleteUserCharacter(userCharacterIdToDelete));
-        setUserCharacterIdToDelete(null);
+        setUserCharacterIdToDelete("");
         setShowDeleteConfirmationModal(false);
     }
 
-    const getNewestCharacterStatus = (characterStatuses) => {
+    const getNewestCharacterStatus = (characterStatuses: Array<CharacterStatusSimplified>) => {
         return characterStatuses.reduce((prev, current) => (prev.createdAt > current.createdAt ? prev : current));
     }
 
@@ -93,7 +97,7 @@ export default function UserCharacters() {
 
             <ConfirmationModal modalTitle={"Do you want to delete selected user character?"} message={deleteConfirmationModalMessage} show={showDeleteConfirmationModal} onAccept={onDeleteConfirmationModalAccept} onHide={() => setShowDeleteConfirmationModal(false)} onClose={() => setShowDeleteConfirmationModal(false)} />
 
-            <AddUserCharacterModal name="New character name" title="New character status" show={showAddUserCharacterModal} onHide={() => setShowAddUserCharacterModal(false)} onClose={() => setShowAddUserCharacterModal(false)} onAccept={(userCharacter) => onModalAccept(userCharacter)} modalTitle={"Add character"} />
+            <AddUserCharacterModal name="New character name" title="New character status" show={showAddUserCharacterModal} onHide={() => setShowAddUserCharacterModal(false)} onClose={() => setShowAddUserCharacterModal(false)} onAccept={(userCharacter: PostUserCharacterRequestData) => onModalAccept(userCharacter)} modalTitle={"Add character"} />
         </div>
     );
 }

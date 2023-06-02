@@ -9,7 +9,6 @@ export const userCharactersSlice = createSlice({
     name: "userCharacters",
     initialState: initialState,
     reducers: {
-
     },
     extraReducers(builder) {
         builder

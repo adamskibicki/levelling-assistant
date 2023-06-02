@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addNewCategory } from "../CharacterPanel/characterPanelSlice";
+import { addNewCategory } from "../CharacterPanel/slice/thunks/addNewCategory";
 import InputColor from "../Inputs/InputColor";
 import InputText from "../Inputs/InputText";
 import Modal from "../Modal/Modal";
