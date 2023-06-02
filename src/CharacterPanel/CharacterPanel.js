@@ -13,16 +13,9 @@ import Loader from "../components/Loader";
 export default function CharacterPanel() {
     const characterStatus = useSelector(state => state.characterPanel);
     const loaded = useSelector(state => state.characterPanel.loaded);
-    const displayedCharacterStatusId = useSelector(state => state.characterPanel.displayedCharacterStatusId);
     const { statusId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (displayedCharacterStatusId !== null && displayedCharacterStatusId !== statusId) {
-            navigate(`/character/${displayedCharacterStatusId}`);
-        }
-    }, [statusId, displayedCharacterStatusId, navigate]);
 
     useEffect(() => {
         dispatch(getStatus(statusId));
@@ -178,12 +171,15 @@ export default function CharacterPanel() {
 
     const saveChangesOnClick = () => {
         dispatch(saveCharacterStatusChanges({
-            characterStatusId: statusId,
-            characterStatus: {
-                classes: characterStatus.classes,
-                generalInformation: characterStatus.generalInformation,
-                generalSkills: characterStatus.generalSkills
-            }
+            payload:{
+                characterStatusId: statusId,
+                characterStatus: {
+                    classes: characterStatus.classes,
+                    generalInformation: characterStatus.generalInformation,
+                    generalSkills: characterStatus.generalSkills
+                }
+            },
+            navigate: navigate
         }));
     }
 
