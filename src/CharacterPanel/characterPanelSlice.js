@@ -4,7 +4,6 @@ import axios from "axios";
 const initialState = {
     loaded: false,
     userCategories: [],
-    displayedCharacterStatusId: null,
     generalInformation: {
         basicInfo: {
             name: "None",
@@ -80,17 +79,17 @@ export const characterPanelSlice = createSlice({
     initialState: initialState,
     reducers: {
         updateSkill: (state, action) => {
-            const {skillId, classId} = action.payload;
+            const { skillId, classId } = action.payload;
             state.classes[classId].skills[skillId].tierDescriptions = action.payload.tierDescriptions;
             state.classes[classId].skills[skillId].categories = action.payload.categories;
         },
         editBasicInfo: (state, action) => {
-            const {name, title} = action.payload;
+            const { name, title } = action.payload;
             state.generalInformation.basicInfo.name = name;
             state.generalInformation.basicInfo.title = title;
         },
         editStats: (state, action) => {
-            const {stats} = action.payload;
+            const { stats } = action.payload;
             state.generalInformation.stats.stats = stats;
         }
     },
@@ -104,7 +103,6 @@ export const characterPanelSlice = createSlice({
                 state.generalInformation = action.payload.generalInformation;
                 state.classes = action.payload.classes;
                 state.generalSkills = action.payload.generalSkills;
-                state.displayedCharacterStatusId = action.payload.id; 
             })
             .addCase(getStatus.rejected, (state, action) => {
                 state.loaded = false;
@@ -114,7 +112,7 @@ export const characterPanelSlice = createSlice({
             .addCase(fetchUserCategories.fulfilled, (state, action) => {
                 state.userCategories = action.payload;
             });
-            
+
         builder
             .addCase(addNewCategory.fulfilled, (state, action) => {
                 state.userCategories = [...state.userCategories, action.payload];
@@ -122,8 +120,8 @@ export const characterPanelSlice = createSlice({
 
         builder
             .addCase(saveCharacterStatusChanges.fulfilled, (state, action) => {
-                console.log(action.payload);
-                state.displayedCharacterStatusId = action.payload.id;
+                console.log(action);
+                action.meta.arg.navigate(`/character/${action.payload.id}`);
             });
     }
 });
@@ -139,13 +137,13 @@ export const fetchUserCategories = createAsyncThunk('character/getUserCategories
 })
 
 export const addNewCategory = createAsyncThunk('character/addNewCategory', async (data) => {
-    const response = await axios.post('https://localhost:7119/api/Categories/AddNewCategory', {...data});
+    const response = await axios.post('https://localhost:7119/api/Categories/AddNewCategory', { ...data });
     return response.data;
 })
 
 export const saveCharacterStatusChanges = createAsyncThunk('character/post', async (data) => {
     console.log(data);
-    const response = await axios.post('https://localhost:7119/api/CharacterStatus', data);
+    const response = await axios.post('https://localhost:7119/api/CharacterStatus', data.payload);
     return response.data;
 })
 
