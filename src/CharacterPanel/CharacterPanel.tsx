@@ -38,7 +38,6 @@ export default function CharacterPanel() {
 
     const getSkillsAffectingProvidedStat = (stat: Stat, skills: Skill[]) => {
         return skills.filter(s => {
-            //TODO: fix backend to not return null as Stat variables - return empty array instead
             return s.variables?.filter(v => v.affectedStatIds.includes(stat.id)).length > 0;
         });
     }

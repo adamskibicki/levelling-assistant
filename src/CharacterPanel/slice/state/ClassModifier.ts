@@ -1,8 +1,9 @@
 import { Category } from "./Category";
+import { CategoryCalculationType } from "./CategoryCalculationType";
 
 export interface ClassModifier {
     affectedResourceId: string;
-    categoryCalculationType: unknown;//TODO
+    categoryCalculationType: CategoryCalculationType;
     percentagePointsOfCategoryIncrease: number;
     category: Category;
  }
