@@ -6,23 +6,39 @@ import ResourcesStatus from './SideBar/ResourcesStatus';
 import Stats from './SideBar/Stats';
 import UnspentSkillpoints from './SideBar/UnspentSkillpoints';
 import { useDispatch, useSelector } from 'react-redux';
-import { getStatus, saveCharacterStatusChanges } from './characterPanelSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from "../components/Loader";
+import { getStatus } from './slice/thunks/getStatus';
+import { CharacterPanelSliceState } from './slice/state/CharacterPanelSliceState';
+import { AppDispatch } from '../store/store';
+import { saveCharacterStatusChanges } from './slice/thunks/saveCharacterStatusChanges';
+import { Resource } from './slice/state/Resource';
+import { Stat } from './slice/state/Stat';
+import { Skill } from './slice/state/Skill';
+import { CategoryCalculationType } from './slice/state/CategoryCalculationType';
+import { SkillVariable } from './slice/state/SkillVariable';
+import { VariableCalculationType } from './slice/state/VariableCalculationType';
+import { ClassModifier } from './slice/state/ClassModifier';
 
 export default function CharacterPanel() {
-    const characterStatus = useSelector(state => state.characterPanel);
-    const loaded = useSelector(state => state.characterPanel.loaded);
-    const { statusId } = useParams();
-    const dispatch = useDispatch();
+    const characterStatus = useSelector((state: {characterPanel: CharacterPanelSliceState}) => state.characterPanel);
+    const loaded = useSelector((state: {characterPanel: CharacterPanelSliceState}) => state.characterPanel.loaded);
+    const { statusId } = useParams<string | "">();
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(getStatus(statusId));
+        if (statusId === undefined) {
+            alert("CharacterPanel cannot be loaded without CharacterStatus id in route");
+        }
+        else {
+            dispatch(getStatus({id: statusId}));
+        }
     }, [statusId, dispatch]);
 
-    const getSkillsAffectingProvidedStat = (stat, skills) => {
+    const getSkillsAffectingProvidedStat = (stat: Stat, skills: Skill[]) => {
         return skills.filter(s => {
+            //TODO: fix backend to not return null as Stat variables - return empty array instead
             return s.variables?.filter(v => v.affectedStatIds.includes(stat.id)).length > 0;
         });
     }
@@ -31,7 +47,7 @@ export default function CharacterPanel() {
         return characterStatus.classes.map(c => c.skills).flat();
     }
 
-    const calculateFinalStatValue = (stat) => {
+    const calculateFinalStatValue = (stat: Stat) => {
         let statAffectingSkills = getSkillsAffectingProvidedStat(stat, getAllClassSkills());
 
         let statIncreases = [];
@@ -47,20 +63,20 @@ export default function CharacterPanel() {
                 let variableIncreaseValue = calculateValueOfIncreasedVariable(skillVariable, skill);
 
                 switch (skillVariable.categoryCalculationType) {
-                    case 'None':
+                    case CategoryCalculationType.None:
                         break;
-                    case 'Multiplicative':
+                    case CategoryCalculationType.Multiplicative:
                         statMultipliers.push(variableIncreaseValue);
                         break;
-                    case 'MultiplicativeWithBaseAdded':
+                    case CategoryCalculationType.MultiplicativeWithBaseAdded:
                         statMultipliers.push(variableIncreaseValue + 100);
                         break;
-                    case 'Additive':
-                    case 'StaticAdditiveOtherVariableBased':
+                    case CategoryCalculationType.Additive:
+                    case CategoryCalculationType.StaticAdditiveOtherVariableBased:
                         statIncreases.push(variableIncreaseValue);
                         break;
                     default:
-                        console.error('calculationType \'' + skillVariable.categoryCalculationType + '\' is not supported');
+                        console.error('CategoryCalculationType \'' + skillVariable.categoryCalculationType + '\' is not supported');
                 }
             }
         }
@@ -71,44 +87,45 @@ export default function CharacterPanel() {
         return stat.value * calculatedStatIncreases * calculatedStatMultipliers;
     }
 
-    const calculateValueOfIncreasedVariable = (variable, skill) => {
+    const calculateValueOfIncreasedVariable = (variable: SkillVariable, skill: Skill): number => {
         const baseValue = variable.baseValue;
         const calculationType = variable.variableCalculationType;
         const categoryIds = skill.categories.map(c => (c.id));
 
-        let increase = categoryIds.map(c => {
+        let increase = categoryIds.map(function(this: void, c){
             return getPercentagePointsIncreaseInCategoryFromClassModifiers(c);
-        }, this).reduce((a, c) => a + c, 0);
+        }).reduce((a, c) => a + c, 0);
 
         switch (calculationType) {
-            case 'Additive':
+            case VariableCalculationType.Additive:
                 {
                     let increaseWithBase = 100 + increase;
                     return baseValue * increaseWithBase / 100;
                 }
-            case 'Reciprocal':
+            case VariableCalculationType.Reciprocal:
                 {
                     let increaseWithBase = 100 + increase;
                     return baseValue / (increaseWithBase / 100);
                 }
-            case 'StaticAdditiveOtherVariableBased':
+            case VariableCalculationType.StaticAdditiveOtherVariableBased:
                 {
                     let otherVariable = skill.variables.filter(v => v.name === variable.baseVariableName)[0];
                     let otherVariableIncrease = calculateValueOfIncreasedVariable(otherVariable, skill);
 
                     return otherVariableIncrease * variable.baseValue / 100;
                 }
-            case 'None':
+            case VariableCalculationType.None:
                 {
                     return variable.baseValue;
                 }
             default:
-                console.error('calculationType \'' + calculationType + '\' is not known');
+                console.error('VariableCalculationType \'' + calculationType + '\' is not known');
+                return 0;
         }
     }
 
-    const getPercentagePointsIncreaseInCategoryFromClassModifiers = (categoryId) => {
-        let allClassModifiers = [];
+    const getPercentagePointsIncreaseInCategoryFromClassModifiers = (categoryId: string) => {
+        let allClassModifiers: ClassModifier[] = [];
         characterStatus.classes.forEach(c => {
             allClassModifiers = allClassModifiers.concat(c.modifiers);
         });
@@ -127,7 +144,7 @@ export default function CharacterPanel() {
         }));
     }
 
-    const calculateResourceValue = (resource) => {
+    const calculateResourceValue = (resource: Resource) => {
         const allClassModifiers = getAllClassModifiers();
         let affectingClassModifiers = allClassModifiers.filter(m => m.affectedResourceId === resource.id);
         let resourceStat = characterStatus.generalInformation.stats.stats.filter(s => s.id === resource.baseStatId)[0];

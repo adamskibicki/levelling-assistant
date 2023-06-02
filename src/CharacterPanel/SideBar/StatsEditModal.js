@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { editStats } from "../characterPanelSlice";
+import { editStats } from "../slice/characterPanelSlice";
 import InputText from "../../Inputs/InputText";
 import Modal from "../../Modal/Modal";
 import ModalContent from "../../Modal/ModalContent";
