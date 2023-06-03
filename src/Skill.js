@@ -90,9 +90,9 @@ class Skill extends React.Component {
                                     ))
                             }
                         </div>
-                        <SkillCategories categories={this.props.categories}/>
+                        <SkillCategories categories={this.props.categories} />
                         {
-                            this.props.allowEdit && <SkillEdit {...this.props} skillId={0} classId={0}/>
+                            this.props.allowEdit && <SkillEdit {...this.props} skillId={0} classId={0} />
                         }
                     </>
                 }
