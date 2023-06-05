@@ -64,7 +64,7 @@ export default function ClassesPanel(props: {
                     >
                         <Class
                             allowEdit={true}
-                            {...c}
+                            value={c}
                             calculateValueOfIncreasedVariable={
                                 props.calculateValueOfIncreasedVariable
                             }

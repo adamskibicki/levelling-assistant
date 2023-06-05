@@ -1,5 +1,15 @@
 @import './palette.scss';
 
+.class {
+    &__edit-button {
+        padding: 1px 3px;
+    }
+
+    &__delete-button {
+        padding: 1px 5px;
+    }
+}
+
 .class-container {
     background-color: $tertiary-color;
     margin: 0.4rem;

@@ -1,25 +1,32 @@
-import { faCaretDown, faCaretUp, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCaretDown,
+    faCaretUp,
+    faClose,
+    faEdit,
+    faMinus,
+    faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "./Class.scss";
 import SkillComponent from "./Skill";
-import { ClassModifier } from "./CharacterPanel/slice/state/ClassModifier";
-import { Skill } from "./CharacterPanel/slice/state/Skill";
 import ConfirmationModal from "./UserCharacters/ConfirmationModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "./store/store";
-import { deleteClass } from "./CharacterPanel/slice/characterPanelSlice";
+import {
+    deleteClass,
+    editClass,
+} from "./CharacterPanel/slice/characterPanelSlice";
+import { CharacterClass } from "./CharacterPanel/slice/state/CharacterClass";
+import EditClassModal from "./ClassesPanel/EditClassModal";
 
 export default function Class(props: {
-    id: string;
-    name: string;
-    level: number;
-    modifiers: ClassModifier[];
-    skills: Skill[];
+    value: CharacterClass;
     allowEdit: boolean;
     calculateValueOfIncreasedVariable: Function;
 }) {
     const [expanded, setExpanded] = useState(true);
+    const [showEditClassModal, setShowEditClassModal] = useState(false);
     const [classModifiersExpanded, setClassModifiersExpanded] = useState(true);
     const [
         showClassDeletionConfirmationModal,
@@ -39,9 +46,27 @@ export default function Class(props: {
     };
 
     const deleteCurrentClass = () => {
-        dispatch(deleteClass(props.id));
+        dispatch(deleteClass(props.value.id));
         setShowClassDeletionConfirmationModal(false);
-    }
+    };
+
+    const onAcceptEditCurrentClass = (
+        _: React.MouseEvent<HTMLButtonElement>,
+        characterClass: CharacterClass
+    ) => {
+        dispatch(editClass(characterClass));
+
+        setShowEditClassModal(false);
+    };
+
+    const editClassLevel = (levelChangeValue: number) => {
+        dispatch(
+            editClass({
+                ...props.value,
+                level: props.value.level + levelChangeValue,
+            })
+        );
+    };
 
     return (
         <>
@@ -58,10 +83,30 @@ export default function Class(props: {
                         )}
                     </button>
                     <h4 className="class-name">
-                        {props.name} - lvl {props.level}
+                        {props.value.name} - lvl {props.value.level}
                     </h4>
+                    <button 
+                        className={props.value.level === 0 ? "disabled" : ""}
+                        onClick={() => editClassLevel(-1)}
+                    >
+                        <FontAwesomeIcon icon={faMinus} />
+                    </button>
                     <button
-                        onClick={() => setShowClassDeletionConfirmationModal(true)}
+                        onClick={() => editClassLevel(1)}
+                    >
+                        <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                    <button
+                        className="class__edit-button"
+                        onClick={() => setShowEditClassModal(true)}
+                    >
+                        <FontAwesomeIcon icon={faEdit} />
+                    </button>
+                    <button
+                        className="class__delete-button"
+                        onClick={() =>
+                            setShowClassDeletionConfirmationModal(true)
+                        }
                     >
                         <FontAwesomeIcon icon={faClose} />
                     </button>
@@ -83,7 +128,7 @@ export default function Class(props: {
                         <div className="title">Class modifiers:</div>
                     </div>
                     {classModifiersExpanded &&
-                        props.modifiers.map((m, i) => (
+                        props.value.modifiers.map((m, i) => (
                             <div className="modifier" key={i}>
                                 {m.category !== null && (
                                     <div className="category">
@@ -96,7 +141,7 @@ export default function Class(props: {
                 </div>
             </div>
             <div>
-                {props.skills.map((s, i) => (
+                {props.value.skills.map((s, i) => (
                     <SkillComponent
                         allowEdit={props.allowEdit}
                         key={i + expanded.toString()}
@@ -109,12 +154,19 @@ export default function Class(props: {
                 ))}
             </div>
             <ConfirmationModal
-                modalTitle={`Are you sure you want to delete class: ${props.name}`}
-                message={`Class ${props.name} and all associated modifiers and skills will be deleted.`}
+                modalTitle={`Are you sure you want to delete class: ${props.value.name}`}
+                message={`Class ${props.value.name} and all associated modifiers and skills will be deleted.`}
                 show={showClassDeletionConfirmationModal}
                 onAccept={() => deleteCurrentClass()}
                 onClose={() => setShowClassDeletionConfirmationModal(false)}
                 onHide={() => setShowClassDeletionConfirmationModal(false)}
+            />
+            <EditClassModal
+                characterClass={props.value}
+                onAccept={onAcceptEditCurrentClass}
+                onClose={() => setShowEditClassModal(false)}
+                onHide={() => setShowEditClassModal(false)}
+                show={showEditClassModal}
             />
         </>
     );
