@@ -29,6 +29,12 @@ export const characterPanelSlice = createSlice({
             type: string;
         }) => {
             state.classes = [...state.classes, action.payload];
+        },
+        deleteClass: (state, action: {
+            payload: string;
+            type: string;
+        }) => {
+            state.classes = state.classes.filter(c => c.id !== action.payload);
         }
     },
     extraReducers(builder) {
@@ -63,6 +69,6 @@ export const characterPanelSlice = createSlice({
     }
 });
 
-export const { updateSkill, editBasicInfo, editStats, addClass } = characterPanelSlice.actions;
+export const { updateSkill, editBasicInfo, editStats, addClass, deleteClass } = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;

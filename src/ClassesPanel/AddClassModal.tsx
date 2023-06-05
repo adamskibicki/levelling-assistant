@@ -5,6 +5,7 @@ import ModalFooter from "../Modal/ModalFooter";
 import ModalHeader from "../Modal/ModalHeader";
 import InputText from "../Inputs/InputText";
 import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AddClassModal(props: {
     onHide: Function,
@@ -17,6 +18,7 @@ export default function AddClassModal(props: {
 
     const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
         props.onAccept(event, {
+            id: uuidv4(),
             name: name,
             level: 0,
             modifiers: [],
