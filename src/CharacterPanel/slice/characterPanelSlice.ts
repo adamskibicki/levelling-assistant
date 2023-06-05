@@ -4,6 +4,7 @@ import { getStatus } from "./thunks/getStatus";
 import { fetchUserCategories } from "./thunks/fetchUserCategories";
 import { addNewCategory } from "./thunks/addNewCategory";
 import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges";
+import { CharacterClass } from "./state/CharacterClass";
 
 export const characterPanelSlice = createSlice({
     name: 'characterPanel',
@@ -22,6 +23,12 @@ export const characterPanelSlice = createSlice({
         editStats: (state, action) => {
             const { stats } = action.payload;
             state.generalInformation.stats.stats = stats;
+        },
+        addClass: (state, action: {
+            payload: CharacterClass;
+            type: string;
+        }) => {
+            state.classes = [...state.classes, action.payload];
         }
     },
     extraReducers(builder) {
@@ -57,6 +64,6 @@ export const characterPanelSlice = createSlice({
     }
 });
 
-export const { updateSkill, editBasicInfo, editStats } = characterPanelSlice.actions;
+export const { updateSkill, editBasicInfo, editStats, addClass } = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;

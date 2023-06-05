@@ -4,18 +4,24 @@ import ModalContent from "../Modal/ModalContent";
 import ModalFooter from "../Modal/ModalFooter";
 import ModalHeader from "../Modal/ModalHeader";
 import InputText from "../Inputs/InputText";
+import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
 
 export default function AddClassModal(props: {
     onHide: Function,
     show: boolean,
     onClose: Function,
-    onAccept: Function
+    onAccept: (event: React.MouseEvent<HTMLButtonElement>, characterClass: CharacterClass) => void
 }) {
     const nameDefault = "New class";
     const [name, setName] = useState(nameDefault);
 
     const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
-        props.onAccept(event, name);
+        props.onAccept(event, {
+            name: name,
+            level: 0,
+            modifiers: [],
+            skills: []
+        });
         setName(nameDefault);
     }
 
