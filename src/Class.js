@@ -54,7 +54,7 @@ class Class extends React.Component {
                             </button>
                             <div className='title'>Class modifiers:</div>
                         </div>
-                        { 
+                        {
                             this.state.classModifiersExpanded &&
                             this.props.modifiers.map((m, i) => (
                                 <div className='modifier' key={i}>
@@ -71,7 +71,7 @@ class Class extends React.Component {
                 <div>
                     {
                         this.props.skills.map((s, i) => (
-                            <Skill allowEdit={this.props.allowEdit} key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable}/>
+                            <Skill allowEdit={this.props.allowEdit} key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable} />
                         ))
                     }
                 </div>
