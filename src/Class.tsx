@@ -2,9 +2,18 @@ import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import './Class.scss';
-import Skill from './Skill';
+import SkillComponent from './Skill';
+import { ClassModifier } from './CharacterPanel/slice/state/ClassModifier';
+import { Skill } from './CharacterPanel/slice/state/Skill';
 
-export default function Class(props) {
+export default function Class(props: {
+    name: string;
+    level: number;
+    modifiers: ClassModifier[],
+    skills: Skill[],
+    allowEdit: boolean,
+    calculateValueOfIncreasedVariable: Function
+}) {
     const [expanded, setExpanded] = useState(true);
     const [classModifiersExpanded, setClassModifiersExpanded] = useState(true);
 
@@ -47,7 +56,7 @@ export default function Class(props) {
                             <div className='modifier' key={i}>
                                 {
                                     m.category !== null &&
-                                    <div className='category'>{m.category?.name}</div>
+                                    <div className='category'>{m.category.name}</div>
                                 }
                                 <p className='description'>{m.description}</p>
                             </div>
@@ -58,7 +67,7 @@ export default function Class(props) {
             <div>
                 {
                     props.skills.map((s, i) => (
-                        <Skill allowEdit={props.allowEdit} key={i + expanded.toString()} {...s} expanded={expanded} calculateValueOfIncreasedVariable={props.calculateValueOfIncreasedVariable} />
+                        <SkillComponent allowEdit={props.allowEdit} key={i + expanded.toString()} {...s} expanded={expanded} calculateValueOfIncreasedVariable={props.calculateValueOfIncreasedVariable} />
                     ))
                 }
             </div>
