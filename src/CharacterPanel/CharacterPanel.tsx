@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './CharacterPanel.scss'
-import SkillsPanel from '../SkillsPanel';
+import ClassesPanel from '../ClassesPanel/ClassesPanel';
 import BasicInfo from './SideBar/BasicInfo';
 import ResourcesStatus from './SideBar/ResourcesStatus';
 import Stats from './SideBar/Stats';
@@ -231,7 +231,7 @@ export default function CharacterPanel() {
                         </div>
                     </div>
 
-                    <SkillsPanel classes={characterStatus.classes} calculateValueOfIncreasedVariable={calculateValueOfIncreasedVariable} />
+                    <ClassesPanel classes={characterStatus.classes} calculateValueOfIncreasedVariable={calculateValueOfIncreasedVariable} />
                 </>
             }
         </div>

@@ -14,7 +14,7 @@ import ModalContent from "./Modal/ModalContent";
 import ModalFooter from "./Modal/ModalFooter";
 import ModalHeader from "./Modal/ModalHeader";
 import "./SkillEdit.scss";
-import SkillCategoriesEdit from "./SkillsPanel/SkillCategoriesEdit";
+import SkillCategoriesEdit from "./ClassesPanel/SkillCategoriesEdit";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
 import { Category } from "./CharacterPanel/slice/state/Category";
 import { CharacterPanelSliceState } from "./CharacterPanel/slice/state/CharacterPanelSliceState";

@@ -23,59 +23,7 @@ export const initialState: CharacterPanelSliceState = {
             fourthTierGeneralSkillpoints: 0,
         },
     },
-    classes: [
-        {
-            name: "None",
-            level: 0,
-            modifiers: [],
-            skills: [
-                {
-                    name: "None",
-                    level: 0,
-                    tier: 0,
-                    tierDescriptions: [],
-                    type: "None",
-                    categories: [],
-                    enhanced: false,
-                    variables: []
-                },
-            ],
-        },
-        {
-            name: "None",
-            level: 0,
-            modifiers: [],
-            skills: [
-                {
-                    name: "None",
-                    level: 0,
-                    tier: 0,
-                    tierDescriptions: [],
-                    type: "None",
-                    categories: [],
-                    enhanced: false,
-                    variables: []
-                },
-            ],
-        },
-        {
-            name: "None",
-            level: 0,
-            modifiers: [],
-            skills: [
-                {
-                    name: "None",
-                    level: 0,
-                    tier: 0,
-                    tierDescriptions: [],
-                    type: "None",
-                    categories: [],
-                    enhanced: false,
-                    variables: []
-                },
-            ],
-        },
-    ],
+    classes: [],
     generalSkills: [],
 };
 

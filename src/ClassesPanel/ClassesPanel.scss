@@ -1,6 +1,6 @@
-@import './palette.scss';
+@import '../palette.scss';
 
-.skills-panel {
+.classes-panel {
     padding: 5rem 0 0 0;
     background-color: $quaternary-color;
     height: 100%;
@@ -13,6 +13,7 @@
         border: none;
         font-size: 1rem;
         margin: 0;
+        vertical-align: top;
     }
 
     &__tablinks:hover {

@@ -4,6 +4,7 @@ import { getStatus } from "./thunks/getStatus";
 import { fetchUserCategories } from "./thunks/fetchUserCategories";
 import { addNewCategory } from "./thunks/addNewCategory";
 import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges";
+import { CharacterClass } from "./state/CharacterClass";
 
 export const characterPanelSlice = createSlice({
     name: 'characterPanel',
@@ -22,6 +23,25 @@ export const characterPanelSlice = createSlice({
         editStats: (state, action) => {
             const { stats } = action.payload;
             state.generalInformation.stats.stats = stats;
+        },
+        addClass: (state, action: {
+            payload: CharacterClass;
+            type: string;
+        }) => {
+            state.classes = [...state.classes, action.payload];
+        },
+        deleteClass: (state, action: {
+            payload: string;
+            type: string;
+        }) => {
+            state.classes = state.classes.filter(c => c.id !== action.payload);
+        },
+        editClass: (state, action: {
+            payload: CharacterClass;
+            type: string;
+        }) => {
+            const index = state.classes.findIndex(c => c.id === action.payload.id);
+            state.classes[index] = action.payload;
         }
     },
     extraReducers(builder) {
@@ -51,12 +71,11 @@ export const characterPanelSlice = createSlice({
 
         builder
             .addCase(saveCharacterStatusChanges.fulfilled, (state, action) => {
-                console.log(action);
                 action.meta.arg.navigate(`/character/${action.payload.id}`);
             });
     }
 });
 
-export const { updateSkill, editBasicInfo, editStats } = characterPanelSlice.actions;
+export const { updateSkill, editBasicInfo, editStats, addClass, deleteClass, editClass } = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;

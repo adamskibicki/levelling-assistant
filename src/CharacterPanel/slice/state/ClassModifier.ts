@@ -6,4 +6,5 @@ export interface ClassModifier {
     categoryCalculationType: CategoryCalculationType;
     percentagePointsOfCategoryIncrease: number;
     category: Category;
- }
+    description: string;
+}
