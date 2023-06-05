@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import "./SkillsPanel.scss";
-import { CharacterClass } from "./CharacterPanel/slice/state/CharacterClass";
-import Class from "./Class";
+import "./ClassesPanel.scss";
+import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
+import Class from "../Class";
 
-export default function SkillsPanel(props: {
+export default function ClassesPanel(props: {
     classes: CharacterClass[];
     calculateValueOfIncreasedVariable: Function;
 }) {

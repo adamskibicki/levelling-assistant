@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import './Skill.scss';
 import SkillEdit from './SkillEdit';
-import SkillCategories from './SkillsPanel/SkillCategories';
+import SkillCategories from './ClassesPanel/SkillCategories';
 
 class Skill extends React.Component {
     constructor(props) {
