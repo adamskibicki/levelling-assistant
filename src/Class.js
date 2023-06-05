@@ -1,83 +1,67 @@
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useState } from 'react';
 import './Class.scss';
 import Skill from './Skill';
 
-class Class extends React.Component {
-    constructor(props) {
-        super(props);
+export default function Class(props) {
+    const [expanded, setExpanded] = useState(true);
+    const [classModifiersExpanded, setClassModifiersExpanded] = useState(true);
 
-        this.state = {
-            expanded: true,
-            classModifiersExpanded: true,
-        };
+    const switchExpandVisibility = () => {
+        const prevExpanded = expanded;
+
+        setExpanded(!prevExpanded);
+        setClassModifiersExpanded(!prevExpanded);
     }
 
-    switchExpandVisibility() {
-        this.setState((prevState) => (
-            {
-                expanded: !prevState.expanded,
-                classModifiersExpanded: !prevState.expanded
-            }
-        ));
+    const switchClassModifiersExpandVisibility = () => {
+        setClassModifiersExpanded((prevState => !prevState));
     }
 
-    switchClassModifiersExpandVisibility() {
-        this.setState((prevState) => (
-            {
-                classModifiersExpanded: !prevState.classModifiersExpanded
-            }
-        ));
-    }
-
-    render() {
-        return (
-            <>
-                <div className='class-container'>
-                    <div className='class-name-container'>
-                        <button className='expand' onClick={() => this.switchExpandVisibility()}>
+    return (
+        <>
+            <div className='class-container'>
+                <div className='class-name-container'>
+                    <button className='expand' onClick={() => switchExpandVisibility()}>
+                        {
+                            expanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
+                        }
+                    </button>
+                    <h4 className='class-name'>
+                        {props.name} - lvl {props.level}
+                    </h4>
+                </div>
+                <div className='modifiers-container'>
+                    <div className='title-container'>
+                        <button className='expand' onClick={() => switchClassModifiersExpandVisibility()}>
                             {
-                                this.state.expanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
+                                classModifiersExpanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
                             }
                         </button>
-                        <h4 className='class-name'>
-                            {this.props.name} - lvl {this.props.level}
-                        </h4>
+                        <div className='title'>Class modifiers:</div>
                     </div>
-                    <div className='modifiers-container'>
-                        <div className='title-container'>
-                            <button className='expand' onClick={() => this.switchClassModifiersExpandVisibility()}>
-                                {
-                                    this.state.classModifiersExpanded ? (<FontAwesomeIcon icon={faCaretUp} />) : (<FontAwesomeIcon icon={faCaretDown} />)
-                                }
-                            </button>
-                            <div className='title'>Class modifiers:</div>
-                        </div>
-                        {
-                            this.state.classModifiersExpanded &&
-                            this.props.modifiers.map((m, i) => (
-                                <div className='modifier' key={i}>
-                                    {
-                                        m.category !== null &&
-                                        <div className='category'>{m.category?.name}</div>
-                                    }
-                                    <p className='description'>{m.description}</p>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </div>
-                <div>
                     {
-                        this.props.skills.map((s, i) => (
-                            <Skill allowEdit={this.props.allowEdit} key={i + this.state.expanded.toString()} {...s} expanded={this.state.expanded} calculateValueOfIncreasedVariable={this.props.calculateValueOfIncreasedVariable} />
+                        classModifiersExpanded &&
+                        props.modifiers.map((m, i) => (
+                            <div className='modifier' key={i}>
+                                {
+                                    m.category !== null &&
+                                    <div className='category'>{m.category?.name}</div>
+                                }
+                                <p className='description'>{m.description}</p>
+                            </div>
                         ))
                     }
                 </div>
-            </>
-        );
-    }
+            </div>
+            <div>
+                {
+                    props.skills.map((s, i) => (
+                        <Skill allowEdit={props.allowEdit} key={i + expanded.toString()} {...s} expanded={expanded} calculateValueOfIncreasedVariable={props.calculateValueOfIncreasedVariable} />
+                    ))
+                }
+            </div>
+        </>
+    );
 }
-
-export default Class;
