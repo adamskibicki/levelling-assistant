@@ -24,9 +24,7 @@ function SkillCategoriesEdit(props) {
                     .map((c) => (
                         <div className='skill-categories__category skill-categories__category--removable' key={c.id} onClick={() => deleteCategory(c.id)}>
                             <div className='skill-categories__category-name'>{c.name}</div>
-                            <div className='skill-categories__category-overlap'>
-                                <FontAwesomeIcon icon={faClose} />
-                            </div>
+                            <FontAwesomeIcon className='skill-categories__category-overlap' icon={faClose} />
                         </div>
                     ))
                 }
@@ -41,9 +39,7 @@ function SkillCategoriesEdit(props) {
                     .map((uc) => (
                         <div className='skill-categories__category skill-categories__category--selectable' key={uc.id} onClick={() => addCategory(uc.id)}>
                             <div className='skill-categories__category-name'>{uc.name}</div>
-                            <div className='skill-categories__category-overlap'>
-                                <FontAwesomeIcon icon={faPlus} />
-                            </div>
+                            <FontAwesomeIcon className='skill-categories__category-overlap' icon={faPlus} />
                         </div>
                     ))
                 }
