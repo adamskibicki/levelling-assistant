@@ -58,7 +58,6 @@ export const characterPanelSlice = createSlice({
 
         builder
             .addCase(saveCharacterStatusChanges.fulfilled, (state, action) => {
-                console.log(action);
                 action.meta.arg.navigate(`/character/${action.payload.id}`);
             });
     }
