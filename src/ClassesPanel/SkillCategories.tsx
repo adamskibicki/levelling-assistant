@@ -9,7 +9,7 @@ function SkillCategories(props: {
             {
                 props.categories
                     .map((c, i) => (
-                        <div className='skill-categories__category' key={i}>{c.name}</div>
+                        <div className='skill-categories__category' style={{backgroundColor: c.displayColor}} key={i}>{c.name}</div>
                     ))
             }
         </div>
