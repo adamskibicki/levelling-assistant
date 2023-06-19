@@ -10,16 +10,23 @@ import ReorderableList from "../../Lists/ReorderableList";
 import { v4 as uuidv4 } from 'uuid';
 import InputCheckbox from "../../Inputs/InputCheckbox";
 import "./StatsEditModal.scss";
+import { Stat } from "../slice/state/Stat";
 
-export default function StatsEditModal(props) {
-    const [stats, setStats] = useState([]);
+export default function StatsEditModal(props: {
+    stats: Stat[];
+    show: boolean;
+    onHide(): void;
+    onClose(): void;
+    onAccept(): void;
+}) {
+    const [stats, setStats] = useState<Stat[]>([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
         setStats(props.stats);
     }, [props.stats]);
 
-    const onAccept = (event) => {
+    const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         dispatch(editStats({
             stats: stats
@@ -27,7 +34,7 @@ export default function StatsEditModal(props) {
         props.onAccept();
     }
 
-    const onChange = (statId, name) => {
+    const onChange = (statId: string, name: string) => {
         setStats((prevState) => {
             return prevState.map(s => {
                 if (s.id === statId) {
@@ -41,7 +48,7 @@ export default function StatsEditModal(props) {
         });
     }
 
-    const moveItemUp = (event, index) => {
+    const moveItemUp = (_: never, index: number) => {
         setStats((prevState) => {
             const itemToMove = prevState[index];
             const itemReplaced = prevState[index - 1];
@@ -56,7 +63,7 @@ export default function StatsEditModal(props) {
         });
     }
 
-    const moveItemDown = (event, index) => {
+    const moveItemDown = (_: never, index: number) => {
         setStats((prevState) => {
             const itemToMove = prevState[index];
             const itemReplaced = prevState[index + 1];
@@ -71,7 +78,7 @@ export default function StatsEditModal(props) {
         });
     }
 
-    const deleteItem = (event, index) => {
+    const deleteItem = (_: never, index: number) => {
         setStats((prevState) => {
             return prevState.filter((_, i) => i !== index);
         });
@@ -102,7 +109,7 @@ export default function StatsEditModal(props) {
         setStats(props.stats);
     }
 
-    const isHiddenOnChange = (statId, value) => {
+    const isHiddenOnChange = (statId: string, value: boolean) => {
         setStats((prevState) => {
             return prevState.map(s => {
                 if (s.id === statId) {
@@ -126,8 +133,8 @@ export default function StatsEditModal(props) {
                     {
                         stats.map((s, i) => (
                             <div className="stats-edit-modal__stat" key={s.id}>
-                                <InputText value={s.name} onChange={(event) => onChange(s.id, event.target.value)} className="stats-edit-modal__stat-name" />
-                                <InputCheckbox label={"Hide"} value={s.isHidden} onChange={(_, value) => isHiddenOnChange(s.id, value)} className="stats-edit-modal__stat-hide" />
+                                <InputText value={s.name} onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(s.id, event.currentTarget.value)} className="stats-edit-modal__stat-name" />
+                                <InputCheckbox label={"Hide"} value={s.isHidden} onChange={(_: React.MouseEvent<HTMLButtonElement>, value: boolean) => isHiddenOnChange(s.id, value)} className="stats-edit-modal__stat-hide" />
                             </div>
                         ))
                     }

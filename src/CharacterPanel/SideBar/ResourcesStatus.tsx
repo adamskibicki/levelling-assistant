@@ -1,10 +1,11 @@
 import GeneralProperty from "../../GeneralProperty";
+import { CalculatedResource } from "../CalculatedResource";
 
-function numberToStringWithThousandSeparator(number, separator) {
+function numberToStringWithThousandSeparator(number: number, separator: string) {
     return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, separator);
 }
 
-function ResourcesStatus(props) {
+function ResourcesStatus(props: {resources: CalculatedResource[]}) {
     return (
         <>
             <h4>Status</h4>

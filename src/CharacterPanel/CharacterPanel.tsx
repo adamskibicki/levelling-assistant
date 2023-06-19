@@ -19,6 +19,7 @@ import { CategoryCalculationType } from './slice/state/CategoryCalculationType';
 import { SkillVariable } from './slice/state/SkillVariable';
 import { VariableCalculationType } from './slice/state/VariableCalculationType';
 import { ClassModifier } from './slice/state/ClassModifier';
+import { CalculatedResource } from './CalculatedResource';
 
 export default function CharacterPanel() {
     const characterStatus = useSelector((state: {characterPanel: CharacterPanelSliceState}) => state.characterPanel);
@@ -136,7 +137,7 @@ export default function CharacterPanel() {
         return applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
     }
 
-    const getCalculatedResources = () => {
+    const getCalculatedResources = (): CalculatedResource[] => {
         return characterStatus.generalInformation.resources.map(r => ({
             name: r.displayName,
             value: calculateResourceValue(r)

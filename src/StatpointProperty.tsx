@@ -2,7 +2,13 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './StatpointProperty.scss';
 
-function StatpointProperty(props) {
+function StatpointProperty(props: {
+    name: string;
+    value: number;
+    increaseEnabled: boolean;
+    decreaseEnabled: boolean;
+    calculatedValue: number;
+}) {
     return (
         <div className='statpoint-property'>
             <div className='property-name'>

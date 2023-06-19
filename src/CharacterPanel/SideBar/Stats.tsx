@@ -4,8 +4,15 @@ import StatpointProperty from "../../StatpointProperty";
 import StatsEditModal from "./StatsEditModal";
 import TitleWithEditButton from "./TitleWithEditButton";
 import InputCheckbox from "../../Inputs/InputCheckbox";
+import { CharacterStats } from "../slice/state/CharacterStats";
 
-function Stats(props) {
+interface StatsPropsBase {
+    calculateFinalStatValue: Function;
+}
+
+type StatsProps = CharacterStats & StatsPropsBase;
+
+function Stats(props: StatsProps) {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showHiddenStats, setShowHiddenStats] = useState(false);
 
@@ -14,10 +21,10 @@ function Stats(props) {
     return (
         <>
             <TitleWithEditButton onEditClick={() => setShowEditModal(true)} title={'Stats'} />
-            <InputCheckbox label={"Show hidden stats"} value={showHiddenStats} onChange={(_, value) => setShowHiddenStats(value)}/>
+            <InputCheckbox label={"Show hidden stats"} value={showHiddenStats} onChange={(_: any, value: boolean) => setShowHiddenStats(value)}/>
 
             <div>
-                <GeneralProperty name='Unspent statpoints' value={props.unspentStatpoints} />
+                <GeneralProperty name='Unspent statpoints' value={props.unspentStatpoints.toString()} />
                 {
                     statsToShow.map(s => (
                         <StatpointProperty key={s.id} name={s.name} value={s.value} increaseEnabled={true} decreaseEnabled={false} calculatedValue={props.calculateFinalStatValue(s)} />
