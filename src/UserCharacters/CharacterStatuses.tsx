@@ -11,7 +11,6 @@ import "./CharacterStatuses.scss";
 
 export default function CharacterStatuses(props: {
     characterStatuses: Array<CharacterStatusSimplified>;
-    expanded: boolean;
 }) {
     const [characterStatusIdToDelete, setCharacterStatusIdToDelete] =
         useState<string>("");
@@ -43,56 +42,54 @@ export default function CharacterStatuses(props: {
 
     return (
         <>
-            {props.expanded && (
-                <div className="character-statuses">
-                    <>
-                        {props.characterStatuses
-                            .map((cs) => cs)
-                            .sort(
-                                (a, b) =>
-                                    new Date(b.createdAt).getTime() -
-                                    new Date(a.createdAt).getTime()
-                            )
-                            .map((cs) => (
-                                <Link
-                                    to={"/character/" + cs.id}
-                                    key={cs.id}
-                                    className="character-statuses__link"
-                                >
-                                    <div className="character-statuses__item character-statuses__item--old-status">
-                                        <div className="character-statuses__name">
-                                            {cs.name}
-                                        </div>
-                                        <div className="character-statuses__title">
-                                            {cs.title}
-                                        </div>
-                                        <div className="character-statuses__lastEdited">
-                                            {toReadableDate(cs.createdAt)}
-                                        </div>
-                                        <button
-                                            onClick={(event) =>
-                                                onDeleteButtonClick(event, cs)
-                                            }
-                                        >
-                                            <FontAwesomeIcon icon={faClose} />
-                                        </button>
+            <div className="character-statuses">
+                <>
+                    {props.characterStatuses
+                        .map((cs) => cs)
+                        .sort(
+                            (a, b) =>
+                                new Date(b.createdAt).getTime() -
+                                new Date(a.createdAt).getTime()
+                        )
+                        .map((cs) => (
+                            <Link
+                                to={"/character/" + cs.id}
+                                key={cs.id}
+                                className="character-statuses__link"
+                            >
+                                <div className="character-statuses__item character-statuses__item--old-status">
+                                    <div className="character-statuses__name">
+                                        {cs.name}
                                     </div>
-                                </Link>
-                            ))}
-                    </>
+                                    <div className="character-statuses__title">
+                                        {cs.title}
+                                    </div>
+                                    <div className="character-statuses__lastEdited">
+                                        {toReadableDate(cs.createdAt)}
+                                    </div>
+                                    <button
+                                        onClick={(event) =>
+                                            onDeleteButtonClick(event, cs)
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={faClose} />
+                                    </button>
+                                </div>
+                            </Link>
+                        ))}
+                </>
 
-                    <ConfirmationModal
-                        modalTitle={
-                            "Do you want to delete selected character status?"
-                        }
-                        message={deleteConfirmationModalMessage}
-                        show={showDeleteConfirmationModal}
-                        onAccept={onDeleteConfirmationModalAccept}
-                        onHide={() => setShowDeleteConfirmationModal(false)}
-                        onClose={() => setShowDeleteConfirmationModal(false)}
-                    />
-                </div>
-            )}
+                <ConfirmationModal
+                    modalTitle={
+                        "Do you want to delete selected character status?"
+                    }
+                    message={deleteConfirmationModalMessage}
+                    show={showDeleteConfirmationModal}
+                    onAccept={onDeleteConfirmationModalAccept}
+                    onHide={() => setShowDeleteConfirmationModal(false)}
+                    onClose={() => setShowDeleteConfirmationModal(false)}
+                />
+            </div>
         </>
     );
 }
