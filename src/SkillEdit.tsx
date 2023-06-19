@@ -23,7 +23,6 @@ import { v4 as uuidv4 } from "uuid";
 
 function SkillEdit(props: {
     skillId: string;
-    classId: string;
     tierDescriptions: TierDescription[];
     categories: Category[];
     name: string;
@@ -137,7 +136,6 @@ function SkillEdit(props: {
         const dataToDispatch = {
             tierDescriptions: tierDescriptions,
             skillId: props.skillId,
-            classId: props.classId,
             categories: categories,
         };
 

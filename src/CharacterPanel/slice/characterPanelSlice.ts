@@ -7,13 +7,19 @@ import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges"
 import { CharacterClass } from "./state/CharacterClass";
 
 export const characterPanelSlice = createSlice({
-    name: 'characterPanel',
+    name: "characterPanel",
     initialState: initialState,
     reducers: {
         updateSkill: (state, action) => {
-            const { skillId, classId } = action.payload;
-            state.classes[classId].skills[skillId].tierDescriptions = action.payload.tierDescriptions;
-            state.classes[classId].skills[skillId].categories = action.payload.categories;
+            const { skillId } = action.payload;
+
+            const skillTuUpdate =  state.classes.flatMap(c => c.skills).find((s) => s.id === skillId);
+
+            if (skillTuUpdate === undefined)
+                throw new Error("skillTuUpdate is undefinded");
+
+            skillTuUpdate.tierDescriptions = action.payload.tierDescriptions;
+            skillTuUpdate.categories = action.payload.categories;
         },
         editBasicInfo: (state, action) => {
             const { name, title } = action.payload;
@@ -24,25 +30,38 @@ export const characterPanelSlice = createSlice({
             const { stats } = action.payload;
             state.generalInformation.stats.stats = stats;
         },
-        addClass: (state, action: {
-            payload: CharacterClass;
-            type: string;
-        }) => {
+        addClass: (
+            state,
+            action: {
+                payload: CharacterClass;
+                type: string;
+            }
+        ) => {
             state.classes = [...state.classes, action.payload];
         },
-        deleteClass: (state, action: {
-            payload: string;
-            type: string;
-        }) => {
-            state.classes = state.classes.filter(c => c.id !== action.payload);
+        deleteClass: (
+            state,
+            action: {
+                payload: string;
+                type: string;
+            }
+        ) => {
+            state.classes = state.classes.filter(
+                (c) => c.id !== action.payload
+            );
         },
-        editClass: (state, action: {
-            payload: CharacterClass;
-            type: string;
-        }) => {
-            const index = state.classes.findIndex(c => c.id === action.payload.id);
+        editClass: (
+            state,
+            action: {
+                payload: CharacterClass;
+                type: string;
+            }
+        ) => {
+            const index = state.classes.findIndex(
+                (c) => c.id === action.payload.id
+            );
             state.classes[index] = action.payload;
-        }
+        },
     },
     extraReducers(builder) {
         builder
@@ -59,23 +78,30 @@ export const characterPanelSlice = createSlice({
                 state.loaded = false;
             });
 
-        builder
-            .addCase(fetchUserCategories.fulfilled, (state, action) => {
-                state.userCategories = action.payload;
-            });
+        builder.addCase(fetchUserCategories.fulfilled, (state, action) => {
+            state.userCategories = action.payload;
+        });
 
-        builder
-            .addCase(addNewCategory.fulfilled, (state, action) => {
-                state.userCategories = [...state.userCategories, action.payload];
-            });
+        builder.addCase(addNewCategory.fulfilled, (state, action) => {
+            state.userCategories = [...state.userCategories, action.payload];
+        });
 
-        builder
-            .addCase(saveCharacterStatusChanges.fulfilled, (state, action) => {
+        builder.addCase(
+            saveCharacterStatusChanges.fulfilled,
+            (state, action) => {
                 action.meta.arg.navigate(`/character/${action.payload.id}`);
-            });
-    }
+            }
+        );
+    },
 });
 
-export const { updateSkill, editBasicInfo, editStats, addClass, deleteClass, editClass } = characterPanelSlice.actions;
+export const {
+    updateSkill,
+    editBasicInfo,
+    editStats,
+    addClass,
+    deleteClass,
+    editClass,
+} = characterPanelSlice.actions;
 
 export default characterPanelSlice.reducer;
