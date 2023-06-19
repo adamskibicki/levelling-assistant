@@ -8,6 +8,7 @@ export interface SkillVariable {
     categoryCalculationType: CategoryCalculationType; 
     baseValue: number;
     variableCalculationType: VariableCalculationType;
+    unit: string;
 }
 
 
