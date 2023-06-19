@@ -133,7 +133,7 @@ export default function Class(props: {
                         props.value.modifiers.map((m, i) => (
                             <div className="modifier" key={i}>
                                 {m.category !== null && (
-                                    <div className="category">
+                                    <div className="category" style={{backgroundColor: m.category.displayColor}} >
                                         {m.category.name}
                                     </div>
                                 )}

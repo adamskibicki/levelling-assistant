@@ -18,13 +18,13 @@
 
         &--removable {
             &:hover {
-                background-color: $remove-color;
+                background-color: $remove-color !important;
             }
         }
 
         &--selectable {
             &:hover {
-                background-color: $add-color;
+                background-color: $add-color !important;
             }
         }
 
