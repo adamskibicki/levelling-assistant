@@ -7,7 +7,6 @@ import SkillCategories from "./ClassesPanel/SkillCategories";
 import { SkillVariable } from "./CharacterPanel/slice/state/SkillVariable";
 import { Skill } from "./CharacterPanel/slice/state/Skill";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
-const query = /<[\\S]*>/g;
 
 interface SkillProps extends Skill {
     allowEdit: boolean;
@@ -37,6 +36,8 @@ class SkillComponent extends React.Component<
     }
 
     replaceVariableMarkupsInTierDescriptions(tierDescription: TierDescription) {
+        const query = /<[\\S]*>/g;
+        
         let tierDescriptionVariablesMatches = [
             ...tierDescription.description.matchAll(query),
         ];

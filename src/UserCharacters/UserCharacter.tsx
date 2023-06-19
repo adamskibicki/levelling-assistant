@@ -6,15 +6,15 @@ import { toReadableDate } from "../common/DateExtensions";
 import { useAppDispatch } from "../store/store";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCaretUp, faClose } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "./ConfirmationModal";
-import "./CharacterStatuses.scss";
+import "./UserCharacter.scss";
 import { deleteUserCharacter } from "./slice/thunks/deleteUserCharacter";
 import CharacterStatuses from "./CharacterStatuses";
 import { getNewestCharacterStatus } from "./getNewestCharacterStatus";
 
 export default function UserCharacterComponent(props: UserCharacter) {
-    const [expanded, setExpanded] = useState(true);
+    const [expanded, setExpanded] = useState(false);
 
     const [
         showDeleteUserCharacterConfirmationModal,
@@ -53,6 +53,11 @@ export default function UserCharacterComponent(props: UserCharacter) {
         );
     };
 
+    const flipExpanded = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        setExpanded(!expanded);
+    };
+
     const newestCharacterStatus = getNewestCharacterStatus(
         props.characterStatuses
     );
@@ -62,16 +67,25 @@ export default function UserCharacterComponent(props: UserCharacter) {
             <div>
                 <Link
                     to={"/character/" + newestCharacterStatus.id}
-                    className="user-characters__link"
+                    className="user-character__link"
                 >
-                    <div className="user-characters__item">
-                        <div className="user-characters__name">
+                    <div className="user-character__item">
+                        <button
+                            onClick={flipExpanded}
+                        >
+                            {expanded ? (
+                                <FontAwesomeIcon icon={faCaretUp} />
+                            ) : (
+                                <FontAwesomeIcon icon={faCaretDown} />
+                            )}
+                        </button>
+                        <div className="user-character__name">
                             {newestCharacterStatus.name}
                         </div>
-                        <div className="user-characters__title">
+                        <div className="user-character__title">
                             {newestCharacterStatus.title}
                         </div>
-                        <div className="user-characters__lastEdited">
+                        <div className="user-character__lastEdited">
                             {toReadableDate(newestCharacterStatus.createdAt)}
                         </div>
                         <button

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./UserCharacters.scss";
+import "./UserCharacter.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddUserCharacterModal from "./AddUserCharacterModal";
@@ -68,7 +69,7 @@ export default function UserCharacters() {
             {loaded && (
                 <>
                     <div
-                        className="user-characters__item"
+                        className="user-character__item"
                         onClick={() => setShowAddUserCharacterModal(true)}
                     >
                         <FontAwesomeIcon
