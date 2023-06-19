@@ -36,10 +36,10 @@ class SkillComponent extends React.Component<
     }
 
     replaceVariableMarkupsInTierDescriptions(tierDescription: TierDescription) {
-        let baseRegex = new RegExp("<[\\S]*>");
-
+        const query = /<[\\S]*>/g;
+        
         let tierDescriptionVariablesMatches = [
-            ...tierDescription.description.matchAll(baseRegex),
+            ...tierDescription.description.matchAll(query),
         ];
 
         if (tierDescriptionVariablesMatches.length > 0) {

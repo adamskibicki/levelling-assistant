@@ -3,22 +3,6 @@
 .user-characters {
     padding-top: 5rem;
 
-    &__link {
-        text-decoration: none;
-    }
-
-    &__item {
-        display: flex;
-        background-color: $tertiary-color;
-        padding: $padding;
-        margin: 0.4rem;
-
-        &:hover {
-            background-color: $primary-color;
-            cursor: pointer;
-        }
-    }
-
     &__loader {
         display: flex;
         background-color: $tertiary-color;
@@ -37,26 +21,5 @@
 
     &__bottom-spacer {
         min-height: 1rem;
-    }
-
-    &__name {
-        flex: 1;
-        text-align: left;
-        padding-top: 0.2rem;
-    }
-
-    &__title {
-        flex: 1;
-        text-align: left;
-        margin-left: 0.4rem;
-        margin-right: 0.4rem;
-        padding-top: 0.2rem;
-    }
-
-    &__lastEdited {
-        flex: 4;
-        text-align: right;
-        margin-right: 0.4rem;
-        padding-top: 0.2rem;
     }
 }
