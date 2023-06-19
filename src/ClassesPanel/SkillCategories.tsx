@@ -1,6 +1,9 @@
+import { Category } from '../CharacterPanel/slice/state/Category';
 import './SkillCategories.scss';
 
-function SkillCategories(props) {
+function SkillCategories(props: {
+    categories: Category[];
+}) {
     return (
         <div className='skill-categories'>
             {

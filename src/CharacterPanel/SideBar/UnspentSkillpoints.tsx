@@ -1,6 +1,7 @@
 import GeneralProperty from "../../GeneralProperty";
+import { Skillpoints } from "../slice/state/Skillpoints";
 
-function UnspentSkillpoints(props) {
+function UnspentSkillpoints(props: Skillpoints) {
     return (
         <>
             <h4>Unspent skillpoints</h4>

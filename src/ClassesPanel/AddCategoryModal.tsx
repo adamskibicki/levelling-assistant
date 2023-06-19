@@ -7,13 +7,19 @@ import Modal from "../Modal/Modal";
 import ModalContent from "../Modal/ModalContent";
 import ModalFooter from "../Modal/ModalFooter";
 import ModalHeader from "../Modal/ModalHeader";
+import { AppDispatch } from "../store/store";
 
-export default function AddCategoryModal(props) {
+export default function AddCategoryModal(props: {
+    show: boolean;
+    onHide(): void;
+    onClose(): void;
+    onAccept(): void;
+}) {
     const [color, setColor] = useState('#000000');
     const [name, setName] = useState('New category');
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
-    const onAccept = (event) => {
+    const onAccept = (event: React.MouseEvent<HTMLInputElement>) => {
         event.preventDefault();
         dispatch(addNewCategory({
             name: name,
@@ -28,8 +34,8 @@ export default function AddCategoryModal(props) {
                 Add category
             </ModalHeader>
             <ModalContent>
-                <InputText label={'Name'} value={name} onChange={(event) => setName(event.target.value)}/>
-                <InputColor label={'Display color'} value={color} onChange={(event) => setColor(event.target.value)}/>
+                <InputText label={'Name'} value={name} onChange={(event: React.FormEvent<HTMLInputElement>) => setName(event.currentTarget.value)}/>
+                <InputColor label={'Display color'} value={color} onChange={(event: React.FormEvent<HTMLInputElement>) => setColor(event.currentTarget.value)}/>
             </ModalContent>
             <ModalFooter onClose={props.onClose} onAccept={onAccept}>
 

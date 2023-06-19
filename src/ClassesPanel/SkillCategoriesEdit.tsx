@@ -3,15 +3,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import AddCategoryModal from './AddCategoryModal';
 import './SkillCategories.scss';
+import { Category } from '../CharacterPanel/slice/state/Category';
+import { UserCategory } from '../CharacterPanel/slice/state/UserCategory';
 
-function SkillCategoriesEdit(props) {
+function SkillCategoriesEdit(props: {
+    categories: Category[];
+    userCategories: UserCategory[];
+    onChange(categories: Category[]): void;
+}) {
     const [showAddCategoryModal, setShowAddCategoryModal] = useState(false);
 
-    const deleteCategory = (id) => {
+    const deleteCategory = (id: string) => {
         props.onChange(props.categories.filter(c => c.id !== id));
     };
 
-    const addCategory = (id) => {
+    const addCategory = (id: string) => {
         props.onChange([...props.categories, props.userCategories.filter(uc => uc.id === id)[0]]);
     };
     

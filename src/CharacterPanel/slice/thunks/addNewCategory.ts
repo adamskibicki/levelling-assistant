@@ -10,4 +10,7 @@ interface AddNewCategoryRequestData {
 }
 
 interface AddNewCategoryResponseData {
+    id: string;
+    name: string;
+    displayColor: string;
 }
