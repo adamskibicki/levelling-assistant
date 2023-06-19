@@ -142,6 +142,7 @@ export default function UserCharacters() {
                                     </div>
                                 </Link>
                                 <CharacterStatuses
+                                    expanded={false}
                                     characterStatuses={uc.characterStatuses}
                                 />
                             </div>
