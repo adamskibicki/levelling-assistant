@@ -8,9 +8,9 @@ import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
 import { v4 as uuidv4 } from 'uuid';
 
 export default function AddClassModal(props: {
-    onHide: Function,
+    onHide(event: MouseEvent): void,
     show: boolean,
-    onClose: Function,
+    onClose(event: React.MouseEvent): void,
     onAccept: (event: React.MouseEvent<HTMLButtonElement>, characterClass: CharacterClass) => void
 }) {
     const nameDefault = "New class";

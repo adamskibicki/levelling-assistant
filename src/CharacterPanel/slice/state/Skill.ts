@@ -9,7 +9,7 @@ export interface Skill {
     tier: number;
     type: string;
     enhanced: boolean;
-    tierDescriptions: Array<TierDescription>;
-    categories: Array<Category>;
+    tierDescriptions: TierDescription[];
+    categories: Category[];
     variables: SkillVariable[];
 }
