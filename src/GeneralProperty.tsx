@@ -1,6 +1,9 @@
 import './GeneralProperty.scss';
 
-function GeneralProperty(props) {
+export default function GeneralProperty(props: {
+    name: string;
+    value: string;
+}) {
     return (
         <div className='general-property'>
             <div className='property-name'>
@@ -12,5 +15,3 @@ function GeneralProperty(props) {
         </div>
     );
 }
-
-export default GeneralProperty;
