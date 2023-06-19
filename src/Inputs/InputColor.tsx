@@ -1,7 +1,11 @@
 import React from "react";
 import './InputCommon.scss';
 
-export default function InputColor(props) {
+export default function InputColor(props: {
+    label: string;
+    value: string;
+    onChange(event: React.FormEvent<HTMLInputElement>): void;
+}) {
     return (
         <div className='input'>
             <label className='input__label'>{props.label}</label>

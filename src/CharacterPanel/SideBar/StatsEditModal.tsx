@@ -134,7 +134,7 @@ export default function StatsEditModal(props: {
                         stats.map((s, i) => (
                             <div className="stats-edit-modal__stat" key={s.id}>
                                 <InputText value={s.name} onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(s.id, event.currentTarget.value)} className="stats-edit-modal__stat-name" />
-                                <InputCheckbox label={"Hide"} value={s.isHidden} onChange={(_: React.MouseEvent<HTMLButtonElement>, value: boolean) => isHiddenOnChange(s.id, value)} className="stats-edit-modal__stat-hide" />
+                                <InputCheckbox label={"Hide"} value={s.isHidden} onChange={(_, value) => isHiddenOnChange(s.id, value)} />
                             </div>
                         ))
                     }

@@ -35,7 +35,7 @@ export default function AddCategoryModal(props: {
             </ModalHeader>
             <ModalContent>
                 <InputText label={'Name'} value={name} onChange={(event: React.FormEvent<HTMLInputElement>) => setName(event.currentTarget.value)}/>
-                <InputColor label={'Display color'} value={color} onChange={(event: React.FormEvent<HTMLInputElement>) => setColor(event.currentTarget.value)}/>
+                <InputColor label={'Display color'} value={color} onChange={(event) => setColor(event.currentTarget.value)}/>
             </ModalContent>
             <ModalFooter onClose={props.onClose} onAccept={onAccept}>
 
