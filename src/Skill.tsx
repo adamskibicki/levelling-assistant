@@ -7,6 +7,7 @@ import SkillCategories from "./ClassesPanel/SkillCategories";
 import { SkillVariable } from "./CharacterPanel/slice/state/SkillVariable";
 import { Skill } from "./CharacterPanel/slice/state/Skill";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
+const query = /<[\\S]*>/g;
 
 interface SkillProps extends Skill {
     allowEdit: boolean;
@@ -36,10 +37,8 @@ class SkillComponent extends React.Component<
     }
 
     replaceVariableMarkupsInTierDescriptions(tierDescription: TierDescription) {
-        let baseRegex = new RegExp("<[\\S]*>");
-
         let tierDescriptionVariablesMatches = [
-            ...tierDescription.description.matchAll(baseRegex),
+            ...tierDescription.description.matchAll(query),
         ];
 
         if (tierDescriptionVariablesMatches.length > 0) {

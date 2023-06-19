@@ -1,26 +1,21 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./UserCharacters.scss";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddUserCharacterModal from "./AddUserCharacterModal";
-import ConfirmationModal from "./ConfirmationModal";
 import Loader from "../components/Loader";
 import { getUserCharacters } from "./slice/thunks/getUserCharacters";
 import {
     PostUserCharacterRequestData,
     postUserCharacter,
 } from "./slice/thunks/postUserCharacter";
-import { deleteUserCharacter } from "./slice/thunks/deleteUserCharacter";
-import { toReadableDate } from "../common/DateExtensions";
-import CharacterStatuses from "./CharacterStatuses";
 import { AppDispatch } from "../store/store";
 import {
-    CharacterStatusSimplified,
-    UserCharacter,
     UserCharacterSliceState,
 } from "./slice/state/UserCharacterSliceState";
+import { getNewestCharacterStatus } from "./getNewestCharacterStatus";
+import UserCharacterComponent from "./UserCharacter";
 
 export default function UserCharacters() {
     const userCharacters = useSelector(
@@ -30,11 +25,7 @@ export default function UserCharacters() {
     const loaded = useSelector((state: any) => state.userCharacters.loaded);
     const [showAddUserCharacterModal, setShowAddUserCharacterModal] =
         useState(false);
-    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
-        useState(false);
-    const [deleteConfirmationModalMessage, setDeleteConfirmationModalMessage] =
-        useState("");
-    const [userCharacterIdToDelete, setUserCharacterIdToDelete] = useState("");
+
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
@@ -44,39 +35,6 @@ export default function UserCharacters() {
     const onModalAccept = (userCharacter: PostUserCharacterRequestData) => {
         setShowAddUserCharacterModal(false);
         dispatch(postUserCharacter(userCharacter));
-    };
-
-    const onUserCharacterDeleteButtonClick = (
-        event: React.MouseEvent<HTMLButtonElement>,
-        userCharacter: UserCharacter
-    ) => {
-        event.preventDefault();
-
-        const newestCharacterStatus = getNewestCharacterStatus(
-            userCharacter.characterStatuses
-        );
-
-        setUserCharacterIdToDelete(userCharacter.id);
-        setShowDeleteConfirmationModal(true);
-        setDeleteConfirmationModalMessage(
-            `${newestCharacterStatus.name}\n${
-                newestCharacterStatus.title
-            }\n${toReadableDate(newestCharacterStatus.createdAt)}`
-        );
-    };
-
-    const onDeleteConfirmationModalAccept = () => {
-        dispatch(deleteUserCharacter(userCharacterIdToDelete));
-        setUserCharacterIdToDelete("");
-        setShowDeleteConfirmationModal(false);
-    };
-
-    const getNewestCharacterStatus = (
-        characterStatuses: Array<CharacterStatusSimplified>
-    ) => {
-        return characterStatuses.reduce((prev, current) =>
-            prev.createdAt > current.createdAt ? prev : current
-        );
     };
 
     return (
@@ -104,49 +62,9 @@ export default function UserCharacters() {
                             ).getTime()
                     )
                     .map((ucs) => ucs.userCharacter)
-                    .map((uc) => {
-                        const newestCharacterStatus = getNewestCharacterStatus(
-                            uc.characterStatuses
-                        );
-
-                        return (
-                            <div key={uc.id}>
-                                <Link
-                                    to={
-                                        "/character/" + newestCharacterStatus.id
-                                    }
-                                    className="user-characters__link"
-                                >
-                                    <div className="user-characters__item">
-                                        <div className="user-characters__name">
-                                            {newestCharacterStatus.name}
-                                        </div>
-                                        <div className="user-characters__title">
-                                            {newestCharacterStatus.title}
-                                        </div>
-                                        <div className="user-characters__lastEdited">
-                                            {toReadableDate(
-                                                newestCharacterStatus.createdAt
-                                            )}
-                                        </div>
-                                        <button
-                                            onClick={(event) =>
-                                                onUserCharacterDeleteButtonClick(
-                                                    event,
-                                                    uc
-                                                )
-                                            }
-                                        >
-                                            <FontAwesomeIcon icon={faClose} />
-                                        </button>
-                                    </div>
-                                </Link>
-                                <CharacterStatuses
-                                    characterStatuses={uc.characterStatuses}
-                                />
-                            </div>
-                        );
-                    })}
+                    .map((uc) => 
+                        <UserCharacterComponent key={uc.id} {...uc}/>
+                    )}
             {loaded && (
                 <>
                     <div
@@ -161,15 +79,6 @@ export default function UserCharacters() {
                     <div className="user-characters__bottom-spacer"></div>
                 </>
             )}
-
-            <ConfirmationModal
-                modalTitle={"Do you want to delete selected user character?"}
-                message={deleteConfirmationModalMessage}
-                show={showDeleteConfirmationModal}
-                onAccept={onDeleteConfirmationModalAccept}
-                onHide={() => setShowDeleteConfirmationModal(false)}
-                onClose={() => setShowDeleteConfirmationModal(false)}
-            />
 
             <AddUserCharacterModal
                 name="New character name"

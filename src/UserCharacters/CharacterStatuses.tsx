@@ -9,50 +9,87 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "./ConfirmationModal";
 import "./CharacterStatuses.scss";
 
-interface CharacterStatusesProps {
-    characterStatuses: Array<CharacterStatusSimplified>
-}
-
-export default function CharacterStatuses(props: CharacterStatusesProps) {
-    
-    const [characterStatusIdToDelete, setCharacterStatusIdToDelete] = useState<string>("");
-    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
-    const [deleteConfirmationModalMessage, setDeleteConfirmationModalMessage] = useState("");
+export default function CharacterStatuses(props: {
+    characterStatuses: Array<CharacterStatusSimplified>;
+}) {
+    const [characterStatusIdToDelete, setCharacterStatusIdToDelete] =
+        useState<string>("");
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] =
+        useState(false);
+    const [deleteConfirmationModalMessage, setDeleteConfirmationModalMessage] =
+        useState("");
     const dispatch = useAppDispatch();
 
-    const onDeleteButtonClick = (event: React.MouseEvent<HTMLButtonElement>, characterStatus: CharacterStatusSimplified) => {
+    const onDeleteButtonClick = (
+        event: React.MouseEvent<HTMLButtonElement>,
+        characterStatus: CharacterStatusSimplified
+    ) => {
         event.preventDefault();
         setShowDeleteConfirmationModal(true);
-        setDeleteConfirmationModalMessage(`${characterStatus.name}\n${characterStatus.title}\n${toReadableDate(characterStatus.createdAt)}`);
+        setDeleteConfirmationModalMessage(
+            `${characterStatus.name}\n${
+                characterStatus.title
+            }\n${toReadableDate(characterStatus.createdAt)}`
+        );
         setCharacterStatusIdToDelete(characterStatus.id);
-    }
+    };
 
     const onDeleteConfirmationModalAccept = () => {
         dispatch(deleteCharacterStatus(characterStatusIdToDelete));
         setCharacterStatusIdToDelete("");
         setShowDeleteConfirmationModal(false);
-    }
+    };
 
     return (
-        <div className="character-statuses">
-            <>
-            {
-                props.characterStatuses
-                    .map(cs => cs)
-                    .sort((a, b) => (new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()))
-                    .map((cs) =>
-                        <Link to={"/character/" + cs.id} key={cs.id} className="character-statuses__link">
-                            <div className="character-statuses__item character-statuses__item--old-status">
-                                <div className="character-statuses__name">{cs.name}</div>
-                                <div className="character-statuses__title">{cs.title}</div>
-                                <div className="character-statuses__lastEdited">{toReadableDate(cs.createdAt)}</div>
-                                <button onClick={(event) => onDeleteButtonClick(event, cs)}><FontAwesomeIcon icon={faClose} /></button>
-                            </div>
-                        </Link>
-            )}
-            </>
+        <>
+            <div className="character-statuses">
+                <>
+                    {props.characterStatuses
+                        .map((cs) => cs)
+                        .sort(
+                            (a, b) =>
+                                new Date(b.createdAt).getTime() -
+                                new Date(a.createdAt).getTime()
+                        )
+                        .map((cs) => (
+                            <Link
+                                to={"/character/" + cs.id}
+                                key={cs.id}
+                                className="character-statuses__link"
+                            >
+                                <div className="character-statuses__item character-statuses__item--old-status">
+                                    <div className="character-statuses__name">
+                                        {cs.name}
+                                    </div>
+                                    <div className="character-statuses__title">
+                                        {cs.title}
+                                    </div>
+                                    <div className="character-statuses__lastEdited">
+                                        {toReadableDate(cs.createdAt)}
+                                    </div>
+                                    <button
+                                        onClick={(event) =>
+                                            onDeleteButtonClick(event, cs)
+                                        }
+                                    >
+                                        <FontAwesomeIcon icon={faClose} />
+                                    </button>
+                                </div>
+                            </Link>
+                        ))}
+                </>
 
-            <ConfirmationModal modalTitle={"Do you want to delete selected character status?"} message={deleteConfirmationModalMessage} show={showDeleteConfirmationModal} onAccept={onDeleteConfirmationModalAccept} onHide={() => setShowDeleteConfirmationModal(false)} onClose={() => setShowDeleteConfirmationModal(false)} />
-        </div>
+                <ConfirmationModal
+                    modalTitle={
+                        "Do you want to delete selected character status?"
+                    }
+                    message={deleteConfirmationModalMessage}
+                    show={showDeleteConfirmationModal}
+                    onAccept={onDeleteConfirmationModalAccept}
+                    onHide={() => setShowDeleteConfirmationModal(false)}
+                    onClose={() => setShowDeleteConfirmationModal(false)}
+                />
+            </div>
+        </>
     );
 }
