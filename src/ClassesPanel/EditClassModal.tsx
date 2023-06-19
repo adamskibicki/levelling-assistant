@@ -7,11 +7,11 @@ import InputText from "../Inputs/InputText";
 import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
 
 export default function EditClassModal(props: {
-    characterClass: CharacterClass,
-    onHide: Function,
-    show: boolean,
-    onClose: Function,
-    onAccept: (event: React.MouseEvent<HTMLButtonElement>, characterClass: CharacterClass) => void
+    characterClass: CharacterClass;
+    onHide(event: MouseEvent): void;
+    show: boolean;
+    onClose(event: React.MouseEvent): void;
+    onAccept: (event: React.MouseEvent<HTMLButtonElement>, characterClass: CharacterClass) => void;
 }) {
     const [name, setName] = useState(props.characterClass.name);
 

@@ -1,8 +1,16 @@
 import React, { Children } from "react";
 import './Modal.scss';
 
-class Modal extends React.Component {
-    constructor(props) {
+interface ModalProps {
+    show: boolean;
+    onHide(event: MouseEvent): void;
+    children: React.ReactNode | React.ReactNode[];
+}
+
+class Modal extends React.Component<ModalProps> {
+    wrapperRef: React.RefObject<HTMLDivElement>
+
+    constructor(props: ModalProps) {
         super(props);
 
         this.wrapperRef = React.createRef();
@@ -16,9 +24,9 @@ class Modal extends React.Component {
         document.removeEventListener("mousedown", this.handleClickOutside);
     }
 
-    handleClickOutside = (event) => {
-        if(this.props.show && this.wrapperRef && !this.wrapperRef.current.contains(event.target)){
-            this.props.onHide();
+    handleClickOutside = (event: MouseEvent) => {
+        if(this.props.show && this.wrapperRef.current && !this.wrapperRef.current.contains(event.target as Node)){
+            this.props.onHide(event);
         }
     }
 

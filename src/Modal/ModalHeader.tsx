@@ -3,7 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { Children } from "react";
 import './ModalHeader.scss';
 
-class ModalHeader extends React.Component {
+class ModalHeader extends React.Component<{
+    onClose(event: React.MouseEvent<HTMLButtonElement>): void;
+    children: React.ReactNode | React.ReactNode[];
+}> {
     render() {
         return (
             <div className='modal-header'>

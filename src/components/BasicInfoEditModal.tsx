@@ -11,7 +11,7 @@ export default function BasicInfoEditModal(props: {
     onAccept(basicInfo: BasicInfo): void;
     modalTitle: string;
     onClose(event: React.MouseEvent<HTMLButtonElement>): void;
-    onHide(event: React.MouseEvent<HTMLButtonElement>): void;
+    onHide(event: MouseEvent): void;
     value: BasicInfo;
     show: boolean;
 }) {

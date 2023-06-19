@@ -19,7 +19,7 @@ export default function AddCategoryModal(props: {
     const [name, setName] = useState('New category');
     const dispatch = useDispatch<AppDispatch>();
 
-    const onAccept = (event: React.MouseEvent<HTMLInputElement>) => {
+    const onAccept = (event: React.MouseEvent) => {
         event.preventDefault();
         dispatch(addNewCategory({
             name: name,

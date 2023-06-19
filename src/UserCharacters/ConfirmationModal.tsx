@@ -9,7 +9,7 @@ export default function ConfirmationModal(props: {
     modalTitle: string,
     message: string,
     onAccept: (event: React.MouseEvent<HTMLButtonElement>) => void,
-    onHide: (event: React.MouseEvent<HTMLButtonElement>) => void,
+    onHide: (event: MouseEvent) => void,
     onClose: (event: React.MouseEvent<HTMLButtonElement>) => void
 }) {
     const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,7 +21,7 @@ export default function ConfirmationModal(props: {
         props.onClose(event);
     }
 
-    const onHide = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const onHide = (event: MouseEvent) => {
         props.onHide(event);
     }
 
