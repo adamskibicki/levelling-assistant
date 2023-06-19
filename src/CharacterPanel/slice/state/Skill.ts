@@ -4,6 +4,7 @@ import { TierDescription } from "./TierDescription";
 
 
 export interface Skill {
+    id: string;
     name: string;
     level: number;
     tier: number;
