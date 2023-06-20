@@ -1,29 +1,27 @@
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { ClassModifier } from "../../CharacterPanel/slice/state/ClassModifier";
 import "./ClassModifiers.scss";
+import { EditButton, ExpandButton } from "../../components/common/Buttons";
 
 export default function ClassModifiers(props: {
     classModifiers: ClassModifier[];
     expand: boolean;
 }) {
     const [expanded, setExpanded] = useState(props.expand);
+    const [showClassModifiersEditModal, setShowClassModifiersEditModal] =
+        useState(false);
 
     return (
         <div className="class-modifiers">
             <div className="class-modifiers__title-bar">
-                <button
-                    className="class-modifiers__expand"
+                <ExpandButton
+                    expanded={expanded}
                     onClick={() => setExpanded(!expanded)}
-                >
-                    {expanded ? (
-                        <FontAwesomeIcon icon={faCaretUp} />
-                    ) : (
-                        <FontAwesomeIcon icon={faCaretDown} />
-                    )}
-                </button>
+                />
                 <div className="class-modifiers__title">Class modifiers:</div>
+                <EditButton
+                    onClick={() => setShowClassModifiersEditModal(true)}
+                />
             </div>
             {expanded &&
                 props.classModifiers.map((m, i) => (
@@ -38,7 +36,9 @@ export default function ClassModifiers(props: {
                                 {m.category.name}
                             </div>
                         )}
-                        <p className="class-modifiers__description">{m.description}</p>
+                        <p className="class-modifiers__description">
+                            {m.description}
+                        </p>
                     </div>
                 ))}
         </div>
