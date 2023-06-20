@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { CharacterPanelSliceState } from "../../CharacterPanel/slice/state/CharacterPanelSliceState";
 import { Resource } from "../../CharacterPanel/slice/state/Resource";
 import "./EditClassModifierModal.scss";
+import { CategoryCalculationType } from "../../CharacterPanel/slice/state/CategoryCalculationType";
 
 export default function EditClassModifierModal(props: {
     show: boolean;
@@ -48,9 +49,15 @@ export default function EditClassModifierModal(props: {
     
     const getResourceDisplayName = (resource: Resource) => resource.displayName;
 
-    const onAffectedResourcIdChange = (_: any, resource: Resource) => {
+    const onAffectedResourcIdChange = (_: any, resource: Resource | null) => {
         onClassModifierChanged({
-            affectedResourceId: resource.id,
+            affectedResourceId: resource ? resource.id : null,
+        });
+    }
+
+    const onCategoryCalculationTypeChange = (_: any, categoryCalculationType: CategoryCalculationType) => {
+        onClassModifierChanged({
+            categoryCalculationType: categoryCalculationType,
         });
     }
 
@@ -75,11 +82,20 @@ export default function EditClassModifierModal(props: {
                             values={resources}
                             allowNullValue={true}
                             label={"Affected resource"}
-                            className="edit-class-modifier-modal__select"
+                            className="edit-class-modifier-modal__item-dropdown"
                             selectedValue={resources.find(r => r.id === classModifier.affectedResourceId)}
                             getItemKey={getResourceId}
                             getItemLabel={getResourceDisplayName}
                             onChange={onAffectedResourcIdChange}
+                        />
+                        <InputDropdown
+                            values={Object.values(CategoryCalculationType)}
+                            label={"Category calculation type"}
+                            className="edit-class-modifier-modal__item-dropdown"
+                            selectedValue={classModifier.categoryCalculationType}
+                            getItemKey={cct => cct}
+                            getItemLabel={cct => cct}
+                            onChange={onCategoryCalculationTypeChange}
                         />
                     </>
                 )}

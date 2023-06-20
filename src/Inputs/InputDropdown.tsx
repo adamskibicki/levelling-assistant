@@ -9,9 +9,16 @@ export default function InputDropdown<T>(props: {
     nullValueItemLabel?: string;
     getItemKey(item: T): string;
     getItemLabel(item: T): string;
-    onChange(event: React.ChangeEvent<HTMLSelectElement>, item: T): void;
+    onChange(event: React.ChangeEvent<HTMLSelectElement>, item: T | null): void;
 }) {
+    const nullOption = "null-option";
+
     const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        if (event.currentTarget.value === nullOption) {
+            props.onChange(event, null);
+            return;
+        }
+
         const selectedItem = props.values.find(
             (v) => props.getItemKey(v) === event.currentTarget.value
         );
@@ -23,7 +30,11 @@ export default function InputDropdown<T>(props: {
     };
 
     const renderNullValueOption = () => {
-        return <option key={"null-option"} value={"null-option"}>{props.nullValueItemLabel ?? ""}</option>;
+        return (
+            <option key={nullOption} value={nullOption}>
+                {props.nullValueItemLabel ?? ""}
+            </option>
+        );
     };
 
     return (
@@ -34,7 +45,11 @@ export default function InputDropdown<T>(props: {
             <select
                 className="input__input input-dropdown__select"
                 onChange={onChange}
-                value={props.selectedValue ? props.getItemKey(props.selectedValue) : "null-option"}
+                value={
+                    props.selectedValue
+                        ? props.getItemKey(props.selectedValue)
+                        : nullOption
+                }
             >
                 {props.allowNullValue && renderNullValueOption()}
                 {props.values.map((v) => (
