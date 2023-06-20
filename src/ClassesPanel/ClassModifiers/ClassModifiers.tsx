@@ -6,6 +6,7 @@ import EditClassModifiersModal from "./EditClassModifiersModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
 import { updateClassModifiers } from "../../CharacterPanel/slice/characterPanelSlice";
+import ClassModifierComponent from "./ClassModifierComponent";
 
 export default function ClassModifiers(props: {
     classModifiers: ClassModifier[];
@@ -17,14 +18,19 @@ export default function ClassModifiers(props: {
         useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
-    const onAcceptEditClassModifiers = (_: React.MouseEvent<HTMLButtonElement>, classModifiers: ClassModifier[]) => {
+    const onAcceptEditClassModifiers = (
+        _: React.MouseEvent<HTMLButtonElement>,
+        classModifiers: ClassModifier[]
+    ) => {
         setShowClassModifiersEditModal(false);
 
-        dispatch(updateClassModifiers({
-            classId: props.classId,
-            classModifiers: classModifiers
-        }))
-    }
+        dispatch(
+            updateClassModifiers({
+                classId: props.classId,
+                classModifiers: classModifiers,
+            })
+        );
+    };
 
     return (
         <>
@@ -42,23 +48,8 @@ export default function ClassModifiers(props: {
                     />
                 </div>
                 {expanded &&
-                    props.classModifiers.map((m, i) => (
-                        <div className="class-modifiers__modifier" key={i}>
-                            {m.category !== null && (
-                                <div
-                                    className="class-modifiers__category"
-                                    style={{
-                                        backgroundColor:
-                                            m.category.displayColor,
-                                    }}
-                                >
-                                    {m.category.name}
-                                </div>
-                            )}
-                            <p className="class-modifiers__description">
-                                {m.description}
-                            </p>
-                        </div>
+                    props.classModifiers.map((cm) => (
+                        <ClassModifierComponent {...cm} key={cm.id} />
                     ))}
             </div>
 
