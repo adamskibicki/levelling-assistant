@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ClassesPanel.scss";
 import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
-import Class from "../Class";
+import Class from "./Class";
 import AddClassModal from "./AddClassModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
