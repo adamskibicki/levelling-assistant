@@ -111,6 +111,7 @@ export default function Class(props: {
                     </button>
                 </div>
                 <ClassModifiers
+                    classId={props.value.id}
                     key={expanded.toString()}
                     expand={expanded}
                     classModifiers={props.value.modifiers}

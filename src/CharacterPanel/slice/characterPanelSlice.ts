@@ -21,6 +21,16 @@ export const characterPanelSlice = createSlice({
             skillTuUpdate.tierDescriptions = action.payload.tierDescriptions;
             skillTuUpdate.categories = action.payload.categories;
         },
+        updateClassModifiers: (state, action) => {
+            const {classId, classModifiers} = action.payload;
+
+            const classToUpdate = state.classes.find(c=> c.id === classId);
+
+            if (classToUpdate === undefined)
+                throw new Error("classToUpdate is undefinded");
+
+            classToUpdate.modifiers = classModifiers;
+        },
         editBasicInfo: (state, action) => {
             const { name, title } = action.payload;
             state.generalInformation.basicInfo.name = name;
@@ -97,6 +107,7 @@ export const characterPanelSlice = createSlice({
 
 export const {
     updateSkill,
+    updateClassModifiers,
     editBasicInfo,
     editStats,
     addClass,
