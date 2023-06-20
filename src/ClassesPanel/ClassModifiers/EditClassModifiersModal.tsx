@@ -88,15 +88,15 @@ export default function EditClassModifiersModal(props: {
                     onClose={props.onClose}
                     onAccept={onAccept}
                 ></ModalFooter>
-            </Modal>
 
-            <EditClassModifierModal
-                classModifier={classModifierToEdit}
-                show={showEditClassModifierModal}
-                onAccept={(_, cm) => onClassModifierChanged(cm)}
-                onClose={() => setShowEditClassModifierModal(false)}
-                onHide={() => setShowEditClassModifierModal(false)}
-            />
+                <EditClassModifierModal
+                    classModifier={classModifierToEdit}
+                    show={showEditClassModifierModal}
+                    onAccept={(_, cm) => onClassModifierChanged(cm)}
+                    onClose={() => setShowEditClassModifierModal(false)}
+                    onHide={() => setShowEditClassModifierModal(false)}
+                />
+            </Modal>
         </>
     );
 }
