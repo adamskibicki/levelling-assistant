@@ -1,86 +1,64 @@
 import { faCaretDown, faCaretUp, faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Children, useEffect, useState } from "react";
 import './ReorderableList.scss';
 
 export default function ReorderableListImproved<T>(props: {
-    children: React.ReactNode | React.ReactNode[];
+    renderItem(item: T): React.ReactNode | React.ReactNode[];
     getItemKey(item: T): string;
     items: T[];
     onChange(modifiedItems: T[]): void;
 }) {
-    const [items, setItems] = useState<T[]>([]);
-
-    useEffect(() => {
-        setItems(props.items);
-    }, [props.items]);
-
-    //TODO: duplicated code in move item up/down methods
-    const moveItemUp = (_: never, key: string) => {
-        setItems((prevState) => {
-            const indexOfItemToMove = prevState.findIndex(i => props.getItemKey(i) === key);
-            const indexOfItemToBeReplaced = indexOfItemToMove - 1;
-
-            const itemToMove = prevState[indexOfItemToMove];
-            const itemToBeReplaced = prevState[indexOfItemToBeReplaced];
-
-            return prevState.map((item, i) => {
-                if (i === indexOfItemToMove)
-                    return itemToBeReplaced;
-                if (i === indexOfItemToBeReplaced)
-                    return itemToMove;
-                return item;
-            });
-        });
+    const moveItemUp = (key: string) => {
+        moveItem(key, -1);
     }
 
-    const moveItemDown = (_: never, key: string) => {
-        setItems((prevState) => {
-            const indexOfItemToMove = prevState.findIndex(i => props.getItemKey(i) === key);
-            const indexOfItemToBeReplaced = indexOfItemToMove + 1;
-
-            const itemToMove = prevState[indexOfItemToMove];
-            const itemToBeReplaced = prevState[indexOfItemToBeReplaced];
-
-            return prevState.map((item, i) => {
-                if (i === indexOfItemToMove)
-                    return itemToBeReplaced;
-                if (i === indexOfItemToBeReplaced)
-                    return itemToMove;
-                return item;
-            });
-        });
+    const moveItemDown = (key: string) => {
+        moveItem(key, 1);
     }
 
-    const deleteItem = (_: never, key: string) => {
-        setItems((prevState) => {
-            return prevState.filter(i => props.getItemKey(i) !== key);
+    const moveItem = (key: string, step: number) => {
+        const indexOfItemToMove = props.items.findIndex(i => props.getItemKey(i) === key);
+        const indexOfItemToBeReplaced = indexOfItemToMove + step;
+
+        const itemToMove = props.items[indexOfItemToMove];
+        const itemToBeReplaced = props.items[indexOfItemToBeReplaced];
+
+        const updatedItems = props.items.map((item, i) => {
+            if (i === indexOfItemToMove)
+                return itemToBeReplaced;
+            if (i === indexOfItemToBeReplaced)
+                return itemToMove;
+            return item;
         });
+
+        props.onChange(updatedItems);
     }
 
-    const children = Children.toArray(props.children);
+    const deleteItem = (key: string) => {
+        props.onChange(props.items.filter(i => props.getItemKey(i) !== key));
+    }
 
     return (
         <div className="reorderable-list">
-            {children.map((c, i) => (
-                <div className="reorderable-list__item" key={i}>
-                    <div className="reorderable-list__child">{c}</div>
+            {props.items.map((item, index) => (
+                <div className="reorderable-list__item" key={props.getItemKey(item)}>
+                    <div className="reorderable-list__child">{props.renderItem(item)}</div>
                     <div>
                         <button
-                            onClick={(event) => moveItemUp(event, i)}
-                            className={i === 0 ? "disabled" : ""}
+                            onClick={() => moveItemUp(props.getItemKey(item))}
+                            className={index === 0 ? "disabled" : ""}
                         >
                             <FontAwesomeIcon icon={faCaretUp} />
                         </button>
                         <button
-                            onClick={(event) => moveItemDown(event, i)}
+                            onClick={() => moveItemDown(props.getItemKey(item))}
                             className={
-                                i === children.length - 1 ? "disabled" : ""
+                                index === props.items.length - 1 ? "disabled" : ""
                             }
                         >
                             <FontAwesomeIcon icon={faCaretDown} />
                         </button>
-                        <button onClick={(event) => deleteItem(event, i)}>
+                        <button onClick={() => deleteItem(props.getItemKey(item))}>
                             <FontAwesomeIcon icon={faClose} />
                         </button>
                     </div>
