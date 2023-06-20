@@ -52,6 +52,7 @@ export default function EditClassModifiersModal(props: {
                 return cm;
             })
         );
+        setShowEditClassModifierModal(false);
     };
 
     const getItemKey = (classModifier: ClassModifier) => classModifier.id;
