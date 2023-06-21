@@ -90,7 +90,7 @@ export default function CharacterPanel() {
     const calculateValueOfIncreasedVariable = (variable: SkillVariable, skill: Skill): number => {
         const baseValue = variable.baseValue;
         const calculationType = variable.variableCalculationType;
-        const categoryIds = skill.categories.map(c => (c.id));
+        const categoryIds = skill.categoryIds;
 
         let increase = categoryIds.map(function(this: void, c){
             return getPercentagePointsIncreaseInCategoryFromClassModifiers(c);
@@ -131,10 +131,12 @@ export default function CharacterPanel() {
         });
 
         let applyingModifiers = allClassModifiers.filter(m => {
-            return categoryId === m.category?.id;
+            return categoryId === m.categoryId;
         });
 
-        return applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
+        const result = applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
+
+        return result;
     }
 
     const getCalculatedResources = (): CalculatedResource[] => {

@@ -1,0 +1,8 @@
+@import '../palette.scss';
+
+.input-dropdown {
+    &__select {
+        background-color: $secondary-color;
+        border: none;
+    }
+}

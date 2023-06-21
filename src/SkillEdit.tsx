@@ -5,8 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUserCategories } from "./CharacterPanel/slice/thunks/fetchUserCategories";
+import { useDispatch } from "react-redux";
 import { updateSkill } from "./CharacterPanel/slice/characterPanelSlice";
 import InputText from "./Inputs/InputText";
 import Modal from "./Modal/Modal";
@@ -16,26 +15,21 @@ import ModalHeader from "./Modal/ModalHeader";
 import "./SkillEdit.scss";
 import SkillCategoriesEdit from "./ClassesPanel/SkillCategoriesEdit";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
-import { Category } from "./CharacterPanel/slice/state/Category";
-import { CharacterPanelSliceState } from "./CharacterPanel/slice/state/CharacterPanelSliceState";
 import { AppDispatch } from "./store/store";
 import { v4 as uuidv4 } from "uuid";
 
-function SkillEdit(props: {
+export default function SkillEdit(props: {
     skillId: string;
     tierDescriptions: TierDescription[];
-    categories: Category[];
+    categoryIds: string[];
     name: string;
 }) {
     const [show, setShow] = useState(false);
     const [tierDescriptions, setTierDescriptions] = useState<TierDescription[]>(
         []
     );
-    const [categories, setCategories] = useState<Category[]>([]);
-    const userCategories = useSelector(
-        (state: { characterPanel: CharacterPanelSliceState }) =>
-            state.characterPanel.userCategories
-    );
+    const [categoryIds, setCategoryIds] = useState<string[]>([]);
+
     const dispatch = useDispatch<AppDispatch>();
 
     const showModal = () => {
@@ -45,8 +39,7 @@ function SkillEdit(props: {
                 ? [...props.tierDescriptions].sort((a, b) => a.tier - b.tier)
                 : props.tierDescriptions
         );
-        setCategories(props.categories);
-        dispatch(fetchUserCategories());
+        setCategoryIds(props.categoryIds);
     };
 
     const hideModal = () => {
@@ -136,15 +129,15 @@ function SkillEdit(props: {
         const dataToDispatch = {
             tierDescriptions: tierDescriptions,
             skillId: props.skillId,
-            categories: categories,
+            categoryIds: categoryIds,
         };
 
         dispatch(updateSkill(dataToDispatch));
         hideModal();
     };
 
-    const onCategoriesChange = (categories: Category[]) => {
-        setCategories(categories);
+    const onCategoriesChange = (categoryIds: string[]) => {
+        setCategoryIds(categoryIds);
     };
 
     return (
@@ -205,10 +198,9 @@ function SkillEdit(props: {
                         ))}
                         <button onClick={addTier}>Add tier</button>
                         <SkillCategoriesEdit
-                            categories={categories}
-                            userCategories={userCategories}
-                            onChange={(categories: Category[]) =>
-                                onCategoriesChange(categories)
+                            selectedCategoryIds={categoryIds}
+                            onChange={(categoryIds) =>
+                                onCategoriesChange(categoryIds)
                             }
                         />
                     </form>
@@ -218,5 +210,3 @@ function SkillEdit(props: {
         </>
     );
 }
-
-export default SkillEdit;

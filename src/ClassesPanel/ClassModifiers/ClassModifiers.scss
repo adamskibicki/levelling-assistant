@@ -1,0 +1,19 @@
+@import "../../palette.scss";
+
+.class-modifiers {
+    &__title-bar {
+        display: flex;
+        padding-bottom: 0.5rem;
+        margin: 0 0.5rem;
+    }
+
+    &__title {
+        padding-left: 0.5rem;
+        margin-right: auto;
+    }
+
+    &__expand {
+        height: 1.5rem;
+        margin: 0 0.5rem;
+    }
+}

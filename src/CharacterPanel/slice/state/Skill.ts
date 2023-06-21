@@ -1,4 +1,3 @@
-import { Category } from "./Category";
 import { SkillVariable } from "./SkillVariable";
 import { TierDescription } from "./TierDescription";
 
@@ -11,6 +10,6 @@ export interface Skill {
     type: string;
     enhanced: boolean;
     tierDescriptions: TierDescription[];
-    categories: Category[];
+    categoryIds: string[];
     variables: SkillVariable[];
 }

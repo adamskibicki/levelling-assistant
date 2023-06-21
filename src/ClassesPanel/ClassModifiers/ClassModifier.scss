@@ -1,0 +1,21 @@
+@import "../../palette.scss";
+
+.class-modifier {
+    &__modifier {
+        display: flex;
+        padding: 0.1rem;
+    }
+
+    &__category{
+        padding: 0.4rem;
+        margin-right: 0;
+        margin-left: 0.4rem;
+        background-color: $secondary-color;
+        height: fit-content;
+    }
+
+    &__description{
+        margin: 0.4rem;
+        text-align: left;
+    }
+}

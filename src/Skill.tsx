@@ -29,6 +29,8 @@ class SkillComponent extends React.Component<
         };
     }
 
+    
+
     switchExpandVisibility() {
         this.setState((prevState) => ({
             expanded: !prevState.expanded,
@@ -150,7 +152,7 @@ class SkillComponent extends React.Component<
                                     </p>
                                 ))}
                         </div>
-                        <SkillCategories categories={this.props.categories} />
+                        <SkillCategories categoryIds={this.props.categoryIds} />
                         {this.props.allowEdit && (
                             <SkillEdit
                                 {...this.props}

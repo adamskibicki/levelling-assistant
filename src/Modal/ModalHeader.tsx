@@ -5,7 +5,7 @@ import './ModalHeader.scss';
 
 class ModalHeader extends React.Component<{
     onClose(event: React.MouseEvent<HTMLButtonElement>): void;
-    children: React.ReactNode | React.ReactNode[];
+    children?: React.ReactNode | React.ReactNode[];
 }> {
     render() {
         return (

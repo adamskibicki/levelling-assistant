@@ -9,27 +9,31 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "./Class.scss";
-import SkillComponent from "./Skill";
-import ConfirmationModal from "./UserCharacters/ConfirmationModal";
+import SkillComponent from "../Skill";
+import ConfirmationModal from "../UserCharacters/ConfirmationModal";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "./store/store";
+import { AppDispatch } from "../store/store";
 import {
     deleteClass,
     editClass,
-} from "./CharacterPanel/slice/characterPanelSlice";
-import { CharacterClass } from "./CharacterPanel/slice/state/CharacterClass";
-import EditClassModal from "./ClassesPanel/EditClassModal";
-import { SkillVariable } from "./CharacterPanel/slice/state/SkillVariable";
-import { Skill } from "./CharacterPanel/slice/state/Skill";
+} from "../CharacterPanel/slice/characterPanelSlice";
+import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
+import EditClassModal from "../ClassesPanel/EditClassModal";
+import { SkillVariable } from "../CharacterPanel/slice/state/SkillVariable";
+import { Skill } from "../CharacterPanel/slice/state/Skill";
+import ClassModifiers from "./ClassModifiers/ClassModifiers";
 
 export default function Class(props: {
     value: CharacterClass;
     allowEdit: boolean;
-    calculateValueOfIncreasedVariable(variable: SkillVariable, skill: Skill): number;
+    calculateValueOfIncreasedVariable(
+        variable: SkillVariable,
+        skill: Skill
+    ): number;
 }) {
     const [expanded, setExpanded] = useState(true);
     const [showEditClassModal, setShowEditClassModal] = useState(false);
-    const [classModifiersExpanded, setClassModifiersExpanded] = useState(true);
+
     const [
         showClassDeletionConfirmationModal,
         setShowClassDeletionConfirmationModal,
@@ -40,11 +44,6 @@ export default function Class(props: {
         const prevExpanded = expanded;
 
         setExpanded(!prevExpanded);
-        setClassModifiersExpanded(!prevExpanded);
-    };
-
-    const switchClassModifiersExpandVisibility = () => {
-        setClassModifiersExpanded((prevState) => !prevState);
     };
 
     const deleteCurrentClass = () => {
@@ -87,15 +86,13 @@ export default function Class(props: {
                     <h4 className="class-name">
                         {props.value.name} - lvl {props.value.level}
                     </h4>
-                    <button 
+                    <button
                         className={props.value.level === 0 ? "disabled" : ""}
                         onClick={() => editClassLevel(-1)}
                     >
                         <FontAwesomeIcon icon={faMinus} />
                     </button>
-                    <button
-                        onClick={() => editClassLevel(1)}
-                    >
+                    <button onClick={() => editClassLevel(1)}>
                         <FontAwesomeIcon icon={faPlus} />
                     </button>
                     <button
@@ -113,34 +110,12 @@ export default function Class(props: {
                         <FontAwesomeIcon icon={faClose} />
                     </button>
                 </div>
-                <div className="modifiers-container">
-                    <div className="title-container">
-                        <button
-                            className="expand"
-                            onClick={() =>
-                                switchClassModifiersExpandVisibility()
-                            }
-                        >
-                            {classModifiersExpanded ? (
-                                <FontAwesomeIcon icon={faCaretUp} />
-                            ) : (
-                                <FontAwesomeIcon icon={faCaretDown} />
-                            )}
-                        </button>
-                        <div className="title">Class modifiers:</div>
-                    </div>
-                    {classModifiersExpanded &&
-                        props.value.modifiers.map((m, i) => (
-                            <div className="modifier" key={i}>
-                                {m.category !== null && (
-                                    <div className="category" style={{backgroundColor: m.category.displayColor}} >
-                                        {m.category.name}
-                                    </div>
-                                )}
-                                <p className="description">{m.description}</p>
-                            </div>
-                        ))}
-                </div>
+                <ClassModifiers
+                    classId={props.value.id}
+                    key={expanded.toString()}
+                    expand={expanded}
+                    classModifiers={props.value.modifiers}
+                />
             </div>
             <div>
                 {props.value.skills.map((s, i) => (

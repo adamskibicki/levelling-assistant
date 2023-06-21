@@ -1,10 +1,23 @@
 import { Category } from "./Category";
 import { CategoryCalculationType } from "./CategoryCalculationType";
+import { v4 as uuidv4 } from "uuid";
 
 export interface ClassModifier {
-    affectedResourceId: string;
+    id: string;
+    affectedResourceId: string | null;
     categoryCalculationType: CategoryCalculationType;
     percentagePointsOfCategoryIncrease: number;
-    category: Category;
+    categoryId: string | null;
     description: string;
+}
+
+export function GetDefault(): ClassModifier {
+    return {
+        affectedResourceId: null,
+        categoryId: null,
+        categoryCalculationType: CategoryCalculationType.None,
+        description: "",
+        id: uuidv4(),
+        percentagePointsOfCategoryIncrease: 0,
+    };
 }
