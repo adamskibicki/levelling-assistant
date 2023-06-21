@@ -20,6 +20,7 @@ import SkillCategoriesEdit from "../SkillCategoriesEdit";
 export default function EditClassModifierModal(props: {
     show: boolean;
     classModifier: ClassModifier;
+    title?: string;
     onHide(event: MouseEvent): void;
     onClose(event: React.MouseEvent): void;
     onAccept: (
@@ -82,7 +83,7 @@ export default function EditClassModifierModal(props: {
     return (
         <Modal show={props.show} onHide={props.onHide}>
             <ModalHeader onClose={props.onClose}>
-                Edit selected class modifier
+                {props.title || "Edit selected class modifier"}
             </ModalHeader>
             <ModalContent>
                 {true && (

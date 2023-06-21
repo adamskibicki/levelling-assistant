@@ -10,7 +10,8 @@ import {
 import ReorderableListImproved from "../../Lists/ReorderableListImproved";
 import ClassModifierComponent from "./ClassModifierComponent";
 import EditClassModifierModal from "./EditClassModifierModal";
-import { EditButton } from "../../components/common/Buttons";
+import { AddButton, EditButton } from "../../components/common/Buttons";
+import "./EditClassModifiersModal.scss";
 
 export default function EditClassModifiersModal(props: {
     onHide(event: MouseEvent): void;
@@ -28,6 +29,7 @@ export default function EditClassModifiersModal(props: {
     const [classModifierToEdit, setClassModifierToEdit] = useState(
         GetDefault()
     );
+    const [isAddingClassModifier, setIsAddingClassModifier] = useState(false);
 
     useEffect(() => {
         setClassModifiers(props.classModifiers);
@@ -44,13 +46,17 @@ export default function EditClassModifiersModal(props: {
     };
 
     const onClassModifierChanged = (classModifier: ClassModifier) => {
-        onClassModifiersChanged(
-            classModifiers.map((cm) => {
-                if (cm.id === classModifier.id) return classModifier;
+        if (isAddingClassModifier) {
+            onClassModifiersChanged([...classModifiers, classModifier]);
+        } else {
+            onClassModifiersChanged(
+                classModifiers.map((cm) => {
+                    if (cm.id === classModifier.id) return classModifier;
 
-                return cm;
-            })
-        );
+                    return cm;
+                })
+            );
+        }
         setShowEditClassModifierModal(false);
     };
 
@@ -64,6 +70,7 @@ export default function EditClassModifiersModal(props: {
         return (
             <EditButton
                 onClick={() => {
+                    setIsAddingClassModifier(false);
                     setClassModifierToEdit(classModifier);
                     setShowEditClassModifierModal(true);
                 }}
@@ -85,6 +92,14 @@ export default function EditClassModifiersModal(props: {
                         getItemKey={getItemKey}
                         onChange={onClassModifiersChanged}
                     />
+                    <AddButton
+                        className="edit-class-modifiers-modal__add-button"
+                        onClick={() => {
+                            setIsAddingClassModifier(true);
+                            setClassModifierToEdit(GetDefault());
+                            setShowEditClassModifierModal(true);
+                        }}
+                    />
                 </ModalContent>
                 <ModalFooter
                     onClose={props.onClose}
@@ -92,6 +107,7 @@ export default function EditClassModifiersModal(props: {
                 ></ModalFooter>
 
                 <EditClassModifierModal
+                    title={isAddingClassModifier ? "Add new class modifier" : undefined}
                     classModifier={classModifierToEdit}
                     show={showEditClassModifierModal}
                     onAccept={(_, cm) => onClassModifierChanged(cm)}

@@ -1,7 +1,7 @@
 import { Children } from "react";
 import "./Buttons.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faCaretDown, faCaretUp, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 export function Button(props: {
     onClick(event: React.MouseEvent<HTMLButtonElement>): void;
@@ -54,6 +54,17 @@ export function EditButton(props: {
     return (
         <IconButton className={`edit-button ${props.className}`} onClick={props.onClick}>
             <FontAwesomeIcon icon={faEdit} />
+        </IconButton>
+    );
+}
+
+export function AddButton(props: {
+    onClick(event: React.MouseEvent<HTMLButtonElement>): void;
+    className?: string;
+}) {
+    return (
+        <IconButton className={`add-button ${props.className}`} onClick={props.onClick}>
+            <FontAwesomeIcon icon={faAdd} />
         </IconButton>
     );
 }
