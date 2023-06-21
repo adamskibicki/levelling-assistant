@@ -1,5 +1,14 @@
 import { Category } from '../CharacterPanel/slice/state/Category';
+import { useUserCategories } from '../hooks/useUserCategories';
 import './SkillCategories.scss';
+
+export default function SkillCategoriesWrapper(props: {
+    categoryIds: string[];
+}) {
+    const {getCategoriesByIds} = useUserCategories();
+
+    return <SkillCategories categories={getCategoriesByIds(props.categoryIds)} />
+}
 
 function SkillCategories(props: {
     categories: Category[];
@@ -15,5 +24,3 @@ function SkillCategories(props: {
         </div>
     );
 }
-
-export default SkillCategories;

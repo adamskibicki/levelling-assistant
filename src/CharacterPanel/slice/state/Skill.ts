@@ -1,4 +1,3 @@
-import { Category } from "./Category";
 import { SkillVariable } from "./SkillVariable";
 import { TierDescription } from "./TierDescription";
 
@@ -11,7 +10,6 @@ export interface Skill {
     type: string;
     enhanced: boolean;
     tierDescriptions: TierDescription[];
-    //TODO: remove categories here - operate on it's ids instead to avoid data duplication
-    categories: Category[];
+    categoryIds: string[];
     variables: SkillVariable[];
 }

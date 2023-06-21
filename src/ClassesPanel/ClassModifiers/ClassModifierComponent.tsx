@@ -1,17 +1,22 @@
 import { ClassModifier } from "../../CharacterPanel/slice/state/ClassModifier";
+import { useUserCategories } from "../../hooks/useUserCategories";
 import "./ClassModifier.scss";
 
 export default function ClassModifierComponent(props: ClassModifier) {
+    const {getCategoryById} = useUserCategories();
+
+    const category = props.categoryId ? getCategoryById(props.categoryId) : null;
+    
     return (
         <div className="class-modifier__modifier">
-            {props.category !== null && (
+            {category !== null && (
                 <div
                     className="class-modifier__category"
                     style={{
-                        backgroundColor: props.category.displayColor,
+                        backgroundColor: category.displayColor,
                     }}
                 >
-                    {props.category.name}
+                    {category.name}
                 </div>
             )}
             <p className="class-modifier__description">{props.description}</p>

@@ -5,6 +5,7 @@ import { fetchUserCategories } from "./thunks/fetchUserCategories";
 import { addNewCategory } from "./thunks/addNewCategory";
 import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges";
 import { CharacterClass } from "./state/CharacterClass";
+import { Category } from "./state/Category";
 
 export const characterPanelSlice = createSlice({
     name: "characterPanel",
@@ -19,7 +20,7 @@ export const characterPanelSlice = createSlice({
                 throw new Error("skillTuUpdate is undefinded");
 
             skillTuUpdate.tierDescriptions = action.payload.tierDescriptions;
-            skillTuUpdate.categories = action.payload.categories;
+            skillTuUpdate.categoryIds = action.payload.categories.map((c: Category) => c.id);
         },
         updateClassModifiers: (state, action) => {
             const {classId, classModifiers} = action.payload;
@@ -89,8 +90,8 @@ export const characterPanelSlice = createSlice({
             });
 
         builder.addCase(fetchUserCategories.fulfilled, (state, action) => {
-            state.userCategories = action.payload;
-        });
+                state.userCategories = action.payload;
+            });
 
         builder.addCase(addNewCategory.fulfilled, (state, action) => {
             state.userCategories = [...state.userCategories, action.payload];

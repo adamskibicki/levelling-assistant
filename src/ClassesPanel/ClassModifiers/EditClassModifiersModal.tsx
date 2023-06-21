@@ -40,7 +40,6 @@ export default function EditClassModifiersModal(props: {
     const onClassModifiersChanged = (
         updatedClassModifiers: ClassModifier[]
     ) => {
-        console.log(updatedClassModifiers);
         setClassModifiers(updatedClassModifiers);
     };
 

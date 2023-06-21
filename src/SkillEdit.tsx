@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchUserCategories } from "./CharacterPanel/slice/thunks/fetchUserCategories";
 import { updateSkill } from "./CharacterPanel/slice/characterPanelSlice";
 import InputText from "./Inputs/InputText";
@@ -17,14 +17,14 @@ import "./SkillEdit.scss";
 import SkillCategoriesEdit from "./ClassesPanel/SkillCategoriesEdit";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
 import { Category } from "./CharacterPanel/slice/state/Category";
-import { CharacterPanelSliceState } from "./CharacterPanel/slice/state/CharacterPanelSliceState";
 import { AppDispatch } from "./store/store";
 import { v4 as uuidv4 } from "uuid";
+import { useUserCategories } from "./hooks/useUserCategories";
 
-function SkillEdit(props: {
+export default function SkillEdit(props: {
     skillId: string;
     tierDescriptions: TierDescription[];
-    categories: Category[];
+    categoryIds: string[];
     name: string;
 }) {
     const [show, setShow] = useState(false);
@@ -32,10 +32,8 @@ function SkillEdit(props: {
         []
     );
     const [categories, setCategories] = useState<Category[]>([]);
-    const userCategories = useSelector(
-        (state: { characterPanel: CharacterPanelSliceState }) =>
-            state.characterPanel.userCategories
-    );
+    const {userCategories, getCategoriesByIds} = useUserCategories();
+
     const dispatch = useDispatch<AppDispatch>();
 
     const showModal = () => {
@@ -45,7 +43,7 @@ function SkillEdit(props: {
                 ? [...props.tierDescriptions].sort((a, b) => a.tier - b.tier)
                 : props.tierDescriptions
         );
-        setCategories(props.categories);
+        setCategories(getCategoriesByIds(props.categoryIds));
         dispatch(fetchUserCategories());
     };
 
@@ -218,5 +216,3 @@ function SkillEdit(props: {
         </>
     );
 }
-
-export default SkillEdit;
