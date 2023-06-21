@@ -14,6 +14,8 @@ import { CharacterPanelSliceState } from "../../CharacterPanel/slice/state/Chara
 import { Resource } from "../../CharacterPanel/slice/state/Resource";
 import "./EditClassModifierModal.scss";
 import { CategoryCalculationType } from "../../CharacterPanel/slice/state/CategoryCalculationType";
+import InputNumber from "../../Inputs/InputNumber";
+import SkillCategoriesEdit from "../SkillCategoriesEdit";
 
 export default function EditClassModifierModal(props: {
     show: boolean;
@@ -46,20 +48,36 @@ export default function EditClassModifierModal(props: {
     };
 
     const getResourceId = (resource: Resource) => resource.id;
-    
+
     const getResourceDisplayName = (resource: Resource) => resource.displayName;
 
     const onAffectedResourcIdChange = (_: any, resource: Resource | null) => {
         onClassModifierChanged({
             affectedResourceId: resource ? resource.id : null,
         });
-    }
+    };
 
-    const onCategoryCalculationTypeChange = (_: any, categoryCalculationType: CategoryCalculationType) => {
+    const onCategoryCalculationTypeChange = (
+        _: any,
+        categoryCalculationType: CategoryCalculationType
+    ) => {
         onClassModifierChanged({
             categoryCalculationType: categoryCalculationType,
         });
-    }
+    };
+
+    const onPercentagePointsOfCategoryIncreaseChange = (
+        _: any,
+        value: number
+    ) => {
+        onClassModifierChanged({ percentagePointsOfCategoryIncrease: value });
+    };
+
+    const onCategoryIdChange = (categoryIds: string[]) => {
+        onClassModifierChanged({
+            categoryId: categoryIds.length === 0 ? null : categoryIds[0],
+        });
+    };
 
     return (
         <Modal show={props.show} onHide={props.onHide}>
@@ -72,7 +90,9 @@ export default function EditClassModifierModal(props: {
                         <InputText
                             label={"Description"}
                             value={classModifier.description}
-                            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                            onChange={(
+                                event: React.FormEvent<HTMLInputElement>
+                            ) =>
                                 onClassModifierChanged({
                                     description: event.currentTarget.value,
                                 })
@@ -82,8 +102,10 @@ export default function EditClassModifierModal(props: {
                             values={resources}
                             allowNullValue={true}
                             label={"Affected resource"}
-                            className="edit-class-modifier-modal__item-dropdown"
-                            selectedValue={resources.find(r => r.id === classModifier.affectedResourceId)}
+                            className="edit-class-modifier-modal__input--top-spacer"
+                            selectedValue={resources.find(
+                                (r) => r.id === classModifier.affectedResourceId
+                            )}
                             getItemKey={getResourceId}
                             getItemLabel={getResourceDisplayName}
                             onChange={onAffectedResourcIdChange}
@@ -91,11 +113,32 @@ export default function EditClassModifierModal(props: {
                         <InputDropdown
                             values={Object.values(CategoryCalculationType)}
                             label={"Category calculation type"}
-                            className="edit-class-modifier-modal__item-dropdown"
-                            selectedValue={classModifier.categoryCalculationType}
-                            getItemKey={cct => cct}
-                            getItemLabel={cct => cct}
+                            className="edit-class-modifier-modal__input--top-spacer"
+                            selectedValue={
+                                classModifier.categoryCalculationType
+                            }
+                            getItemKey={(cct) => cct}
+                            getItemLabel={(cct) => cct}
                             onChange={onCategoryCalculationTypeChange}
+                        />
+                        <InputNumber
+                            label={"Percentage points of category increase"}
+                            className="edit-class-modifier-modal__input--top-spacer"
+                            onChange={
+                                onPercentagePointsOfCategoryIncreaseChange
+                            }
+                            value={
+                                classModifier.percentagePointsOfCategoryIncrease
+                            }
+                        />
+                        <SkillCategoriesEdit
+                            selectedCategoryIds={
+                                classModifier.categoryId === null
+                                    ? []
+                                    : [classModifier.categoryId]
+                            }
+                            limit={1}
+                            onChange={onCategoryIdChange}
                         />
                     </>
                 )}

@@ -74,7 +74,9 @@ export default function EditClassModifiersModal(props: {
     return (
         <>
             <Modal show={props.show} onHide={props.onHide}>
-                <ModalHeader onClose={props.onClose} />
+                <ModalHeader onClose={props.onClose}>
+                    Class modifiers
+                </ModalHeader>
                 <ModalContent>
                     <ReorderableListImproved
                         renderItem={renderClassModifier}

@@ -1,31 +1,40 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./state/CharacterPanelSliceState";
 import { getStatus } from "./thunks/getStatus";
 import { fetchUserCategories } from "./thunks/fetchUserCategories";
 import { addNewCategory } from "./thunks/addNewCategory";
 import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges";
 import { CharacterClass } from "./state/CharacterClass";
-import { Category } from "./state/Category";
+import { TierDescription } from "./state/TierDescription";
 
 export const characterPanelSlice = createSlice({
     name: "characterPanel",
     initialState: initialState,
     reducers: {
-        updateSkill: (state, action) => {
+        updateSkill: (
+            state,
+            action: PayloadAction<{
+                tierDescriptions: TierDescription[];
+                categoryIds: string[];
+                skillId: string;
+            }>
+        ) => {
             const { skillId } = action.payload;
 
-            const skillTuUpdate =  state.classes.flatMap(c => c.skills).find((s) => s.id === skillId);
+            const skillTuUpdate = state.classes
+                .flatMap((c) => c.skills)
+                .find((s) => s.id === skillId);
 
             if (skillTuUpdate === undefined)
                 throw new Error("skillTuUpdate is undefinded");
 
             skillTuUpdate.tierDescriptions = action.payload.tierDescriptions;
-            skillTuUpdate.categoryIds = action.payload.categories.map((c: Category) => c.id);
+            skillTuUpdate.categoryIds = action.payload.categoryIds;
         },
         updateClassModifiers: (state, action) => {
-            const {classId, classModifiers} = action.payload;
+            const { classId, classModifiers } = action.payload;
 
-            const classToUpdate = state.classes.find(c=> c.id === classId);
+            const classToUpdate = state.classes.find((c) => c.id === classId);
 
             if (classToUpdate === undefined)
                 throw new Error("classToUpdate is undefinded");
@@ -90,8 +99,8 @@ export const characterPanelSlice = createSlice({
             });
 
         builder.addCase(fetchUserCategories.fulfilled, (state, action) => {
-                state.userCategories = action.payload;
-            });
+            state.userCategories = action.payload;
+        });
 
         builder.addCase(addNewCategory.fulfilled, (state, action) => {
             state.userCategories = [...state.userCategories, action.payload];
