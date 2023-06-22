@@ -6,11 +6,11 @@ import Modal from "../../Modal/Modal";
 import ModalContent from "../../Modal/ModalContent";
 import ModalFooter from "../../Modal/ModalFooter";
 import ModalHeader from "../../Modal/ModalHeader";
-import ReorderableList from "../../Lists/ReorderableList";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import InputCheckbox from "../../Inputs/InputCheckbox";
 import "./StatsEditModal.scss";
 import { Stat } from "../slice/state/Stat";
+import ReorderableListImproved from "../../Lists/ReorderableList";
 
 export default function StatsEditModal(props: {
     stats: Stat[];
@@ -28,122 +28,106 @@ export default function StatsEditModal(props: {
 
     const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        dispatch(editStats({
-            stats: stats
-        }));
+        dispatch(
+            editStats({
+                stats: stats,
+            })
+        );
         props.onAccept();
-    }
+    };
 
-    const onChange = (statId: string, name: string) => {
+    const onStatChange = (statId: string, name: string) => {
         setStats((prevState) => {
-            return prevState.map(s => {
+            return prevState.map((s) => {
                 if (s.id === statId) {
                     return {
                         ...s,
-                        name: name
+                        name: name,
                     };
                 }
                 return s;
             });
         });
-    }
-
-    const moveItemUp = (_: never, index: number) => {
-        setStats((prevState) => {
-            const itemToMove = prevState[index];
-            const itemReplaced = prevState[index - 1];
-
-            return prevState.map((s, i) => {
-                if (i === index)
-                    return itemReplaced;
-                if (i === index - 1)
-                    return itemToMove;
-                return s;
-            });
-        });
-    }
-
-    const moveItemDown = (_: never, index: number) => {
-        setStats((prevState) => {
-            const itemToMove = prevState[index];
-            const itemReplaced = prevState[index + 1];
-
-            return prevState.map((s, i) => {
-                if (i === index)
-                    return itemReplaced;
-                if (i === index + 1)
-                    return itemToMove;
-                return s;
-            });
-        });
-    }
-
-    const deleteItem = (_: never, index: number) => {
-        setStats((prevState) => {
-            return prevState.filter((_, i) => i !== index);
-        });
-    }
+    };
 
     const addNewItem = () => {
         setStats((prevState) => {
-            return [...prevState, {
-                id: uuidv4(),
-                name: "New stat",
-                value: 5,
-                isHidden: false
-            }];
+            return [
+                ...prevState,
+                {
+                    id: uuidv4(),
+                    name: "New stat",
+                    value: 5,
+                    isHidden: false,
+                },
+            ];
         });
-    }
+    };
 
     const onClose = () => {
         props.onClose();
         resetForm();
-    }
+    };
 
     const onHide = () => {
         props.onHide();
         resetForm();
-    }
+    };
 
     const resetForm = () => {
         setStats(props.stats);
-    }
+    };
 
     const isHiddenOnChange = (statId: string, value: boolean) => {
         setStats((prevState) => {
-            return prevState.map(s => {
+            return prevState.map((s) => {
                 if (s.id === statId) {
                     return {
                         ...s,
-                        isHidden: value
+                        isHidden: value,
                     };
                 }
                 return s;
             });
         });
-    }
+    };
+
+    const renderStat = (s: Stat) => {
+        return (
+            <div className="stats-edit-modal__stat" key={s.id}>
+                <InputText
+                    value={s.name}
+                    onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                        onStatChange(s.id, event.currentTarget.value)
+                    }
+                    className="stats-edit-modal__stat-name"
+                />
+                <InputCheckbox
+                    label={"Hide"}
+                    value={s.isHidden}
+                    onChange={(_, value) => isHiddenOnChange(s.id, value)}
+                />
+            </div>
+        );
+    };
+
+    const onStatsChange = (modifiedStats: Stat[]) => {
+        setStats(modifiedStats);
+    };
 
     return (
         <Modal show={props.show} onHide={onHide}>
-            <ModalHeader onClose={onClose}>
-                Stats
-            </ModalHeader>
+            <ModalHeader onClose={onClose}>Stats</ModalHeader>
             <ModalContent>
-                <ReorderableList moveItemUp={moveItemUp} moveItemDown={moveItemDown} deleteItem={deleteItem}>
-                    {
-                        stats.map((s, i) => (
-                            <div className="stats-edit-modal__stat" key={s.id}>
-                                <InputText value={s.name} onChange={(event: React.FormEvent<HTMLInputElement>) => onChange(s.id, event.currentTarget.value)} className="stats-edit-modal__stat-name" />
-                                <InputCheckbox label={"Hide"} value={s.isHidden} onChange={(_, value) => isHiddenOnChange(s.id, value)} />
-                            </div>
-                        ))
-                    }
-                </ReorderableList>
+                <ReorderableListImproved
+                    getItemKey={(s) => s.id}
+                    items={stats}
+                    onChange={onStatsChange}
+                    renderItem={renderStat}
+                />
                 <button onClick={addNewItem}>Add new stat</button>
             </ModalContent>
-            <ModalFooter onClose={onClose} onAccept={onAccept}>
-
-            </ModalFooter>
+            <ModalFooter onClose={onClose} onAccept={onAccept}></ModalFooter>
         </Modal>
-    )
-} 
+    );
+}

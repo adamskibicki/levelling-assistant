@@ -7,7 +7,7 @@ import {
     ClassModifier,
     GetDefault,
 } from "../../CharacterPanel/slice/state/ClassModifier";
-import ReorderableListImproved from "../../Lists/ReorderableListImproved";
+import ReorderableList from "../../Lists/ReorderableList";
 import ClassModifierComponent from "./ClassModifierComponent";
 import EditClassModifierModal from "./EditClassModifierModal";
 import { AddButton, EditButton } from "../../components/common/Buttons";
@@ -85,7 +85,7 @@ export default function EditClassModifiersModal(props: {
                     Class modifiers
                 </ModalHeader>
                 <ModalContent>
-                    <ReorderableListImproved
+                    <ReorderableList
                         renderItem={renderClassModifier}
                         renderAdditionalButtons={renderEditButton}
                         items={classModifiers}
