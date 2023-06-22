@@ -1,39 +1,82 @@
-import { faCaretDown, faCaretUp, faClose } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCaretDown,
+    faCaretUp,
+    faClose,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "./ReorderableList.scss";
 import { Children } from "react";
-import './ReorderableList.scss';
 
-export default function ReorderableList(props: {
-    children: React.ReactNode | React.ReactNode[];
-    moveItemUp(event: React.MouseEvent<HTMLButtonElement>, index: number): void;
-    moveItemDown(event: React.MouseEvent<HTMLButtonElement>, index: number): void;
-    deleteItem(event: React.MouseEvent<HTMLButtonElement>, index: number): void;
+export default function ReorderableList<T>(props: {
+    renderItem(item: T): React.ReactNode | React.ReactNode[];
+    renderAdditionalButtons?(item: T): React.ReactNode | React.ReactNode[];
+    getItemKey(item: T): string;
+    items: T[];
+    onChange(modifiedItems: T[]): void;
 }) {
-    const children = Children.toArray(props.children);
+    const moveItemUp = (key: string) => {
+        moveItem(key, -1);
+    };
+
+    const moveItemDown = (key: string) => {
+        moveItem(key, 1);
+    };
+
+    const moveItem = (key: string, step: number) => {
+        const indexOfItemToMove = props.items.findIndex(
+            (i) => props.getItemKey(i) === key
+        );
+        const indexOfItemToBeReplaced = indexOfItemToMove + step;
+
+        const itemToMove = props.items[indexOfItemToMove];
+        const itemToBeReplaced = props.items[indexOfItemToBeReplaced];
+
+        const updatedItems = props.items.map((item, i) => {
+            if (i === indexOfItemToMove) return itemToBeReplaced;
+            if (i === indexOfItemToBeReplaced) return itemToMove;
+            return item;
+        });
+
+        props.onChange(updatedItems);
+    };
+
+    const deleteItem = (key: string) => {
+        props.onChange(props.items.filter((i) => props.getItemKey(i) !== key));
+    };
 
     return (
         <div className="reorderable-list">
-            {children.map((c, i) => (
-                <div className="reorderable-list__item" key={i}>
-                    <div className="reorderable-list__child">{c}</div>
+            {props.items.map((item, index) => (
+                <div
+                    className="reorderable-list__item"
+                    key={props.getItemKey(item)}
+                >
+                    <div className="reorderable-list__child">
+                        {props.renderItem(item)}
+                    </div>
                     <div>
                         <button
-                            onClick={(event) => props.moveItemUp(event, i)}
-                            className={i === 0 ? "disabled" : ""}
+                            onClick={() => moveItemUp(props.getItemKey(item))}
+                            className={index === 0 ? "disabled" : ""}
                         >
                             <FontAwesomeIcon icon={faCaretUp} />
                         </button>
                         <button
-                            onClick={(event) => props.moveItemDown(event, i)}
+                            onClick={() => moveItemDown(props.getItemKey(item))}
                             className={
-                                i === children.length - 1 ? "disabled" : ""
+                                index === props.items.length - 1
+                                    ? "disabled"
+                                    : ""
                             }
                         >
                             <FontAwesomeIcon icon={faCaretDown} />
                         </button>
-                        <button onClick={(event) => props.deleteItem(event, i)}>
+                        <button
+                            onClick={() => deleteItem(props.getItemKey(item))}
+                        >
                             <FontAwesomeIcon icon={faClose} />
                         </button>
+                        {Children.toArray(props.renderAdditionalButtons && props.renderAdditionalButtons(item))}
                     </div>
                 </div>
             ))}
