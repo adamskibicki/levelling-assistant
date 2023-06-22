@@ -12,9 +12,6 @@ import { getStatus } from './slice/thunks/getStatus';
 import { CharacterPanelSliceState } from './slice/state/CharacterPanelSliceState';
 import { AppDispatch } from '../store/store';
 import { saveCharacterStatusChanges } from './slice/thunks/saveCharacterStatusChanges';
-import { Resource } from './slice/state/Resource';
-import { CalculatedResource } from './CalculatedResource';
-import { useCalculateFinalStatValue } from './useCalculateFinalStatValue';
 
 export default function CharacterPanel() {
     const characterStatus = useSelector((state: {characterPanel: CharacterPanelSliceState}) => state.characterPanel);
@@ -22,7 +19,6 @@ export default function CharacterPanel() {
     const { statusId } = useParams<string | "">();
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const {calculateFinalStatValue} = useCalculateFinalStatValue();
 
     useEffect(() => {
         if (statusId === undefined) {
@@ -32,55 +28,6 @@ export default function CharacterPanel() {
             dispatch(getStatus({id: statusId}));
         }
     }, [statusId, dispatch]);
-
-    const getCalculatedResources = (): CalculatedResource[] => {
-        return characterStatus.generalInformation.resources.map(r => ({
-            name: r.displayName,
-            value: calculateResourceValue(r)
-        }));
-    }
-
-    const calculateResourceValue = (resource: Resource) => {
-        const allClassModifiers = getAllClassModifiers();
-        let affectingClassModifiers = allClassModifiers.filter(m => m.affectedResourceId === resource.id);
-        let resourceStat = characterStatus.generalInformation.stats.stats.filter(s => s.id === resource.baseStatId)[0];
-
-        let finalStatValue = calculateFinalStatValue(resourceStat);
-
-        let baseResourceValue = finalStatValue * resource.resourcePointsPerBaseStatPoint;
-
-        let increases = [];
-        let multipliers = [];
-
-        for (let i = 0; i < affectingClassModifiers.length; i++) {
-            const classModifier = affectingClassModifiers[i];
-
-            switch (classModifier.categoryCalculationType) {
-                case 'None':
-                    break;
-                case 'Multiplicative':
-                    multipliers.push(classModifier.percentagePointsOfCategoryIncrease);
-                    break;
-                case 'MultiplicativeWithBaseAdded':
-                    multipliers.push(classModifier.percentagePointsOfCategoryIncrease + 100);
-                    break;
-                case 'Additive':
-                    increases.push(classModifier.percentagePointsOfCategoryIncrease);
-                    break;
-                default:
-                    console.error('calculationType \'' + classModifier.categoryCalculationType + '\' is not supported');
-            }
-        }
-
-
-        let calculatedMultipliers = multipliers.map(m => m / 100).reduce((a, c) => a * c, 1);
-
-        return baseResourceValue * (increases.reduce((a, c) => a + c, 100) / 100) * calculatedMultipliers;
-    }
-
-    const getAllClassModifiers = () => {
-        return characterStatus.classes.map(c => c.modifiers).flat();
-    }
 
     const saveChangesOnClick = () => {
         dispatch(saveCharacterStatusChanges({
@@ -116,7 +63,7 @@ export default function CharacterPanel() {
                         </div>
 
                         <div className='general-information-group'>
-                            <ResourcesStatus resources={getCalculatedResources()} />
+                            <ResourcesStatus resources={characterStatus.generalInformation.resources} />
                         </div>
 
                         <div className='general-information-group'>

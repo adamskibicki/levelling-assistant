@@ -1,14 +1,10 @@
-import { useSelector } from "react-redux";
 import { Skill } from "./slice/state/Skill";
 import { SkillVariable } from "./slice/state/SkillVariable";
 import { VariableCalculationType } from "./slice/state/VariableCalculationType";
-import { CharacterPanelSliceState } from "./slice/state/CharacterPanelSliceState";
+import { useAllClassModifiers } from "./useAllClassModifiers";
 
 export function useCalculateValueOfIncreasedVariable() {
-    const allClassModifiers = useSelector(
-        (state: { characterPanel: CharacterPanelSliceState }) =>
-            state.characterPanel.classes.flatMap(c => c.modifiers)
-    );
+    const {allClassModifiers} = useAllClassModifiers();
 
     const getPercentagePointsIncreaseInCategoryFromClassModifiers = (categoryId: string) => {
         let applyingModifiers = allClassModifiers.filter(m => {
