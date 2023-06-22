@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './CharacterPanel.scss'
 import ClassesPanel from '../ClassesPanel/ClassesPanel';
 import BasicInfo from './SideBar/BasicInfo';
-import ResourcesStatus from './SideBar/ResourcesStatus';
+import ResourcesStatus from './SideBar/Resources/ResourcesStatus';
 import Stats from './SideBar/Stats';
 import UnspentSkillpoints from './SideBar/UnspentSkillpoints';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,13 +13,8 @@ import { CharacterPanelSliceState } from './slice/state/CharacterPanelSliceState
 import { AppDispatch } from '../store/store';
 import { saveCharacterStatusChanges } from './slice/thunks/saveCharacterStatusChanges';
 import { Resource } from './slice/state/Resource';
-import { Stat } from './slice/state/Stat';
-import { Skill } from './slice/state/Skill';
-import { CategoryCalculationType } from './slice/state/CategoryCalculationType';
-import { SkillVariable } from './slice/state/SkillVariable';
-import { VariableCalculationType } from './slice/state/VariableCalculationType';
-import { ClassModifier } from './slice/state/ClassModifier';
 import { CalculatedResource } from './CalculatedResource';
+import { useCalculateFinalStatValue } from './useCalculateFinalStatValue';
 
 export default function CharacterPanel() {
     const characterStatus = useSelector((state: {characterPanel: CharacterPanelSliceState}) => state.characterPanel);
@@ -27,6 +22,7 @@ export default function CharacterPanel() {
     const { statusId } = useParams<string | "">();
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const {calculateFinalStatValue} = useCalculateFinalStatValue();
 
     useEffect(() => {
         if (statusId === undefined) {
@@ -36,108 +32,6 @@ export default function CharacterPanel() {
             dispatch(getStatus({id: statusId}));
         }
     }, [statusId, dispatch]);
-
-    const getSkillsAffectingProvidedStat = (stat: Stat, skills: Skill[]) => {
-        return skills.filter(s => {
-            return s.variables?.filter(v => v.affectedStatIds.includes(stat.id)).length > 0;
-        });
-    }
-
-    const getAllClassSkills = () => {
-        return characterStatus.classes.map(c => c.skills).flat();
-    }
-
-    const calculateFinalStatValue = (stat: Stat) => {
-        let statAffectingSkills = getSkillsAffectingProvidedStat(stat, getAllClassSkills());
-
-        let statIncreases = [];
-        let statMultipliers = [];
-
-        for (let i = 0; i < statAffectingSkills.length; i++) {
-            const skill = statAffectingSkills[i];
-            const affectingVariables = skill.variables.filter(v => v.affectedStatIds.includes(stat.id));
-
-            for (let j = 0; j < affectingVariables.length; j++) {
-                const skillVariable = affectingVariables[j];
-
-                let variableIncreaseValue = calculateValueOfIncreasedVariable(skillVariable, skill);
-
-                switch (skillVariable.categoryCalculationType) {
-                    case CategoryCalculationType.None:
-                        break;
-                    case CategoryCalculationType.Multiplicative:
-                        statMultipliers.push(variableIncreaseValue);
-                        break;
-                    case CategoryCalculationType.MultiplicativeWithBaseAdded:
-                        statMultipliers.push(variableIncreaseValue + 100);
-                        break;
-                    case CategoryCalculationType.Additive:
-                    case CategoryCalculationType.StaticAdditiveOtherVariableBased:
-                        statIncreases.push(variableIncreaseValue);
-                        break;
-                    default:
-                        console.error('CategoryCalculationType \'' + skillVariable.categoryCalculationType + '\' is not supported');
-                }
-            }
-        }
-
-        const calculatedStatIncreases = (statIncreases.reduce((a, c) => a + c, 100) / 100);
-        const calculatedStatMultipliers = statMultipliers.map(s => (s / 100)).reduce((a, c) => (a) * (c), 1);
-
-        return stat.value * calculatedStatIncreases * calculatedStatMultipliers;
-    }
-
-    const calculateValueOfIncreasedVariable = (variable: SkillVariable, skill: Skill): number => {
-        const baseValue = variable.baseValue;
-        const calculationType = variable.variableCalculationType;
-        const categoryIds = skill.categoryIds;
-
-        let increase = categoryIds.map(function(this: void, c){
-            return getPercentagePointsIncreaseInCategoryFromClassModifiers(c);
-        }).reduce((a, c) => a + c, 0);
-
-        switch (calculationType) {
-            case VariableCalculationType.Additive:
-                {
-                    let increaseWithBase = 100 + increase;
-                    return baseValue * increaseWithBase / 100;
-                }
-            case VariableCalculationType.Reciprocal:
-                {
-                    let increaseWithBase = 100 + increase;
-                    return baseValue / (increaseWithBase / 100);
-                }
-            case VariableCalculationType.StaticAdditiveOtherVariableBased:
-                {
-                    let otherVariable = skill.variables.filter(v => v.name === variable.baseVariableName)[0];
-                    let otherVariableIncrease = calculateValueOfIncreasedVariable(otherVariable, skill);
-
-                    return otherVariableIncrease * variable.baseValue / 100;
-                }
-            case VariableCalculationType.None:
-                {
-                    return variable.baseValue;
-                }
-            default:
-                console.error('VariableCalculationType \'' + calculationType + '\' is not known');
-                return 0;
-        }
-    }
-
-    const getPercentagePointsIncreaseInCategoryFromClassModifiers = (categoryId: string) => {
-        let allClassModifiers: ClassModifier[] = [];
-        characterStatus.classes.forEach(c => {
-            allClassModifiers = allClassModifiers.concat(c.modifiers);
-        });
-
-        let applyingModifiers = allClassModifiers.filter(m => {
-            return categoryId === m.categoryId;
-        });
-
-        const result = applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
-
-        return result;
-    }
 
     const getCalculatedResources = (): CalculatedResource[] => {
         return characterStatus.generalInformation.resources.map(r => ({
@@ -226,7 +120,7 @@ export default function CharacterPanel() {
                         </div>
 
                         <div className='general-information-group'>
-                            <Stats {...characterStatus.generalInformation.stats} calculateFinalStatValue={calculateFinalStatValue} />
+                            <Stats {...characterStatus.generalInformation.stats} />
                         </div>
 
                         <div className='general-information-group'>
@@ -234,7 +128,7 @@ export default function CharacterPanel() {
                         </div>
                     </div>
 
-                    <ClassesPanel classes={characterStatus.classes} calculateValueOfIncreasedVariable={calculateValueOfIncreasedVariable} />
+                    <ClassesPanel classes={characterStatus.classes} />
                 </>
             }
         </div>

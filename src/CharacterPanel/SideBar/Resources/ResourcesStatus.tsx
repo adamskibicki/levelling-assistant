@@ -1,14 +1,18 @@
-import GeneralProperty from "../../GeneralProperty";
-import { CalculatedResource } from "../CalculatedResource";
+// import { useState } from "react";
+import GeneralProperty from "../../../GeneralProperty";
+import { CalculatedResource } from "../../CalculatedResource";
+import TitleWithEditButton from "../TitleWithEditButton";
 
 function numberToStringWithThousandSeparator(number: number, separator: string) {
     return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, separator);
 }
 
 function ResourcesStatus(props: {resources: CalculatedResource[]}) {
+    // const [showEditResourcesModal, setShowEditResourcesModal] = useState(false);
+
     return (
         <>
-            <h4>Status</h4>
+            <TitleWithEditButton title="Status" onEditClick={() => {}}/>
             <div>
                 {
                     props.resources.map((r, i) => (
