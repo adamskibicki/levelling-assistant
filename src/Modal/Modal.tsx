@@ -1,5 +1,5 @@
 import React, { Children } from "react";
-import './Modal.scss';
+import "./Modal.scss";
 
 interface ModalProps {
     show: boolean;
@@ -7,8 +7,9 @@ interface ModalProps {
     children: React.ReactNode | React.ReactNode[];
 }
 
-class Modal extends React.Component<ModalProps> {
-    wrapperRef: React.RefObject<HTMLDivElement>
+//TODO: fix export here or global
+export class Modal extends React.Component<ModalProps> {
+    wrapperRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: ModalProps) {
         super(props);
@@ -25,17 +26,21 @@ class Modal extends React.Component<ModalProps> {
     }
 
     handleClickOutside = (event: MouseEvent) => {
-        if(this.props.show && this.wrapperRef.current && !this.wrapperRef.current.contains(event.target as Node)){
+        if (
+            this.props.show &&
+            this.wrapperRef.current &&
+            !this.wrapperRef.current.contains(event.target as Node)
+        ) {
             this.props.onHide(event);
         }
-    }
+    };
 
     render() {
-        const visibilityClass = this.props.show ? 'modal--show' : 'modal--hide';
+        const visibilityClass = this.props.show ? "modal--show" : "modal--hide";
 
         return (
-            <div className={'modal ' + visibilityClass}>
-                <div className='modal__content' ref={this.wrapperRef}>
+            <div className={"modal " + visibilityClass}>
+                <div className="modal__content" ref={this.wrapperRef}>
                     {this.props.show && Children.toArray(this.props.children)}
                 </div>
             </div>

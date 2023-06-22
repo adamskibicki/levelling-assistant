@@ -19,7 +19,7 @@ export default function EditClassModifiersModal(props: {
     onClose(event: React.MouseEvent): void;
     onAccept: (
         event: React.MouseEvent<HTMLButtonElement>,
-        characterClass: ClassModifier[]
+        classModifiers: ClassModifier[]
     ) => void;
     classModifiers: ClassModifier[];
 }) {
