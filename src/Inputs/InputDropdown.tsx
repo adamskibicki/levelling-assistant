@@ -1,16 +1,51 @@
 import "./InputDropdown.scss";
 
-export default function InputDropdown<T>(props: {
+interface InputDropdownPropsBase<T> {
     values: T[];
-    selectedValue: T;
     label: string;
     className?: string;
-    allowNullValue?: boolean;
-    nullValueItemLabel?: string;
     getItemKey(item: T): string;
     getItemLabel(item: T): string;
-    onChange(event: React.ChangeEvent<HTMLSelectElement>, item: T | null): void;
-}) {
+}
+
+export function InputDropdownNotAllowNullValue<T>(
+    props: InputDropdownPropsBase<T> & {
+        selectedValue: T;
+        onChange(event: React.ChangeEvent<HTMLSelectElement>, item: T): void;
+    }
+) {
+    return <InputDropdown {...props} />;
+}
+
+export function InputDropdownAllowNullValue<T>(
+    props: InputDropdownPropsBase<T> & {
+        selectedValue: T | null;
+        nullValueItemLabel?: string;
+        onChange(
+            event: React.ChangeEvent<HTMLSelectElement>,
+            item: T | null
+        ): void;
+    }
+) {
+    return <InputDropdown {...props} allowNullValue={true} />;
+}
+
+export function InputDropdown<T>(
+    props: InputDropdownPropsBase<T> & {
+        values: T[];
+        selectedValue: T;
+        label: string;
+        className?: string;
+        getItemKey(item: T): string;
+        getItemLabel(item: T): string;
+        allowNullValue?: boolean;
+        nullValueItemLabel?: string;
+        onChange(
+            event: React.ChangeEvent<HTMLSelectElement>,
+            item: T | null
+        ): void;
+    }
+) {
     const nullOption = "null-option";
 
     const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -37,6 +72,18 @@ export default function InputDropdown<T>(props: {
         );
     };
 
+    const getItemKey = (item: T) => {
+        if (item === null) return nullOption;
+
+        return props.getItemKey(item);
+    };
+
+    const getItemLabel = (item: T) => {
+        if (item === null) return props.nullValueItemLabel;
+
+        return props.getItemLabel(item);
+    };
+
     return (
         <div className={`input ${props.className}`}>
             {props.label && (
@@ -45,20 +92,16 @@ export default function InputDropdown<T>(props: {
             <select
                 className="input__input input-dropdown__select"
                 onChange={onChange}
-                value={
-                    props.selectedValue
-                        ? props.getItemKey(props.selectedValue)
-                        : nullOption
-                }
+                value={getItemKey(props.selectedValue)}
             >
                 {props.allowNullValue && renderNullValueOption()}
                 {props.values.map((v) => (
                     <option
                         className="input-dropdown__option"
-                        key={props.getItemKey(v)}
-                        value={props.getItemKey(v)}
+                        key={getItemKey(v)}
+                        value={getItemKey(v)}
                     >
-                        {props.getItemLabel(v)}
+                        {getItemLabel(v)}
                     </option>
                 ))}
             </select>

@@ -6,12 +6,9 @@ import AddClassModal from "./AddClassModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { addClass } from "../CharacterPanel/slice/characterPanelSlice";
-import { SkillVariable } from "../CharacterPanel/slice/state/SkillVariable";
-import { Skill } from "../CharacterPanel/slice/state/Skill";
 
 export default function ClassesPanel(props: {
     classes: CharacterClass[];
-    calculateValueOfIncreasedVariable(variable: SkillVariable, skill: Skill): number;
 }) {
     const [selectedTabIndex, setSelectedTabIndex] = useState(0);
     const [showAddClassModal, setShowAddClassModal] = useState(false);
@@ -67,9 +64,6 @@ export default function ClassesPanel(props: {
                         <Class
                             allowEdit={true}
                             value={c}
-                            calculateValueOfIncreasedVariable={
-                                props.calculateValueOfIncreasedVariable
-                            }
                         />
                     </div>
                 ))}

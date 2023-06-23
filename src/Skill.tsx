@@ -1,43 +1,24 @@
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import { useState } from "react";
 import "./Skill.scss";
 import SkillEdit from "./SkillEdit";
 import SkillCategories from "./ClassesPanel/SkillCategories";
-import { SkillVariable } from "./CharacterPanel/slice/state/SkillVariable";
 import { Skill } from "./CharacterPanel/slice/state/Skill";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
+import { useCalculateValueOfIncreasedVariable } from "./CharacterPanel/useCalculateValueOfIncreasedVariable";
+import { ExpandButton } from "./components/common/Buttons";
 
-interface SkillProps extends Skill {
+export default function SkillComponent(props: {
     allowEdit: boolean;
     expanded: boolean;
-    calculateValueOfIncreasedVariable(
-        variable: SkillVariable,
-        skill: Skill
-    ): number;
-}
+} & Skill) {
+    const [expanded, setExpanded] = useState(props.expanded);
+    const {calculateValueOfIncreasedVariable} = useCalculateValueOfIncreasedVariable();
 
-class SkillComponent extends React.Component<
-    SkillProps,
-    { expanded: boolean }
-> {
-    constructor(props: SkillProps) {
-        super(props);
-
-        this.state = {
-            expanded: props.expanded,
-        };
+    const switchExpandVisibility = () => {
+        setExpanded((prevState) => !prevState);
     }
 
-    
-
-    switchExpandVisibility() {
-        this.setState((prevState) => ({
-            expanded: !prevState.expanded,
-        }));
-    }
-
-    replaceVariableMarkupsInTierDescriptions(tierDescription: TierDescription) {
+    const replaceVariableMarkupsInTierDescriptions = (tierDescription: TierDescription) => {
         const query = /<[\\S]*>/g;
         
         let tierDescriptionVariablesMatches = [
@@ -54,21 +35,21 @@ class SkillComponent extends React.Component<
             for (let i = 0; i < variableNames.length; i++) {
                 const vn = variableNames[i];
 
-                const propVariable = this.props.variables.filter(
+                const propVariable = props.variables.filter(
                     (v) => v.name === vn
                 )[0];
 
                 const calculatedIncreasedVariable =
-                    this.props.calculateValueOfIncreasedVariable(
+                    calculateValueOfIncreasedVariable(
                         propVariable,
-                        this.props
+                        props
                     );
 
                 dictionary.set(
                     "<" + vn + ">",
-                    this.props.calculateValueOfIncreasedVariable(
+                    calculateValueOfIncreasedVariable(
                         propVariable,
-                        this.props
+                        props
                     )
                 );
 
@@ -116,54 +97,41 @@ class SkillComponent extends React.Component<
         return tierDescription.description;
     }
 
-    render() {
-        return (
-            <div className="skill">
-                <div className="skill-top-row">
-                    <button
-                        className="skill-expand"
-                        onClick={() => this.switchExpandVisibility()}
-                    >
-                        {this.state.expanded ? (
-                            <FontAwesomeIcon icon={faCaretUp} />
-                        ) : (
-                            <FontAwesomeIcon icon={faCaretDown} />
-                        )}
-                    </button>
-                    <div className="skill-name">
-                        {this.props.type}: {this.props.name}{" "}
-                        {this.props.enhanced ? " [Enhanced]" : ""}
-                    </div>
-                    <div>Level {this.props.level}</div>
-                    <div className="skill-tier">Tier {this.props.tier}</div>
+    return (
+        <div className="skill">
+            <div className="skill-top-row">
+                <ExpandButton expanded={expanded} onClick={() => switchExpandVisibility()} />
+                <div className="skill-name">
+                    {props.type}: {props.name}{" "}
+                    {props.enhanced ? " [Enhanced]" : ""}
                 </div>
-                {this.state.expanded && (
-                    <>
-                        <div>
-                            {this.props.tierDescriptions
-                                .map((x) => x)
-                                .sort((a, b) => a.tier - b.tier)
-                                .map((td) => (
-                                    <p key={td.id} className="tier-description">
-                                        Tier {td.tier}:{" "}
-                                        {this.replaceVariableMarkupsInTierDescriptions(
-                                            td
-                                        )}
-                                    </p>
-                                ))}
-                        </div>
-                        <SkillCategories categoryIds={this.props.categoryIds} />
-                        {this.props.allowEdit && (
-                            <SkillEdit
-                                {...this.props}
-                                skillId={this.props.id}
-                            />
-                        )}
-                    </>
-                )}
+                <div>Level {props.level}</div>
+                <div className="skill-tier">Tier {props.tier}</div>
             </div>
-        );
-    }
+            {expanded && (
+                <>
+                    <div>
+                        {props.tierDescriptions
+                            .map((x) => x)
+                            .sort((a, b) => a.tier - b.tier)
+                            .map((td) => (
+                                <p key={td.id} className="tier-description">
+                                    Tier {td.tier}:{" "}
+                                    {replaceVariableMarkupsInTierDescriptions(
+                                        td
+                                    )}
+                                </p>
+                            ))}
+                    </div>
+                    <SkillCategories categoryIds={props.categoryIds} />
+                    {props.allowEdit && (
+                        <SkillEdit
+                            {...props}
+                            skillId={props.id}
+                        />
+                    )}
+                </>
+            )}
+        </div>
+    );
 }
-
-export default SkillComponent;

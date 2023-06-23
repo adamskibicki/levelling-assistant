@@ -8,14 +8,14 @@ import {
     ClassModifier,
     GetDefault,
 } from "../../CharacterPanel/slice/state/ClassModifier";
-import InputDropdown from "../../Inputs/InputDropdown";
+import { InputDropdown } from "../../Inputs/InputDropdown";
 import { useSelector } from "react-redux";
-import { CharacterPanelSliceState } from "../../CharacterPanel/slice/state/CharacterPanelSliceState";
 import { Resource } from "../../CharacterPanel/slice/state/Resource";
 import "./EditClassModifierModal.scss";
 import { CategoryCalculationType } from "../../CharacterPanel/slice/state/CategoryCalculationType";
 import InputNumber from "../../Inputs/InputNumber";
 import SkillCategoriesEdit from "../SkillCategoriesEdit";
+import { RootState } from "../../store/store";
 
 export default function EditClassModifierModal(props: {
     show: boolean;
@@ -32,8 +32,7 @@ export default function EditClassModifierModal(props: {
         GetDefault()
     );
     const resources = useSelector(
-        (state: { characterPanel: CharacterPanelSliceState }) =>
-            state.characterPanel.generalInformation.resources
+        (state: RootState) => state.characterPanel.generalInformation.resources
     );
 
     useEffect(() => {
@@ -104,9 +103,13 @@ export default function EditClassModifierModal(props: {
                             allowNullValue={true}
                             label={"Affected resource"}
                             className="edit-class-modifier-modal__input--top-spacer"
-                            selectedValue={resources.find(
-                                (r) => r.id === classModifier.affectedResourceId
-                            )}
+                            selectedValue={
+                                resources.find(
+                                    (r) =>
+                                        r.id ===
+                                        classModifier.affectedResourceId
+                                ) || null
+                            }
                             getItemKey={getResourceId}
                             getItemLabel={getResourceDisplayName}
                             onChange={onAffectedResourcIdChange}

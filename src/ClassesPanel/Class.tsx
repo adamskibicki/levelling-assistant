@@ -19,17 +19,11 @@ import {
 } from "../CharacterPanel/slice/characterPanelSlice";
 import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
 import EditClassModal from "../ClassesPanel/EditClassModal";
-import { SkillVariable } from "../CharacterPanel/slice/state/SkillVariable";
-import { Skill } from "../CharacterPanel/slice/state/Skill";
 import ClassModifiers from "./ClassModifiers/ClassModifiers";
 
 export default function Class(props: {
     value: CharacterClass;
     allowEdit: boolean;
-    calculateValueOfIncreasedVariable(
-        variable: SkillVariable,
-        skill: Skill
-    ): number;
 }) {
     const [expanded, setExpanded] = useState(true);
     const [showEditClassModal, setShowEditClassModal] = useState(false);
@@ -124,9 +118,6 @@ export default function Class(props: {
                         key={i + expanded.toString()}
                         {...s}
                         expanded={expanded}
-                        calculateValueOfIncreasedVariable={
-                            props.calculateValueOfIncreasedVariable
-                        }
                     />
                 ))}
             </div>

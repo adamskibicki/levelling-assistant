@@ -6,11 +6,15 @@ import { addNewCategory } from "./thunks/addNewCategory";
 import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges";
 import { CharacterClass } from "./state/CharacterClass";
 import { TierDescription } from "./state/TierDescription";
+import { Resource } from "./state/Resource";
 
 export const characterPanelSlice = createSlice({
     name: "characterPanel",
     initialState: initialState,
     reducers: {
+        updateResources: (state, action: PayloadAction<Resource[]>) => {
+            state.generalInformation.resources = action.payload;
+        },
         updateSkill: (
             state,
             action: PayloadAction<{
@@ -116,6 +120,7 @@ export const characterPanelSlice = createSlice({
 });
 
 export const {
+    updateResources,
     updateSkill,
     updateClassModifiers,
     editBasicInfo,

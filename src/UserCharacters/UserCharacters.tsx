@@ -11,17 +11,13 @@ import {
     PostUserCharacterRequestData,
     postUserCharacter,
 } from "./slice/thunks/postUserCharacter";
-import { AppDispatch } from "../store/store";
-import {
-    UserCharacterSliceState,
-} from "./slice/state/UserCharacterSliceState";
+import { AppDispatch, RootState } from "../store/store";
 import { getNewestCharacterStatus } from "./getNewestCharacterStatus";
 import UserCharacterComponent from "./UserCharacter";
 
 export default function UserCharacters() {
     const userCharacters = useSelector(
-        (state: { userCharacters: UserCharacterSliceState }) =>
-            state.userCharacters.userCharacters
+        (state: RootState) => state.userCharacters.userCharacters
     );
     const loaded = useSelector((state: any) => state.userCharacters.loaded);
     const [showAddUserCharacterModal, setShowAddUserCharacterModal] =
@@ -63,9 +59,9 @@ export default function UserCharacters() {
                             ).getTime()
                     )
                     .map((ucs) => ucs.userCharacter)
-                    .map((uc) => 
-                        <UserCharacterComponent key={uc.id} {...uc}/>
-                    )}
+                    .map((uc) => (
+                        <UserCharacterComponent key={uc.id} {...uc} />
+                    ))}
             {loaded && (
                 <>
                     <div
