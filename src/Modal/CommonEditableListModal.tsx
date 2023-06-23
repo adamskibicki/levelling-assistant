@@ -38,7 +38,7 @@ export default function CommonEditableListModal<TItem>(props: {
 
     useEffect(() => {
         setItems(props.items);
-    }, [props.items]);
+    }, [props.items, props.show]);
 
     const onItemChanged = (item: TItem) => {
         if (isAddingItem) {
@@ -68,7 +68,6 @@ export default function CommonEditableListModal<TItem>(props: {
     };
 
     const renderSingleEditModal = (itemToEdit: TItem) => {
-        console.log("single edit modal rendered");
         return (
             <props.singleEditModal
                 item={itemToEdit}

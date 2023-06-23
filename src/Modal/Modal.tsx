@@ -7,8 +7,7 @@ interface ModalProps {
     children: React.ReactNode | React.ReactNode[];
 }
 
-//TODO: fix export here or global
-export class Modal extends React.Component<ModalProps> {
+export default class Modal extends React.Component<ModalProps> {
     wrapperRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: ModalProps) {
@@ -47,5 +46,3 @@ export class Modal extends React.Component<ModalProps> {
         );
     }
 }
-
-export default Modal;

@@ -8,7 +8,7 @@ import {
     ClassModifier,
     GetDefault,
 } from "../../CharacterPanel/slice/state/ClassModifier";
-import InputDropdown from "../../Inputs/InputDropdown";
+import { InputDropdown } from "../../Inputs/InputDropdown";
 import { useSelector } from "react-redux";
 import { CharacterPanelSliceState } from "../../CharacterPanel/slice/state/CharacterPanelSliceState";
 import { Resource } from "../../CharacterPanel/slice/state/Resource";
@@ -106,7 +106,7 @@ export default function EditClassModifierModal(props: {
                             className="edit-class-modifier-modal__input--top-spacer"
                             selectedValue={resources.find(
                                 (r) => r.id === classModifier.affectedResourceId
-                            )}
+                            ) || null}
                             getItemKey={getResourceId}
                             getItemLabel={getResourceDisplayName}
                             onChange={onAffectedResourcIdChange}

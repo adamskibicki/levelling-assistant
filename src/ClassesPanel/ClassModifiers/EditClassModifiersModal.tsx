@@ -33,7 +33,7 @@ export default function EditClassModifiersModal(props: {
 
     useEffect(() => {
         setClassModifiers(props.classModifiers);
-    }, [props.classModifiers]);
+    }, [props.classModifiers, props.show]);
 
     const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
         props.onAccept(event, classModifiers);
