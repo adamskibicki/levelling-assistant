@@ -7,6 +7,7 @@ import InputNumber from "../../../Inputs/InputNumber";
 import { InputDropdownAllowNullValue } from "../../../Inputs/InputDropdown";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import "./EditResourceModal.scss";
 
 export const EditResourceModal: React.FunctionComponent<
     SingleEditModalProps<Resource>
@@ -64,6 +65,7 @@ export const EditResourceModal: React.FunctionComponent<
                     })
                 }
                 nullValueItemLabel=""
+                className="edit-resource-modal__input--top-spacer"
             />
             <InputNumber
                 label={"Percentage points of category increase"}
@@ -73,6 +75,7 @@ export const EditResourceModal: React.FunctionComponent<
                     })
                 }
                 value={resource.resourcePointsPerBaseStatPoint}
+                className="edit-resource-modal__input--top-spacer"
             />
         </CommonModal>
     );

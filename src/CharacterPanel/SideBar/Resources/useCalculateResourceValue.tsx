@@ -21,10 +21,7 @@ export function useCalculateResourceValue() {
         )[0];
 
         if (!resourceStat) {
-            console.error(
-                "Deleted stat that is being used as base stat for resource: " +
-                    resource.displayName
-            );
+            return 0;
         }
 
         let finalStatValue = calculateFinalStatValue(resourceStat);

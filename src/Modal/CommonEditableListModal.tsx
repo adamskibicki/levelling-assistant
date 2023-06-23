@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AddButton, EditButton } from "../components/common/Buttons";
 import ReorderableList from "../Lists/ReorderableList";
 import CommonModal from "./CommonModal";
+import "./CommonEditableListModal.scss";
 
 export interface SingleEditModalProps<TItem> {
     show: boolean;
@@ -103,6 +104,7 @@ export default function CommonEditableListModal<TItem>(props: {
                         setItemToEdit(props.defaultItemCreator());
                         setShowSingleEditModal(true);
                     }}
+                    className="common-editable-list-modal__add-button"
                 />
             </CommonModal>
         </>
