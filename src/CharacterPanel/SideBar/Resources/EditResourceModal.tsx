@@ -30,8 +30,7 @@ export const EditResourceModal: React.FunctionComponent<
     const getSelectedStat = (resource: Resource) => {
         const selectedStat = stats.find((s) => s.id === resource.baseStatId);
 
-        if (selectedStat === undefined)
-            return null;
+        if (selectedStat === undefined) return null;
 
         return selectedStat;
     };

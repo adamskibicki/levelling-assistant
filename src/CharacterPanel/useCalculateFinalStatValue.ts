@@ -2,15 +2,14 @@ import { useSelector } from "react-redux";
 import { CategoryCalculationType } from "./slice/state/CategoryCalculationType";
 import { Stat } from "./slice/state/Stat";
 import { useCalculateValueOfIncreasedVariable } from "./useCalculateValueOfIncreasedVariable";
-import { CharacterPanelSliceState } from "./slice/state/CharacterPanelSliceState";
+import { RootState } from "../store/store";
 
 export function useCalculateFinalStatValue() {
     const { calculateValueOfIncreasedVariable } =
         useCalculateValueOfIncreasedVariable();
 
-    const allClassSkills = useSelector(
-        (state: { characterPanel: CharacterPanelSliceState }) =>
-            state.characterPanel.classes.map((c) => c.skills).flat()
+    const allClassSkills = useSelector((state: RootState) =>
+        state.characterPanel.classes.map((c) => c.skills).flat()
     );
 
     const getSkillsAffectingProvidedStat = (stat: Stat) => {
