@@ -3,6 +3,11 @@
 .icon-button {
     height: 1.5rem;
     height: fit-content;
+
+    &--disabled {
+        pointer-events: none;
+        border-color: $interactable-disabled-color;
+    }
 }
 
 .edit-button, .add-button {

@@ -1,17 +1,16 @@
 import { useState } from "react";
-import {
-    UserCharacter,
-} from "./slice/state/UserCharacterSliceState";
+import { UserCharacter } from "./slice/state/UserCharacterSliceState";
 import { toReadableDate } from "../common/DateExtensions";
 import { useAppDispatch } from "../store/store";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp, faClose } from "@fortawesome/free-solid-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "./ConfirmationModal";
 import "./UserCharacter.scss";
 import { deleteUserCharacter } from "./slice/thunks/deleteUserCharacter";
 import CharacterStatuses from "./CharacterStatuses";
 import { getNewestCharacterStatus } from "./getNewestCharacterStatus";
+import { ExpandButton, IconButton } from "../components/common/Buttons";
 
 export default function UserCharacterComponent(props: UserCharacter) {
     const [expanded, setExpanded] = useState(false);
@@ -70,15 +69,10 @@ export default function UserCharacterComponent(props: UserCharacter) {
                     className="user-character__link"
                 >
                     <div className="user-character__item">
-                        <button
+                        <ExpandButton
+                            expanded={expanded}
                             onClick={flipExpanded}
-                        >
-                            {expanded ? (
-                                <FontAwesomeIcon icon={faCaretUp} />
-                            ) : (
-                                <FontAwesomeIcon icon={faCaretDown} />
-                            )}
-                        </button>
+                        />
                         <div className="user-character__name">
                             {newestCharacterStatus.name}
                         </div>
@@ -88,18 +82,19 @@ export default function UserCharacterComponent(props: UserCharacter) {
                         <div className="user-character__lastEdited">
                             {toReadableDate(newestCharacterStatus.createdAt)}
                         </div>
-                        <button
+                        <IconButton
                             onClick={(event) =>
                                 onUserCharacterDeleteButtonClick(event, props)
                             }
                         >
                             <FontAwesomeIcon icon={faClose} />
-                        </button>
+                        </IconButton>
                     </div>
                 </Link>
                 {expanded && (
                     <CharacterStatuses
                         characterStatuses={props.characterStatuses}
+                        deletionDisabled={props.characterStatuses.length === 1}
                     />
                 )}
             </div>

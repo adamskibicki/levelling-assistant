@@ -19,10 +19,11 @@ export function IconButton(props: {
     onClick(event: React.MouseEvent<HTMLButtonElement>): void;
     children: React.ReactNode | React.ReactNode[];
     className?: string;
+    disabled?: boolean;
 }) {
     return (
         <Button
-            className={`icon-button ${props.className}`}
+            className={`icon-button ${props.disabled ? "icon-button--disabled" : ""} ${props.className}`}
             onClick={props.onClick}
             children={props.children}
         />
