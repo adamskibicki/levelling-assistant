@@ -8,9 +8,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "./ConfirmationModal";
 import "./CharacterStatuses.scss";
+import { IconButton } from "../components/common/Buttons";
 
 export default function CharacterStatuses(props: {
     characterStatuses: Array<CharacterStatusSimplified>;
+    deletionDisabled: boolean;
 }) {
     const [characterStatusIdToDelete, setCharacterStatusIdToDelete] =
         useState<string>("");
@@ -67,13 +69,14 @@ export default function CharacterStatuses(props: {
                                     <div className="character-statuses__lastEdited">
                                         {toReadableDate(cs.createdAt)}
                                     </div>
-                                    <button
+                                    <IconButton
                                         onClick={(event) =>
                                             onDeleteButtonClick(event, cs)
                                         }
+                                        disabled={props.deletionDisabled}
                                     >
                                         <FontAwesomeIcon icon={faClose} />
-                                    </button>
+                                    </IconButton>
                                 </div>
                             </Link>
                         ))}
