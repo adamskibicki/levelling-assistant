@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./Skill.scss";
-import SkillEdit from "./SkillEdit";
 import SkillCategories from "./ClassesPanel/SkillCategories";
 import { Skill } from "./CharacterPanel/slice/state/Skill";
 import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
@@ -124,12 +123,6 @@ export default function SkillComponent(props: {
                             ))}
                     </div>
                     <SkillCategories categoryIds={props.categoryIds} />
-                    {props.allowEdit && (
-                        <SkillEdit
-                            {...props}
-                            skillId={props.id}
-                        />
-                    )}
                 </>
             )}
         </div>

@@ -9,7 +9,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import "./Class.scss";
-import SkillComponent from "../Skill";
 import ConfirmationModal from "../UserCharacters/ConfirmationModal";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
@@ -20,6 +19,7 @@ import {
 import { CharacterClass } from "../CharacterPanel/slice/state/CharacterClass";
 import EditClassModal from "../ClassesPanel/EditClassModal";
 import ClassModifiers from "./ClassModifiers/ClassModifiers";
+import Skills from "./Skills/Skills";
 
 export default function Class(props: {
     value: CharacterClass;
@@ -112,14 +112,12 @@ export default function Class(props: {
                 />
             </div>
             <div>
-                {props.value.skills.map((s, i) => (
-                    <SkillComponent
-                        allowEdit={props.allowEdit}
-                        key={i + expanded.toString()}
-                        {...s}
-                        expanded={expanded}
-                    />
-                ))}
+                <Skills
+                    allowEdit={props.allowEdit}
+                    expanded={expanded}
+                    skills={props.value.skills}
+                    classId={props.value.id}
+                />
             </div>
             <ConfirmationModal
                 modalTitle={`Are you sure you want to delete class: ${props.value.name}`}
