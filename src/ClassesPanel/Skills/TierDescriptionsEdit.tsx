@@ -5,6 +5,7 @@ import {
 import InputText from "../../Inputs/InputText";
 import ReorderableList from "../../Lists/ReorderableList";
 import { AddButton } from "../../components/common/Buttons";
+import "./TierDescriptionsEdit.scss";
 
 export default function TierDescriptionsEdit(props: {
     tierDescriptions: TierDescription[];
@@ -53,11 +54,16 @@ export default function TierDescriptionsEdit(props: {
                 getItemKey={(tierDescription) => tierDescription.id}
                 items={props.tierDescriptions}
                 renderItem={renderTierDescription}
-                onChange={(tierDescriptions) => props.onChange(updateTiers(tierDescriptions))}
+                onChange={(tierDescriptions) =>
+                    props.onChange(updateTiers(tierDescriptions))
+                }
             />
             <AddButton
+                className="tier-descriptions-edit__add-button"
                 onClick={(_) => {
-                    props.onChange(updateTiers([...props.tierDescriptions, GetDefault()]));
+                    props.onChange(
+                        updateTiers([...props.tierDescriptions, GetDefault()])
+                    );
                 }}
             />
         </>

@@ -56,7 +56,7 @@ export default function Skills(props: {
                 renderItem={(s) => renderSkill(s, false)}
                 show={showSkillsEditModal}
                 singleEditModal={SkillEditModal}
-                title="Edit resources"
+                title="Edit skills"
             />
         </>
     );
