@@ -19,7 +19,7 @@ export default function CharacterPanel() {
     const loaded = useSelector(
         (state: RootState) => state.characterPanel.loaded
     );
-    const { statusId } = useParams<string | "">();
+    const { statusId } = useParams<string>();
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
@@ -34,6 +34,7 @@ export default function CharacterPanel() {
     }, [statusId, dispatch]);
 
     const saveChangesOnClick = () => {
+        if (statusId === undefined) throw new Error("statusId is undefined");
         dispatch(
             saveCharacterStatusChanges({
                 payload: {
