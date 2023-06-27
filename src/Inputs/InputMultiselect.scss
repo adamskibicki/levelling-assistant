@@ -1,0 +1,12 @@
+@import '../palette.scss';
+
+.input-multiselect {
+    &__select {
+        background-color: $secondary-color;
+        border: none;
+
+        &--multiple {
+            overflow-y: hidden;
+        }
+    }
+}
