@@ -36,10 +36,8 @@ export function useCalculateFinalStatValue() {
             for (let j = 0; j < affectingVariables.length; j++) {
                 const skillVariable = affectingVariables[j];
 
-                let variableIncreaseValue = calculateValueOfIncreasedVariable(
-                    skillVariable,
-                    skill
-                );
+                let variableIncreaseValue =
+                    calculateValueOfIncreasedVariable(skillVariable);
 
                 switch (skillVariable.categoryCalculationType) {
                     case CategoryCalculationType.None:

@@ -4,7 +4,13 @@ import {
     Skill,
     SkillType,
 } from "../../CharacterPanel/slice/state/Skill";
-import { SingleEditModalProps } from "../../Modal/CommonEditableListModal";
+import {
+    GetDefault as GetDefaultSkillVariable,
+    SkillVariable,
+} from "../../CharacterPanel/slice/state/SkillVariable";
+import CommonEditableListModal, {
+    SingleEditModalProps,
+} from "../../Modal/CommonEditableListModal";
 import CommonModal from "../../Modal/CommonModal";
 import InputText from "../../Inputs/InputText";
 import InputNumber from "../../Inputs/InputNumber";
@@ -12,11 +18,16 @@ import InputCheckbox from "../../Inputs/InputCheckbox";
 import { InputDropdownNotAllowNullValue } from "../../Inputs/InputDropdown";
 import SkillCategoriesEdit from "../SkillCategoriesEdit";
 import TierDescriptionsEdit from "./TierDescriptionsEdit";
+import { SkillVariableEditModal } from "./SkillVariableEditModal";
+import TitleWithEditButton from "../../CharacterPanel/SideBar/TitleWithEditButton";
+import SkillVariableComponent from "./SkillVariable";
 
 export const SkillEditModal: React.FunctionComponent<
     SingleEditModalProps<Skill>
 > = (props) => {
     const [skill, setSkill] = useState(GetDefault());
+    const [showSkillVariablesEditModal, setShowSkillVariablesEditModal] =
+        useState(false);
 
     useEffect(() => {
         setSkill(props.item);
@@ -26,6 +37,10 @@ export const SkillEditModal: React.FunctionComponent<
         setSkill((prevState) => {
             return { ...prevState, ...propertiesToUpdate };
         });
+    };
+
+    const renderSkillVariable = (skillVariable: SkillVariable) => {
+        return <SkillVariableComponent key={skillVariable.id} {...skillVariable}/>
     };
 
     return (
@@ -77,6 +92,31 @@ export const SkillEditModal: React.FunctionComponent<
                 onChange={(categoryIds) =>
                     onSkillChanged({ categoryIds: categoryIds })
                 }
+            />
+            <TitleWithEditButton
+                title="Skill variables"
+                onEditClick={() => {
+                    setShowSkillVariablesEditModal(true);
+                }}
+            />
+            {props.item.variables.map((sv) => renderSkillVariable(sv))}
+            <CommonEditableListModal
+                items={props.item.variables}
+                defaultItemCreator={GetDefaultSkillVariable}
+                getItemKey={(variable) => variable.id}
+                onAccept={(_, variables) => {
+                    setShowSkillVariablesEditModal(false);
+                    onSkillChanged({ variables: variables });
+                }}
+                onClose={() => setShowSkillVariablesEditModal(false)}
+                onHide={() => setShowSkillVariablesEditModal(false)}
+                referenceItemComparer={(variableA, variableB) =>
+                    variableA.id === variableB.id
+                }
+                renderItem={renderSkillVariable}
+                show={showSkillVariablesEditModal}
+                singleEditModal={SkillVariableEditModal}
+                title="Edit skill variables"
             />
         </CommonModal>
     );

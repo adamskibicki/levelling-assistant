@@ -1,0 +1,17 @@
+@import "../../palette.scss";
+
+.skill-variable {
+    display: flex;
+
+    &__name {
+        flex: 1;
+    }
+
+    &__value {
+        flex: 1;
+    }
+
+    &__affected {
+        flex: 3;
+    }
+}

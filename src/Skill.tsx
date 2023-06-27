@@ -44,14 +44,11 @@ export default function SkillComponent(
                 )[0];
 
                 const calculatedIncreasedVariable =
-                    calculateValueOfIncreasedVariable(propVariable, props);
+                    calculateValueOfIncreasedVariable(propVariable);
 
                 dictionary.set(
                     "<" + vn + ">",
-                    calculateValueOfIncreasedVariable(
-                        propVariable,
-                        props
-                    ).toString()
+                    calculateValueOfIncreasedVariable(propVariable).toString()
                 );
 
                 switch (propVariable.variableCalculationType) {
