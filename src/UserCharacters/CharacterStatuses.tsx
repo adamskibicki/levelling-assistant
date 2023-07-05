@@ -4,7 +4,6 @@ import { toReadableDate } from "../common/DateExtensions";
 import { deleteCharacterStatus } from "./slice/thunks/deleteCharacterStatus";
 import { useAppDispatch } from "../store/store";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "./ConfirmationModal";
 import "./CharacterStatuses.scss";
@@ -73,10 +72,8 @@ export default function CharacterStatuses(props: {
                                         onClick={(event) =>
                                             onDeleteButtonClick(event, cs)
                                         }
-                                        disabled={props.deletionDisabled}
-                                    >
-                                        <FontAwesomeIcon icon={faClose} />
-                                    </IconButton>
+                                        disabled={props.deletionDisabled} icon={faClose}
+                                    />
                                 </div>
                             </Link>
                         ))}

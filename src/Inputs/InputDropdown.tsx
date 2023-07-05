@@ -1,9 +1,12 @@
+import TooltipText from "../components/common/TooltipText";
 import "./InputDropdown.scss";
+import "./InputCommon.scss";
 
 interface InputDropdownPropsBase<T> {
     values: T[];
     label: string;
     className?: string;
+    labelHoverTooltipText?: string;
     getItemKey(item: T): string;
     getItemLabel(item: T): string;
 }
@@ -87,7 +90,12 @@ export function InputDropdown<T>(
     return (
         <div className={`input ${props.className}`}>
             {props.label && (
-                <label className="input__label">{props.label}</label>
+                <label className="input__label input-dropdown__label">
+                    {props.label}
+                    {props.labelHoverTooltipText && (
+                        <TooltipText text={props.labelHoverTooltipText} />
+                    )}
+                </label>
             )}
             <select
                 className="input__input input-dropdown__select"

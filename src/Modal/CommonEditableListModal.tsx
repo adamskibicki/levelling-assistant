@@ -16,6 +16,19 @@ export interface SingleEditModalProps<TItem> {
     ) => void;
 }
 
+export interface SingleEditModalPropsWithAdditionalProps<TItem, TAdditionalProps> {
+    show: boolean;
+    item: TItem;
+    title: string;
+    onHide(event: MouseEvent): void;
+    onClose(event: React.MouseEvent): void;
+    onAccept: (
+        event: React.MouseEvent<HTMLButtonElement>,
+        modifiedItem: TItem
+    ) => void;
+    additionalProps: TAdditionalProps
+}
+
 export default function CommonEditableListModal<TItem>(props: {
     show: boolean;
     title: string;
@@ -31,6 +44,28 @@ export default function CommonEditableListModal<TItem>(props: {
     getItemKey(item: TItem): string;
     renderItem(item: TItem): React.ReactNode | React.ReactNode[];
     singleEditModal: React.FunctionComponent<SingleEditModalProps<TItem>>;
+}) {
+    return (
+        <CommonEditableListModalWithAdditionalSingleEditModalProps {...props} singleEditModalAdditionalProps={{}} />
+    );
+}
+
+export function CommonEditableListModalWithAdditionalSingleEditModalProps<TItem, TSingleEditModalAdditionalProps>(props: {
+    show: boolean;
+    title: string;
+    onHide(event: MouseEvent): void;
+    onClose(event: React.MouseEvent): void;
+    onAccept: (
+        event: React.MouseEvent<HTMLButtonElement>,
+        editedItems: TItem[]
+    ) => void;
+    items: TItem[];
+    defaultItemCreator(): TItem;
+    referenceItemComparer(itemA: TItem, itemB: TItem): boolean;
+    getItemKey(item: TItem): string;
+    renderItem(item: TItem): React.ReactNode | React.ReactNode[];
+    singleEditModal: React.FunctionComponent<SingleEditModalPropsWithAdditionalProps<TItem, TSingleEditModalAdditionalProps>>;
+    singleEditModalAdditionalProps: TSingleEditModalAdditionalProps;
 }) {
     const [items, setItems] = useState<TItem[]>([]);
     const [showSingleEditModal, setShowSingleEditModal] = useState(false);
@@ -77,6 +112,7 @@ export default function CommonEditableListModal<TItem>(props: {
                 onHide={() => setShowSingleEditModal(false)}
                 show={showSingleEditModal}
                 title="Edit item"
+                additionalProps={props.singleEditModalAdditionalProps}
             />
         );
     };

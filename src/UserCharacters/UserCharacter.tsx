@@ -3,7 +3,6 @@ import { UserCharacter } from "./slice/state/UserCharacterSliceState";
 import { toReadableDate } from "../common/DateExtensions";
 import { useAppDispatch } from "../store/store";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import ConfirmationModal from "./ConfirmationModal";
 import "./UserCharacter.scss";
@@ -86,9 +85,8 @@ export default function UserCharacterComponent(props: UserCharacter) {
                             onClick={(event) =>
                                 onUserCharacterDeleteButtonClick(event, props)
                             }
-                        >
-                            <FontAwesomeIcon icon={faClose} />
-                        </IconButton>
+                            icon={faClose}
+                        />
                     </div>
                 </Link>
                 {expanded && (
