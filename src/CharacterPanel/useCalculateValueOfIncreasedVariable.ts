@@ -7,7 +7,7 @@ export function useCalculateValueOfIncreasedVariable(allClassModifiers: ClassMod
     const getPercentagePointsIncreaseInCategoryFromClassModifiers = (
         categoryId: string
     ) => {
-        let applyingModifiers = allClassModifiers.filter((m) => {
+        const applyingModifiers = allClassModifiers.filter((m) => {
             return categoryId === m.categoryId;
         });
 
@@ -26,8 +26,8 @@ export function useCalculateValueOfIncreasedVariable(allClassModifiers: ClassMod
         const calculationType = variable.variableCalculationType;
 
         const categoryIds = skill.categoryIds;
-
-        let increase = categoryIds
+        
+        const increase = categoryIds
             .map((c) =>
                 getPercentagePointsIncreaseInCategoryFromClassModifiers(c)
             )
