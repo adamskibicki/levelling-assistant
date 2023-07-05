@@ -5,6 +5,7 @@ import { Skill } from "../../CharacterPanel/slice/state/Skill";
 import { TierDescription } from "../../CharacterPanel/slice/state/TierDescription";
 import { ExpandButton } from "../../components/common/Buttons";
 import SkillCategories from "../SkillCategories";
+import { useAllClassModifiers } from "../../CharacterPanel/useAllClassModifiers";
 
 export default function SkillComponent(
     props: {
@@ -13,8 +14,9 @@ export default function SkillComponent(
     } & Skill
 ) {
     const [expanded, setExpanded] = useState(props.expanded);
+    const { allClassModifiers } = useAllClassModifiers();
     const { calculateValueOfIncreasedVariable } =
-        useCalculateValueOfIncreasedVariable();
+        useCalculateValueOfIncreasedVariable(allClassModifiers);
 
     const switchExpandVisibility = () => {
         setExpanded((prevState) => !prevState);
@@ -44,11 +46,11 @@ export default function SkillComponent(
                 )[0];
 
                 const calculatedIncreasedVariable =
-                    calculateValueOfIncreasedVariable(propVariable);
+                    calculateValueOfIncreasedVariable(propVariable, props);
 
                 dictionary.set(
                     "<" + vn + ">",
-                    calculateValueOfIncreasedVariable(propVariable).toString()
+                    calculatedIncreasedVariable.toString()
                 );
 
                 switch (propVariable.variableCalculationType) {

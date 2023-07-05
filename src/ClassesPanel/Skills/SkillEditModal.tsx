@@ -40,7 +40,13 @@ export const SkillEditModal: React.FunctionComponent<
     };
 
     const renderSkillVariable = (skillVariable: SkillVariable) => {
-        return <SkillVariableComponent key={skillVariable.id} {...skillVariable}/>
+        return (
+            <SkillVariableComponent
+                key={skillVariable.id}
+                skillVariable={skillVariable}
+                skill={skill}
+            />
+        );
     };
 
     return (
@@ -99,9 +105,9 @@ export const SkillEditModal: React.FunctionComponent<
                     setShowSkillVariablesEditModal(true);
                 }}
             />
-            {props.item.variables.map((sv) => renderSkillVariable(sv))}
+            {skill.variables.map((sv) => renderSkillVariable(sv))}
             <CommonEditableListModal
-                items={props.item.variables}
+                items={skill.variables}
                 defaultItemCreator={GetDefaultSkillVariable}
                 getItemKey={(variable) => variable.id}
                 onAccept={(_, variables) => {

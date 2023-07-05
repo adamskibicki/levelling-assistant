@@ -4,12 +4,16 @@ import { useCalculateValueOfIncreasedVariable } from "../../CharacterPanel/useCa
 import "./SkillVariable.scss";
 import { RootState } from "../../store/store";
 import useGetSkillVariableById from "./useGetSkillVariableById";
+import { useAllClassModifiers } from "../../CharacterPanel/useAllClassModifiers";
+import { Skill } from "../../CharacterPanel/slice/state/Skill";
 
-export default function SkillVariableComponent(
-    props: SkillVariable
-) {
+export default function SkillVariableComponent(props: {
+    skillVariable: SkillVariable;
+    skill: Skill;
+}) {
+    const { allClassModifiers } = useAllClassModifiers();
     const { calculateValueOfIncreasedVariable } =
-        useCalculateValueOfIncreasedVariable();
+        useCalculateValueOfIncreasedVariable(allClassModifiers);
     const { getSkillVariableById } = useGetSkillVariableById();
     const stats = useSelector(
         (state: RootState) =>
@@ -19,9 +23,13 @@ export default function SkillVariableComponent(
     const getAffectedDescription = () => {
         let results = [];
 
-        if (props.baseSkillVariableId)
-            results.push(`Affects variable ${getSkillVariableById(props.baseSkillVariableId)?.name}`);
-        if (props.affectedStatIds)
+        if (props.skillVariable.baseSkillVariableId)
+            results.push(
+                `Affects variable ${
+                    getSkillVariableById(props.skillVariable.baseSkillVariableId)?.name
+                }`
+            );
+        if (props.skillVariable.affectedStatIds)
             results.push(`Affects stats: ${getAffectedStatNames()}`);
         return results.join("  ");
     };
@@ -29,7 +37,7 @@ export default function SkillVariableComponent(
     const getAffectedStatNames = () => {
         const affectedStats = stats.filter((s) => {
             return (
-                props.affectedStatIds.findIndex((asi) => asi === s.id) !== -1
+                props.skillVariable.affectedStatIds.findIndex((asi) => asi === s.id) !== -1
             );
         });
 
@@ -38,10 +46,10 @@ export default function SkillVariableComponent(
 
     return (
         <div className="skill-variable">
-            <div className="skill-variable__name">{props.name}</div>
+            <div className="skill-variable__name">{props.skillVariable.name}</div>
             <div className="skill-variable__value">
-                {calculateValueOfIncreasedVariable(props)}
-                {props.unit}
+                {calculateValueOfIncreasedVariable(props.skillVariable, props.skill)}
+                {props.skillVariable.unit}
             </div>
             <div className="skill-variable__affected">
                 {getAffectedDescription()}

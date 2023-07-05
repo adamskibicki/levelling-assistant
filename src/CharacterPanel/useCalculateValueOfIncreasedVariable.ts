@@ -1,15 +1,9 @@
-import { useSelector } from "react-redux";
 import { SkillVariable } from "./slice/state/SkillVariable";
 import { VariableCalculationType } from "./slice/state/VariableCalculationType";
-import { useAllClassModifiers } from "./useAllClassModifiers";
-import { RootState } from "../store/store";
+import { ClassModifier } from "./slice/state/ClassModifier";
+import { Skill } from "./slice/state/Skill";
 
-export function useCalculateValueOfIncreasedVariable() {
-    const { allClassModifiers } = useAllClassModifiers();
-    const skills = useSelector((state: RootState) =>
-        state.characterPanel.classes.flatMap((c) => c.skills)
-    );
-
+export function useCalculateValueOfIncreasedVariable(allClassModifiers: ClassModifier[]) {
     const getPercentagePointsIncreaseInCategoryFromClassModifiers = (
         categoryId: string
     ) => {
@@ -25,19 +19,11 @@ export function useCalculateValueOfIncreasedVariable() {
     };
 
     const calculateValueOfIncreasedVariable = (
-        variable: SkillVariable
+        variable: SkillVariable,
+        skill: Skill
     ): number => {
         const baseValue = variable.baseValue;
         const calculationType = variable.variableCalculationType;
-        const skill = skills.find((s) =>
-            s.variables.find((sv) => sv.id === variable.id)
-        );
-
-        if (skill === undefined) {
-            throw new Error(
-                `Skill with skill variable that have id: ${variable.id} was not found`
-            );
-        }
 
         const categoryIds = skill.categoryIds;
 
@@ -61,7 +47,7 @@ export function useCalculateValueOfIncreasedVariable() {
                     (v) => v.id === variable.baseSkillVariableId
                 )[0];
                 let otherVariableIncrease =
-                    calculateValueOfIncreasedVariable(otherVariable);
+                    calculateValueOfIncreasedVariable(otherVariable, skill);
 
                 return (otherVariableIncrease * variable.baseValue) / 100;
             }
