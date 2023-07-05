@@ -1,6 +1,7 @@
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './StatpointProperty.scss';
+import TooltipText from './components/common/TooltipText';
+import { IconButton } from './components/common/Buttons';
 
 function StatpointProperty(props: {
     name: string;
@@ -11,21 +12,15 @@ function StatpointProperty(props: {
 }) {
     return (
         <div className='statpoint-property'>
-            <div className='property-name'>
+            <div className='statpoint-property__name'>
                 {props.name}:
             </div>
-            <div className='property-value'>
+            <div className='statpoint-property__value'>
                 {props.value}
-                <div className='property-tooltiptext'>
-                    Final value: {Math.round(props.calculatedValue)}
-                </div>
+                <TooltipText text={`Final value: ${Math.round(props.calculatedValue)}`} />
             </div>
-            <button className={(props.increaseEnabled ? '' : 'disabled') + ' property-increase'}>
-                <FontAwesomeIcon icon={faPlus} />
-            </button>
-            <button className={(props.decreaseEnabled ? '' : 'disabled') + ' property-decrease'}>
-                <FontAwesomeIcon icon={faMinus} />
-            </button>
+            <IconButton icon={faPlus} disabled={!props.increaseEnabled} onClick={() => {console.log("stat increased")}} />            
+            <IconButton icon={faMinus} disabled={!props.decreaseEnabled} onClick={() => {console.log("stat increased")}} />            
         </div>
     );
 }

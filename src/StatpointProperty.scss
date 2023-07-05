@@ -4,36 +4,18 @@
     display: flex;
     padding: 1rem;
 
-    .property-name {
+    &__name {
         flex: 6;
         text-align: left;
     }
 
-    .property-value {
+    &__value {
         flex: 3;
         text-align: right;
         padding-right: 1rem;
 
-        &:hover .property-tooltiptext {
+        &:hover .tooltip-text {
             visibility: visible;
         }
-    }
-
-    .property-increase,
-    .property-decrease {
-        flex: 1;
-    }
-
-    .property-tooltiptext {
-        visibility: hidden;
-        width: fit-content;
-        background-color: $primary-color;
-        color: $text-color;
-        text-align: center;
-        padding: 5px;
-      
-        /* Position the tooltip */
-        position: absolute;
-        z-index: 1;
     }
 }

@@ -102,6 +102,7 @@ export default function EditClassModifierModal(props: {
                             values={resources}
                             allowNullValue={true}
                             label={"Affected resource"}
+                            labelHoverTooltipText="Defines which resource class modifier affects."
                             className="edit-class-modifier-modal__input--top-spacer"
                             selectedValue={
                                 resources.find(
@@ -117,6 +118,7 @@ export default function EditClassModifierModal(props: {
                         <InputDropdown
                             values={Object.values(CategoryCalculationType)}
                             label={"Category calculation type"}
+                            labelHoverTooltipText="Defines how class modifier affects selected resource."
                             className="edit-class-modifier-modal__input--top-spacer"
                             selectedValue={
                                 classModifier.categoryCalculationType
