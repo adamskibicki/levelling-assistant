@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "./Skill.scss";
-import SkillCategories from "./ClassesPanel/SkillCategories";
-import { Skill } from "./CharacterPanel/slice/state/Skill";
-import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
-import { useCalculateValueOfIncreasedVariable } from "./CharacterPanel/useCalculateValueOfIncreasedVariable";
-import { ExpandButton } from "./components/common/Buttons";
+import { useCalculateValueOfIncreasedVariable } from "../../CharacterPanel/useCalculateValueOfIncreasedVariable";
+import { Skill } from "../../CharacterPanel/slice/state/Skill";
+import { TierDescription } from "../../CharacterPanel/slice/state/TierDescription";
+import { ExpandButton } from "../../components/common/Buttons";
+import SkillCategories from "../SkillCategories";
 
 export default function SkillComponent(
     props: {

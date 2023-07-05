@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GetDefault, Skill } from "../../CharacterPanel/slice/state/Skill";
-import SkillComponent from "../../Skill";
+import SkillComponent from "./Skill";
 import { useAppDispatch } from "../../store/store";
 import { updateSkills } from "../../CharacterPanel/slice/characterPanelSlice";
 import TitleWithEditButton from "../../CharacterPanel/SideBar/TitleWithEditButton";
