@@ -7,6 +7,7 @@ import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges"
 import { CharacterClass } from "./state/CharacterClass";
 import { TierDescription } from "./state/TierDescription";
 import { Resource } from "./state/Resource";
+import { Skill } from "./state/Skill";
 
 export const characterPanelSlice = createSlice({
     name: "characterPanel",
@@ -34,6 +35,22 @@ export const characterPanelSlice = createSlice({
 
             skillTuUpdate.tierDescriptions = action.payload.tierDescriptions;
             skillTuUpdate.categoryIds = action.payload.categoryIds;
+        },
+        updateSkills: (
+            state,
+            action: PayloadAction<{
+                editedSkills: Skill[];
+                classId: string;
+            }>
+        ) => {
+            const classTuUpdate = state.classes.find(
+                (c) => c.id === action.payload.classId
+            );
+
+            if (classTuUpdate === undefined)
+                throw new Error("classTuUpdate is undefinded");
+
+            classTuUpdate.skills = action.payload.editedSkills;
         },
         updateClassModifiers: (state, action) => {
             const { classId, classModifiers } = action.payload;
@@ -122,6 +139,7 @@ export const characterPanelSlice = createSlice({
 export const {
     updateResources,
     updateSkill,
+    updateSkills,
     updateClassModifiers,
     editBasicInfo,
     editStats,

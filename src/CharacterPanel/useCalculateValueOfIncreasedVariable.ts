@@ -1,20 +1,22 @@
-import { Skill } from "./slice/state/Skill";
 import { SkillVariable } from "./slice/state/SkillVariable";
 import { VariableCalculationType } from "./slice/state/VariableCalculationType";
-import { useAllClassModifiers } from "./useAllClassModifiers";
+import { ClassModifier } from "./slice/state/ClassModifier";
+import { Skill } from "./slice/state/Skill";
 
-export function useCalculateValueOfIncreasedVariable() {
-    const {allClassModifiers} = useAllClassModifiers();
-
-    const getPercentagePointsIncreaseInCategoryFromClassModifiers = (categoryId: string) => {
-        let applyingModifiers = allClassModifiers.filter(m => {
+export function useCalculateValueOfIncreasedVariable(allClassModifiers: ClassModifier[]) {
+    const getPercentagePointsIncreaseInCategoryFromClassModifiers = (
+        categoryId: string
+    ) => {
+        const applyingModifiers = allClassModifiers.filter((m) => {
             return categoryId === m.categoryId;
         });
 
-        const result = applyingModifiers.map((c) => c.percentagePointsOfCategoryIncrease).reduce((a, c) => a + c, 0);
+        const result = applyingModifiers
+            .map((c) => c.percentagePointsOfCategoryIncrease)
+            .reduce((a, c) => a + c, 0);
 
         return result;
-    }
+    };
 
     const calculateValueOfIncreasedVariable = (
         variable: SkillVariable,
@@ -22,10 +24,13 @@ export function useCalculateValueOfIncreasedVariable() {
     ): number => {
         const baseValue = variable.baseValue;
         const calculationType = variable.variableCalculationType;
-        const categoryIds = skill.categoryIds;
 
-        let increase = categoryIds
-            .map(c => getPercentagePointsIncreaseInCategoryFromClassModifiers(c))
+        const categoryIds = skill.categoryIds;
+        
+        const increase = categoryIds
+            .map((c) =>
+                getPercentagePointsIncreaseInCategoryFromClassModifiers(c)
+            )
             .reduce((a, c) => a + c, 0);
 
         switch (calculationType) {
@@ -39,12 +44,10 @@ export function useCalculateValueOfIncreasedVariable() {
             }
             case VariableCalculationType.StaticAdditiveOtherVariableBased: {
                 let otherVariable = skill.variables.filter(
-                    (v) => v.name === variable.baseVariableName
+                    (v) => v.id === variable.baseSkillVariableId
                 )[0];
-                let otherVariableIncrease = calculateValueOfIncreasedVariable(
-                    otherVariable,
-                    skill
-                );
+                let otherVariableIncrease =
+                    calculateValueOfIncreasedVariable(otherVariable, skill);
 
                 return (otherVariableIncrease * variable.baseValue) / 100;
             }
@@ -54,8 +57,8 @@ export function useCalculateValueOfIncreasedVariable() {
             default:
                 console.error(
                     "VariableCalculationType '" +
-                    calculationType +
-                    "' is not known"
+                        calculationType +
+                        "' is not known"
                 );
                 return 0;
         }

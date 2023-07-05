@@ -3,15 +3,15 @@ import { CategoryCalculationType } from "./slice/state/CategoryCalculationType";
 import { Stat } from "./slice/state/Stat";
 import { useCalculateValueOfIncreasedVariable } from "./useCalculateValueOfIncreasedVariable";
 import { RootState } from "../store/store";
+import { useAllClassModifiers } from "./useAllClassModifiers";
 
 export function useCalculateFinalStatValue() {
-    const { calculateValueOfIncreasedVariable } =
-        useCalculateValueOfIncreasedVariable();
-
+    const { allClassModifiers } = useAllClassModifiers();
     const allClassSkills = useSelector((state: RootState) =>
-        state.characterPanel.classes.map((c) => c.skills).flat()
+        state.characterPanel.classes.flatMap((c) => c.skills)
     );
-
+    const { calculateValueOfIncreasedVariable } =
+        useCalculateValueOfIncreasedVariable(allClassModifiers);
     const getSkillsAffectingProvidedStat = (stat: Stat) => {
         return allClassSkills.filter((s) => {
             return (
@@ -36,10 +36,8 @@ export function useCalculateFinalStatValue() {
             for (let j = 0; j < affectingVariables.length; j++) {
                 const skillVariable = affectingVariables[j];
 
-                let variableIncreaseValue = calculateValueOfIncreasedVariable(
-                    skillVariable,
-                    skill
-                );
+                let variableIncreaseValue =
+                    calculateValueOfIncreasedVariable(skillVariable, skill);
 
                 switch (skillVariable.categoryCalculationType) {
                     case CategoryCalculationType.None:

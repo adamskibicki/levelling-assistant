@@ -1,6 +1,10 @@
 @import '../palette.scss';
 
 .reorderable-list {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 30rem;
+
     :first-child {
         margin-top: 0;
     }

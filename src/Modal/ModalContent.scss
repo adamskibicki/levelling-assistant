@@ -5,4 +5,7 @@
     border-bottom: $border;
     padding-top: $padding;
     padding-bottom: $padding;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 30rem;
 }

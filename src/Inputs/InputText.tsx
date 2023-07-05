@@ -9,7 +9,8 @@ interface InputTextProps {
     onChange(
         event:
             | React.FormEvent<HTMLInputElement>
-            | React.FormEvent<HTMLTextAreaElement>
+            | React.FormEvent<HTMLTextAreaElement>,
+        value: string
     ): void;
 }
 
@@ -25,11 +26,12 @@ class InputText extends React.Component<InputTextProps> {
     onChange = (
         event:
             | React.FormEvent<HTMLInputElement>
-            | React.FormEvent<HTMLTextAreaElement>
+            | React.FormEvent<HTMLTextAreaElement>,
+        value: string
     ) => {
         this.resizeTextArea();
 
-        this.props.onChange(event);
+        this.props.onChange(event, value);
     };
 
     componentDidMount() {
@@ -60,14 +62,14 @@ class InputText extends React.Component<InputTextProps> {
                         rows={1}
                         className="input__input input-text__input--multiline"
                         value={this.props.value}
-                        onChange={this.onChange}
+                        onChange={(event) => this.onChange(event, event.target.value)}
                     ></textarea>
                 ) : (
                     <input
                         className="input__input"
                         type="text"
                         value={this.props.value}
-                        onChange={this.props.onChange}
+                        onChange={(event) => this.props.onChange(event, event.target.value)}
                     />
                 )}
             </div>

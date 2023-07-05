@@ -1,26 +1,32 @@
 import { useState } from "react";
 import "./Skill.scss";
-import SkillEdit from "./SkillEdit";
-import SkillCategories from "./ClassesPanel/SkillCategories";
-import { Skill } from "./CharacterPanel/slice/state/Skill";
-import { TierDescription } from "./CharacterPanel/slice/state/TierDescription";
-import { useCalculateValueOfIncreasedVariable } from "./CharacterPanel/useCalculateValueOfIncreasedVariable";
-import { ExpandButton } from "./components/common/Buttons";
+import { useCalculateValueOfIncreasedVariable } from "../../CharacterPanel/useCalculateValueOfIncreasedVariable";
+import { Skill } from "../../CharacterPanel/slice/state/Skill";
+import { TierDescription } from "../../CharacterPanel/slice/state/TierDescription";
+import { ExpandButton } from "../../components/common/Buttons";
+import SkillCategories from "../SkillCategories";
+import { useAllClassModifiers } from "../../CharacterPanel/useAllClassModifiers";
 
-export default function SkillComponent(props: {
-    allowEdit: boolean;
-    expanded: boolean;
-} & Skill) {
+export default function SkillComponent(
+    props: {
+        allowEdit: boolean;
+        expanded: boolean;
+    } & Skill
+) {
     const [expanded, setExpanded] = useState(props.expanded);
-    const {calculateValueOfIncreasedVariable} = useCalculateValueOfIncreasedVariable();
+    const { allClassModifiers } = useAllClassModifiers();
+    const { calculateValueOfIncreasedVariable } =
+        useCalculateValueOfIncreasedVariable(allClassModifiers);
 
     const switchExpandVisibility = () => {
         setExpanded((prevState) => !prevState);
-    }
+    };
 
-    const replaceVariableMarkupsInTierDescriptions = (tierDescription: TierDescription) => {
-        const query = /<[\\S]*>/g;
-        
+    const replaceVariableMarkupsInTierDescriptions = (
+        tierDescription: TierDescription
+    ) => {
+        const query = /<[\S]*>/g;
+
         let tierDescriptionVariablesMatches = [
             ...tierDescription.description.matchAll(query),
         ];
@@ -31,7 +37,7 @@ export default function SkillComponent(props: {
             );
             variableNames = [...new Set(variableNames)];
 
-            let dictionary = new Map();
+            let dictionary = new Map<string, string>();
             for (let i = 0; i < variableNames.length; i++) {
                 const vn = variableNames[i];
 
@@ -40,17 +46,11 @@ export default function SkillComponent(props: {
                 )[0];
 
                 const calculatedIncreasedVariable =
-                    calculateValueOfIncreasedVariable(
-                        propVariable,
-                        props
-                    );
+                    calculateValueOfIncreasedVariable(propVariable, props);
 
                 dictionary.set(
                     "<" + vn + ">",
-                    calculateValueOfIncreasedVariable(
-                        propVariable,
-                        props
-                    )
+                    calculatedIncreasedVariable.toString()
                 );
 
                 switch (propVariable.variableCalculationType) {
@@ -87,20 +87,25 @@ export default function SkillComponent(props: {
                 }
             }
 
-            let description = tierDescription.description;
+            let description = tierDescription.description.slice();
 
-            for (const prop in dictionary) {
-                description = description.replace(prop, dictionary.get(prop));
+            for (let [prop, value] of dictionary) {
+                description = description.replace(prop, value);
             }
+
+            return description;
         }
 
         return tierDescription.description;
-    }
+    };
 
     return (
         <div className="skill">
             <div className="skill-top-row">
-                <ExpandButton expanded={expanded} onClick={() => switchExpandVisibility()} />
+                <ExpandButton
+                    expanded={expanded}
+                    onClick={() => switchExpandVisibility()}
+                />
                 <div className="skill-name">
                     {props.type}: {props.name}{" "}
                     {props.enhanced ? " [Enhanced]" : ""}
@@ -124,12 +129,6 @@ export default function SkillComponent(props: {
                             ))}
                     </div>
                     <SkillCategories categoryIds={props.categoryIds} />
-                    {props.allowEdit && (
-                        <SkillEdit
-                            {...props}
-                            skillId={props.id}
-                        />
-                    )}
                 </>
             )}
         </div>
