@@ -25,7 +25,7 @@ export default function SkillVariableComponent(props: {
 
         if (props.skillVariable.baseSkillVariableId)
             results.push(
-                `Affects variable ${
+                `Based on variable: ${
                     getSkillVariableById(props.skillVariable.baseSkillVariableId)?.name
                 }`
             );

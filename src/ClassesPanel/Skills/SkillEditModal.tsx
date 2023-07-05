@@ -8,7 +8,8 @@ import {
     GetDefault as GetDefaultSkillVariable,
     SkillVariable,
 } from "../../CharacterPanel/slice/state/SkillVariable";
-import CommonEditableListModal, {
+import {
+    CommonEditableListModalWithAdditionalSingleEditModalProps,
     SingleEditModalProps,
 } from "../../Modal/CommonEditableListModal";
 import CommonModal from "../../Modal/CommonModal";
@@ -106,7 +107,7 @@ export const SkillEditModal: React.FunctionComponent<
                 }}
             />
             {skill.variables.map((sv) => renderSkillVariable(sv))}
-            <CommonEditableListModal
+            <CommonEditableListModalWithAdditionalSingleEditModalProps
                 items={skill.variables}
                 defaultItemCreator={GetDefaultSkillVariable}
                 getItemKey={(variable) => variable.id}
@@ -122,6 +123,9 @@ export const SkillEditModal: React.FunctionComponent<
                 renderItem={renderSkillVariable}
                 show={showSkillVariablesEditModal}
                 singleEditModal={SkillVariableEditModal}
+                singleEditModalAdditionalProps={{
+                    skillVariables: skill.variables,
+                }}
                 title="Edit skill variables"
             />
         </CommonModal>

@@ -5,4 +5,10 @@
         background-color: $secondary-color;
         border: none;
     }
+
+    &__label {
+        &:hover .tooltip-text {
+            visibility: visible;
+        }
+    }
 }

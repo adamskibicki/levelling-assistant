@@ -1,0 +1,14 @@
+@import "../../palette.scss";
+
+.tooltip-text {
+    visibility: hidden;
+    width: fit-content;
+    background-color: $primary-color;
+    color: $text-color;
+    text-align: center;
+    padding: 5px;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}

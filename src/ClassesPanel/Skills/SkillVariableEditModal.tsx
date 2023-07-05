@@ -3,7 +3,7 @@ import {
     GetDefault,
     SkillVariable,
 } from "../../CharacterPanel/slice/state/SkillVariable";
-import { SingleEditModalProps } from "../../Modal/CommonEditableListModal";
+import { SingleEditModalPropsWithAdditionalProps } from "../../Modal/CommonEditableListModal";
 import CommonModal from "../../Modal/CommonModal";
 import InputText from "../../Inputs/InputText";
 import {
@@ -18,22 +18,12 @@ import { RootState } from "../../store/store";
 import { InputMultiselect } from "../../Inputs/InputMultiselect";
 
 export const SkillVariableEditModal: React.FunctionComponent<
-    SingleEditModalProps<SkillVariable>
+    SingleEditModalPropsWithAdditionalProps<SkillVariable, { skillVariables: SkillVariable[] }>
 > = (props) => {
     const [skillVariable, setSkillVariable] = useState(GetDefault());
     const stats = useSelector(
         (state: RootState) =>
             state.characterPanel.generalInformation.stats.stats
-    );
-    const skillVariables = useSelector((state: RootState) =>
-        state.characterPanel.classes
-            .flatMap((c) => c.skills)
-            .filter(
-                (s) =>
-                    s.variables.find((sv) => sv.id === props.item.id) !==
-                    undefined
-            )
-            .flatMap((s) => s.variables)
     );
 
     useEffect(() => {
@@ -75,7 +65,8 @@ export const SkillVariableEditModal: React.FunctionComponent<
             />
             <InputDropdownNotAllowNullValue
                 values={Object.values(CategoryCalculationType)}
-                label="Category calculation type (how skill categories affect it)"
+                label="Category calculation type"
+                labelHoverTooltipText="Describes how this variable affects selected stats."
                 selectedValue={skillVariable.categoryCalculationType}
                 getItemKey={(cct) => cct}
                 getItemLabel={(cct) => cct}
@@ -85,7 +76,8 @@ export const SkillVariableEditModal: React.FunctionComponent<
             />
             <InputDropdownNotAllowNullValue
                 values={Object.values(VariableCalculationType)}
-                label="Variable calculation type (how variable affects it's base variable)"
+                label="Variable calculation type"
+                labelHoverTooltipText="Describes how class modifiers affects this variable. Used when calculationg final variable value (value after all calculations). Class modifiers increases apply to variable based on matching skill's categories and class modifiers' categories."
                 selectedValue={skillVariable.variableCalculationType}
                 getItemKey={(vct) => vct}
                 getItemLabel={(vct) => vct}
@@ -94,7 +86,7 @@ export const SkillVariableEditModal: React.FunctionComponent<
                 }
             />
             <InputDropdownAllowNullValue
-                values={skillVariables.filter((sv) => sv.id !== props.item.id)}
+                values={props.additionalProps.skillVariables.filter((sv) => sv.id !== props.item.id)}
                 label="Base variable"
                 getItemKey={(sv) => sv.id}
                 getItemLabel={(sv) => sv.name}
@@ -104,7 +96,7 @@ export const SkillVariableEditModal: React.FunctionComponent<
                     });
                 }}
                 selectedValue={
-                    skillVariables.find(
+                    props.additionalProps.skillVariables.find(
                         (sv) => sv.id === skillVariable.baseSkillVariableId
                     ) ?? null
                 }
