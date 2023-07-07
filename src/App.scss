@@ -22,4 +22,10 @@
             background-color: $primary-color;
         }
     }
+
+    &__login-button, &__logout-button {
+        margin: 1rem 1rem 1rem auto;
+        padding: 0.8rem;
+        
+    }
 }

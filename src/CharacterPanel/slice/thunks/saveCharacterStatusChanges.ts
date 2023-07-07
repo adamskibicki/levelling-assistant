@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { NavigateFunction } from "react-router-dom";
+import authHeader from "../../../Identity/services/auth-header";
 
 export const saveCharacterStatusChanges = createAsyncThunk<
     SaveCharacterStatusChangesResponseData,
@@ -8,7 +9,8 @@ export const saveCharacterStatusChanges = createAsyncThunk<
 >("character/post", async (data) => {
     const response = await axios.post(
         "https://localhost:7119/api/CharacterStatus",
-        data.payload
+        data.payload,
+        { headers: authHeader() }
     );
     return response.data as SaveCharacterStatusChangesResponseData;
 });

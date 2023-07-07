@@ -10,8 +10,6 @@ import { fetchUserCategories } from './CharacterPanel/slice/thunks/fetchUserCate
 
 const root = ReactDOM.createRoot(document.getElementById('root') as Element);
 
-store.dispatch(fetchUserCategories());
-
 root.render(
   <React.StrictMode>
     <Provider store={store}>

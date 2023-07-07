@@ -6,6 +6,7 @@ interface InputTextProps {
     className?: string;
     label?: string;
     value: string;
+    autocomplete?: string;
     onChange(
         event:
             | React.FormEvent<HTMLInputElement>
@@ -61,15 +62,21 @@ class InputText extends React.Component<InputTextProps> {
                         ref={this.textareaRef}
                         rows={1}
                         className="input__input input-text__input--multiline"
+                        autoComplete={this.props.autocomplete}
                         value={this.props.value}
-                        onChange={(event) => this.onChange(event, event.target.value)}
+                        onChange={(event) =>
+                            this.onChange(event, event.target.value)
+                        }
                     ></textarea>
                 ) : (
                     <input
                         className="input__input"
+                        autoComplete={this.props.autocomplete}
                         type="text"
                         value={this.props.value}
-                        onChange={(event) => this.props.onChange(event, event.target.value)}
+                        onChange={(event) =>
+                            this.props.onChange(event, event.target.value)
+                        }
                     />
                 )}
             </div>

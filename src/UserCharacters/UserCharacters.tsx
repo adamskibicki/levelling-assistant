@@ -11,9 +11,10 @@ import {
     PostUserCharacterRequestData,
     postUserCharacter,
 } from "./slice/thunks/postUserCharacter";
-import { AppDispatch, RootState } from "../store/store";
+import { RootState, useAppDispatch } from "../store/store";
 import { getNewestCharacterStatus } from "./getNewestCharacterStatus";
 import UserCharacterComponent from "./UserCharacter";
+import { fetchUserCategories } from "../CharacterPanel/slice/thunks/fetchUserCategories";
 
 export default function UserCharacters() {
     const userCharacters = useSelector(
@@ -23,9 +24,10 @@ export default function UserCharacters() {
     const [showAddUserCharacterModal, setShowAddUserCharacterModal] =
         useState(false);
 
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(fetchUserCategories());
         dispatch(getUserCharacters());
     }, [dispatch]);
 
