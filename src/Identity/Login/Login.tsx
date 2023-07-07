@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { RootState, useAppDispatch } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 import { login } from "../slice/thunks/login";
 import { Button } from "../../components/common/Buttons";
 import CommonModal from "../../Modal/CommonModal";
 import InputText from "../../Inputs/InputText";
 import InputPassword from "../../Inputs/InputPassword";
-import { useSelector } from "react-redux";
 import { logout } from "../slice/userIdentitySlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login(props: {
     loginButtonClassName?: string;
@@ -14,13 +14,14 @@ export default function Login(props: {
 }) {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [userLogin, setUserLogin] = useState({ email: "", password: "" });
-    const loggedIn = useSelector(
-        (state: RootState) => state.userIdentity.loggedIn
+    const loggedIn = useAppSelector(
+        (state) => state.userIdentity.loggedIn
     );
-    const userData = useSelector(
-        (state: RootState) => state.userIdentity.userData
+    const userData = useAppSelector(
+        (state) => state.userIdentity.userData
     );
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const onLoginModalAccept = () => {
         setShowLoginModal(false);
@@ -33,7 +34,10 @@ export default function Login(props: {
             {loggedIn ? (
                 <Button
                     className={props.logoutButtonClassName}
-                    onClick={() => dispatch(logout())}
+                    onClick={() => {
+                        dispatch(logout());
+                        navigate("");
+                    }}
                 >
                     Logout: {userData.userName}
                 </Button>

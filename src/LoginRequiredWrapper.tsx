@@ -1,13 +1,12 @@
-import { useSelector } from "react-redux";
-import { RootState } from "./store/store";
+import { useAppSelector } from "./store/store";
 import { Children } from "react";
 import "./LoginRequiredWrappet.scss";
 
 export function LoginRequiredWrapper(props: {
     children: React.ReactNode | React.ReactNode[];
 }) {
-    const loggedIn = useSelector(
-        (state: RootState) => state.userIdentity.loggedIn
+    const loggedIn = useAppSelector(
+        (state) => state.userIdentity.loggedIn
     );
 
     return (

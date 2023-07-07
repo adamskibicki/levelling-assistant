@@ -1,9 +1,8 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useAppSelector } from "../store/store";
 
 export function useUserCategories() {
-    const userCategories = useSelector(
-        (state: RootState) => state.characterPanel.userCategories
+    const userCategories = useAppSelector(
+        (state) => state.characterPanel.userCategories
     );
 
     const getCategoriesByIds = (categoryIds: string[]) => {

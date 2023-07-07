@@ -1,15 +1,19 @@
-import { useSelector } from "react-redux";
 import { CategoryCalculationType } from "./slice/state/CategoryCalculationType";
 import { Stat } from "./slice/state/Stat";
 import { useCalculateValueOfIncreasedVariable } from "./useCalculateValueOfIncreasedVariable";
-import { RootState } from "../store/store";
 import { useAllClassModifiers } from "./useAllClassModifiers";
+import { useAppSelector } from "../store/store";
+import { useMemo } from "react";
 
 export function useCalculateFinalStatValue() {
     const { allClassModifiers } = useAllClassModifiers();
-    const allClassSkills = useSelector((state: RootState) =>
-        state.characterPanel.classes.flatMap((c) => c.skills)
+    const allClasses = useAppSelector((state) => state.characterPanel.classes);
+
+    const allClassSkills = useMemo(
+        () => allClasses.flatMap((c) => c.skills),
+        [allClasses]
     );
+
     const { calculateValueOfIncreasedVariable } =
         useCalculateValueOfIncreasedVariable(allClassModifiers);
     const getSkillsAffectingProvidedStat = (stat: Stat) => {
@@ -36,8 +40,10 @@ export function useCalculateFinalStatValue() {
             for (let j = 0; j < affectingVariables.length; j++) {
                 const skillVariable = affectingVariables[j];
 
-                let variableIncreaseValue =
-                    calculateValueOfIncreasedVariable(skillVariable, skill);
+                let variableIncreaseValue = calculateValueOfIncreasedVariable(
+                    skillVariable,
+                    skill
+                );
 
                 switch (skillVariable.categoryCalculationType) {
                     case CategoryCalculationType.None:

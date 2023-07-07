@@ -5,14 +5,18 @@ import authHeader from "../../../Identity/services/auth-header";
 
 export const saveCharacterStatusChanges = createAsyncThunk<
     SaveCharacterStatusChangesResponseData,
-    SaveCharacterStatusChangesRequestData
+    SaveCharacterStatusChangesRequestData & {
+        navigate: NavigateFunction;
+    }
 >("character/post", async (data) => {
     const response = await axios.post(
         "https://localhost:7119/api/CharacterStatus",
         data.payload,
         { headers: authHeader() }
     );
-    return response.data as SaveCharacterStatusChangesResponseData;
+    const typedResponse = response.data as SaveCharacterStatusChangesResponseData;
+    data.navigate(`/character/${typedResponse.id}`);
+    return typedResponse;
 });
 
 interface SaveCharacterStatusChangesRequestData {
@@ -20,7 +24,6 @@ interface SaveCharacterStatusChangesRequestData {
         characterStatus: CharacterStatus;
         characterStatusId: string;
     };
-    navigate: NavigateFunction;
 }
 
 interface SaveCharacterStatusChangesResponseData {

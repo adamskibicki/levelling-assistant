@@ -5,17 +5,15 @@ import { useEffect, useState } from "react";
 import InputText from "../../../Inputs/InputText";
 import InputNumber from "../../../Inputs/InputNumber";
 import { InputDropdownAllowNullValue } from "../../../Inputs/InputDropdown";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
+import { useAppSelector } from "../../../store/store";
 import "./EditResourceModal.scss";
 
 export const EditResourceModal: React.FunctionComponent<
     SingleEditModalProps<Resource>
 > = (props) => {
     const [resource, setResource] = useState(GetDefault());
-    const stats = useSelector(
-        (state: RootState) =>
-            state.characterPanel.generalInformation.stats.stats
+    const stats = useAppSelector(
+        (state) => state.characterPanel.generalInformation.stats.stats
     );
 
     useEffect(() => {

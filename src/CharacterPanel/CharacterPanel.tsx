@@ -5,22 +5,21 @@ import BasicInfo from "./SideBar/BasicInfo";
 import ResourcesStatus from "./SideBar/Resources/ResourcesStatus";
 import Stats from "./SideBar/Stats";
 import UnspentSkillpoints from "./SideBar/UnspentSkillpoints";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import { getStatus } from "./slice/thunks/getStatus";
-import { AppDispatch, RootState } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { saveCharacterStatusChanges } from "./slice/thunks/saveCharacterStatusChanges";
 
 export default function CharacterPanel() {
-    const characterStatus = useSelector(
-        (state: RootState) => state.characterPanel
+    const characterStatus = useAppSelector(
+        (state) => state.characterPanel
     );
-    const loaded = useSelector(
-        (state: RootState) => state.characterPanel.loaded
+    const loaded = useAppSelector(
+        (state) => state.characterPanel.loaded
     );
     const { statusId } = useParams<string>();
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -45,7 +44,7 @@ export default function CharacterPanel() {
                         generalSkills: characterStatus.generalSkills,
                     },
                 },
-                navigate: navigate,
+                navigate,
             })
         );
     };

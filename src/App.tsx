@@ -4,13 +4,12 @@ import UserCharacters from "./UserCharacters/UserCharacters";
 import Home from "./Home";
 import CharacterPanel from "./CharacterPanel/CharacterPanel";
 import Login from "./Identity/Login/Login";
-import { useSelector } from "react-redux";
-import { RootState } from "./store/store";
 import { LoginRequiredWrapper } from "./LoginRequiredWrapper";
+import { useAppSelector } from "./store/store";
 
 function App() {
-    const loggedIn = useSelector(
-        (state: RootState) => state.userIdentity.loggedIn
+    const loggedIn = useAppSelector(
+        (state) => state.userIdentity.loggedIn
     );
 
     return (

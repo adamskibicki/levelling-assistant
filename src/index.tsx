@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import './palette.scss';
 import { Provider } from 'react-redux';
 import store from './store/store';
-import { fetchUserCategories } from './CharacterPanel/slice/thunks/fetchUserCategories';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as Element);
 
