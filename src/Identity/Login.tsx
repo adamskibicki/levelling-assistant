@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { login } from "../slice/thunks/login";
-import { Button } from "../../components/common/Buttons";
-import CommonModal from "../../Modal/CommonModal";
-import InputText from "../../Inputs/InputText";
-import InputPassword from "../../Inputs/InputPassword";
-import { logout } from "../slice/userIdentitySlice";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import { login } from "./slice/thunks/login";
+import { Button } from "../components/common/Buttons";
+import CommonModal from "../Modal/CommonModal";
+import InputText from "../Inputs/InputText";
+import InputPassword from "../Inputs/InputPassword";
+import { logout } from "./slice/userIdentitySlice";
 import { useNavigate } from "react-router-dom";
 
 export default function Login(props: {

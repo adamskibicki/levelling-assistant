@@ -23,9 +23,11 @@
         }
     }
 
-    &__login-button, &__logout-button {
+    &__buttons-container {
         margin: 1rem 1rem 1rem auto;
+    }
+
+    &__login-button, &__logout-button, &__register-button {
         padding: 0.8rem;
-        
     }
 }

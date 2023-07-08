@@ -3,14 +3,13 @@ import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
 import UserCharacters from "./UserCharacters/UserCharacters";
 import Home from "./Home";
 import CharacterPanel from "./CharacterPanel/CharacterPanel";
-import Login from "./Identity/Login/Login";
+import Login from "./Identity/Login";
 import { LoginRequiredWrapper } from "./LoginRequiredWrapper";
 import { useAppSelector } from "./store/store";
+import Register from "./Identity/Register/Register";
 
 function App() {
-    const loggedIn = useAppSelector(
-        (state) => state.userIdentity.loggedIn
-    );
+    const loggedIn = useAppSelector((state) => state.userIdentity.loggedIn);
 
     //TODO: add register, add auto login with token auto check (need api endpoint)
     return (
@@ -25,10 +24,17 @@ function App() {
                             Characters
                         </Link>
                     )}
-                    <Login
-                        loginButtonClassName={scss["app__login-button"]}
-                        logoutButtonClassName={scss["app__logout-button"]}
-                    />
+                    <div className={scss["app__buttons-container"]}>
+                        <Register
+                            registerButtonClassName={
+                                scss["app__register-button"]
+                            }
+                        />
+                        <Login
+                            loginButtonClassName={scss["app__login-button"]}
+                            logoutButtonClassName={scss["app__logout-button"]}
+                        />
+                    </div>
                 </div>
                 <Routes>
                     <Route index element={<Home />} />
