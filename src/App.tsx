@@ -1,4 +1,4 @@
-import "./App.scss";
+import scss from "./App.module.scss";
 import { BrowserRouter, Route, Link, Routes } from "react-router-dom";
 import UserCharacters from "./UserCharacters/UserCharacters";
 import Home from "./Home";
@@ -12,21 +12,22 @@ function App() {
         (state) => state.userIdentity.loggedIn
     );
 
+    //TODO: add register, add auto login with token auto check (need api endpoint)
     return (
-        <div className="app">
+        <div className={scss.app}>
             <BrowserRouter>
-                <div className="app__navbar">
-                    <Link className="app__link" to="/">
+                <div className={scss.app__navbar}>
+                    <Link className={scss.app__link} to="/">
                         Home
                     </Link>
                     {loggedIn && (
-                        <Link className="app__link" to="/characters">
+                        <Link className={scss.app__link} to="/characters">
                             Characters
                         </Link>
                     )}
                     <Login
-                        loginButtonClassName="app__login-button"
-                        logoutButtonClassName="app__logout-button"
+                        loginButtonClassName={scss["app__login-button"]}
+                        logoutButtonClassName={scss["app__logout-button"]}
                     />
                 </div>
                 <Routes>
