@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React, { Children, useEffect, useRef } from "react";
 import "./Modal.scss";
 
 interface ModalProps {
@@ -7,42 +7,36 @@ interface ModalProps {
     children: React.ReactNode | React.ReactNode[];
 }
 
-export default class Modal extends React.Component<ModalProps> {
-    wrapperRef: React.RefObject<HTMLDivElement>;
+export default function Modal(props: ModalProps) {
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    console.log("render");
 
-    constructor(props: ModalProps) {
-        super(props);
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        console.log("addEventListener");
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            console.log("removeEventListener");
+        };
+    }, []);
 
-        this.wrapperRef = React.createRef();
-    }
-
-    componentDidMount() {
-        document.addEventListener("mousedown", this.handleClickOutside);
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener("mousedown", this.handleClickOutside);
-    }
-
-    handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent) => {
         if (
-            this.props.show &&
-            this.wrapperRef.current &&
-            !this.wrapperRef.current.contains(event.target as Node)
+            props.show &&
+            wrapperRef.current &&
+            !wrapperRef.current.contains(event.target as Node)
         ) {
-            this.props.onHide(event);
+            props.onHide(event);
         }
     };
 
-    render() {
-        const visibilityClass = this.props.show ? "modal--show" : "modal--hide";
+    const visibilityClass = props.show ? "modal--show" : "modal--hide";
 
-        return (
-            <div className={"modal " + visibilityClass}>
-                <div className="modal__content" ref={this.wrapperRef}>
-                    {this.props.show && Children.toArray(this.props.children)}
-                </div>
+    return (
+        <div className={"modal " + visibilityClass}>
+            <div className="modal__content" ref={wrapperRef}>
+                {props.show && Children.toArray(props.children)}
             </div>
-        );
-    }
+        </div>
+    );
 }

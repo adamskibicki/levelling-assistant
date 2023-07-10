@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./InputText.scss";
 
 interface InputTextProps {
@@ -15,73 +15,59 @@ interface InputTextProps {
     ): void;
 }
 
-class InputText extends React.Component<InputTextProps> {
-    textareaRef: React.RefObject<HTMLTextAreaElement>;
+export default function InputText(props: InputTextProps) {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    constructor(props: InputTextProps) {
-        super(props);
-
-        this.textareaRef = React.createRef();
-    }
-
-    onChange = (
+    const onChange = (
         event:
             | React.FormEvent<HTMLInputElement>
             | React.FormEvent<HTMLTextAreaElement>,
         value: string
     ) => {
-        this.resizeTextArea();
+        resizeTextArea();
 
-        this.props.onChange(event, value);
+        props.onChange(event, value);
     };
 
-    componentDidMount() {
-        this.resizeTextArea();
-    }
+    useEffect(() => {
+        resizeTextArea();
+    }, [props.value]);
 
-    componentDidUpdate() {
-        this.resizeTextArea();
-    }
-
-    resizeTextArea = () => {
-        if (!this.props.multiline) return;
-        if (this.textareaRef.current === null) return;
-        this.textareaRef.current.style.height = "0px";
-        const scrollHeight = this.textareaRef.current.scrollHeight;
-        this.textareaRef.current.style.height = scrollHeight + "px";
+    const resizeTextArea = () => {
+        if (!props.multiline) return;
+        if (textareaRef.current === null) return;
+        textareaRef.current.style.height = "0px";
+        const scrollHeight = textareaRef.current.scrollHeight;
+        textareaRef.current.style.height = scrollHeight + "px";
     };
 
-    render() {
-        return (
-            <div className={"input " + this.props.className}>
-                {this.props.label && (
-                    <label className="input__label">{this.props.label}</label>
-                )}
-                {this.props.multiline ? (
-                    <textarea
-                        ref={this.textareaRef}
-                        rows={1}
-                        className="input__input input-text__input--multiline"
-                        autoComplete={this.props.autocomplete}
-                        value={this.props.value}
-                        onChange={(event) =>
-                            this.onChange(event, event.target.value)
-                        }
-                    ></textarea>
-                ) : (
-                    <input
-                        className="input__input"
-                        autoComplete={this.props.autocomplete}
-                        type="text"
-                        value={this.props.value}
-                        onChange={(event) =>
-                            this.props.onChange(event, event.target.value)
-                        }
-                    />
-                )}
-            </div>
-        );
-    }
+    return (
+        <div className={"input " + props.className}>
+            {props.label && (
+                <label className="input__label">{props.label}</label>
+            )}
+            {props.multiline ? (
+                <textarea
+                    ref={textareaRef}
+                    rows={1}
+                    className="input__input input-text__input--multiline"
+                    autoComplete={props.autocomplete}
+                    value={props.value}
+                    onChange={(event) =>
+                        onChange(event, event.target.value)
+                    }
+                ></textarea>
+            ) : (
+                <input
+                    className="input__input"
+                    autoComplete={props.autocomplete}
+                    type="text"
+                    value={props.value}
+                    onChange={(event) =>
+                        props.onChange(event, event.target.value)
+                    }
+                />
+            )}
+        </div>
+    );
 }
-
-export default InputText;

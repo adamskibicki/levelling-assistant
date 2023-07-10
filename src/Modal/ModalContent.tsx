@@ -1,16 +1,10 @@
 import React, { Children } from "react";
 import "./ModalContent.scss";
 
-class ModalContent extends React.Component<{
+export default function ModalContent(props: {
     children: React.ReactNode | React.ReactNode[];
-}> {
-    render() {
-        return (
-            <div className="modal-content">
-                {Children.toArray(this.props.children)}
-            </div>
-        );
-    }
+}) {
+    return (
+        <div className="modal-content">{Children.toArray(props.children)}</div>
+    );
 }
-
-export default ModalContent;
