@@ -9,13 +9,12 @@ import {
     GetDefault,
 } from "../../CharacterPanel/slice/state/ClassModifier";
 import { InputDropdown } from "../../Inputs/InputDropdown";
-import { useSelector } from "react-redux";
 import { Resource } from "../../CharacterPanel/slice/state/Resource";
 import "./EditClassModifierModal.scss";
 import { CategoryCalculationType } from "../../CharacterPanel/slice/state/CategoryCalculationType";
 import InputNumber from "../../Inputs/InputNumber";
 import SkillCategoriesEdit from "../SkillCategoriesEdit";
-import { RootState } from "../../store/store";
+import { useAppSelector } from "../../store/store";
 
 export default function EditClassModifierModal(props: {
     show: boolean;
@@ -31,8 +30,8 @@ export default function EditClassModifierModal(props: {
     const [classModifier, setClassModifier] = useState<ClassModifier>(
         GetDefault()
     );
-    const resources = useSelector(
-        (state: RootState) => state.characterPanel.generalInformation.resources
+    const resources = useAppSelector(
+        (state) => state.characterPanel.generalInformation.resources
     );
 
     useEffect(() => {

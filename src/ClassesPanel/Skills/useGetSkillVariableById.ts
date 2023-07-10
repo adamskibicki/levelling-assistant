@@ -1,11 +1,14 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useMemo } from "react";
+import { useAppSelector } from "../../store/store";
 
 export default function useGetSkillVariableById() {
-    const skillVariables = useSelector((state: RootState) =>
-        state.characterPanel.classes
-            .flatMap((c) => c.skills)
-            .flatMap((s) => s.variables)
+    const allClasses = useAppSelector(
+        (state) => state.characterPanel.classes
+    );
+
+    const skillVariables = useMemo(
+        () => allClasses.flatMap((c) => c.skills).flatMap((s) => s.variables),
+        [allClasses]
     );
 
     const getSkillVariableById = (id: string) => {

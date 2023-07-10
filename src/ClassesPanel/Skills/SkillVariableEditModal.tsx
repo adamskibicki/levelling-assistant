@@ -13,17 +13,18 @@ import {
 import { CategoryCalculationType } from "../../CharacterPanel/slice/state/CategoryCalculationType";
 import { VariableCalculationType } from "../../CharacterPanel/slice/state/VariableCalculationType";
 import InputNumber from "../../Inputs/InputNumber";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
+import { useAppSelector } from "../../store/store";
 import { InputMultiselect } from "../../Inputs/InputMultiselect";
 
 export const SkillVariableEditModal: React.FunctionComponent<
-    SingleEditModalPropsWithAdditionalProps<SkillVariable, { skillVariables: SkillVariable[] }>
+    SingleEditModalPropsWithAdditionalProps<
+        SkillVariable,
+        { skillVariables: SkillVariable[] }
+    >
 > = (props) => {
     const [skillVariable, setSkillVariable] = useState(GetDefault());
-    const stats = useSelector(
-        (state: RootState) =>
-            state.characterPanel.generalInformation.stats.stats
+    const stats = useAppSelector(
+        (state) => state.characterPanel.generalInformation.stats.stats
     );
 
     useEffect(() => {
@@ -86,7 +87,9 @@ export const SkillVariableEditModal: React.FunctionComponent<
                 }
             />
             <InputDropdownAllowNullValue
-                values={props.additionalProps.skillVariables.filter((sv) => sv.id !== props.item.id)}
+                values={props.additionalProps.skillVariables.filter(
+                    (sv) => sv.id !== props.item.id
+                )}
                 label="Base variable"
                 getItemKey={(sv) => sv.id}
                 getItemLabel={(sv) => sv.name}

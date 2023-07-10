@@ -1,40 +1,33 @@
 import React, { Children } from "react";
 import "./ModalFooter.scss";
 
-class ModalFooter extends React.Component<{
+export default function ModalFooter(props: {
     onClose(event: React.MouseEvent<HTMLButtonElement>): void;
     onAccept(event: React.MouseEvent<HTMLButtonElement>): void;
     children?: React.ReactNode | React.ReactNode[];
-}> {
-    onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
-        this.props.onClose && this.props.onClose(event);
+}) {
+    const onClose = (event: React.MouseEvent<HTMLButtonElement>) => {
+        props.onClose && props.onClose(event);
     };
 
-    onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
-        this.props.onAccept && this.props.onAccept(event);
+    const onAccept = (event: React.MouseEvent<HTMLButtonElement>) => {
+        props.onAccept && props.onAccept(event);
     };
 
-    render() {
-        return (
-            <div className="modal-footer">
-                {Children.toArray(this.props.children)}
-                <div>
-                    <button
-                        className="modal-footer__accept"
-                        onClick={this.onAccept}
-                    >
-                        Accept
-                    </button>
-                    <button
-                        className="modal-footer__close"
-                        onClick={this.onClose}
-                    >
-                        Close
-                    </button>
-                </div>
+    return (
+        <div className="modal-footer">
+            {Children.toArray(props.children)}
+            <div>
+                <button
+                    className="modal-footer__accept"
+                    onClick={onAccept}
+                >
+                    Accept
+                </button>
+                <button className="modal-footer__close" onClick={onClose}>
+                    Close
+                </button>
             </div>
-        );
-    }
+        </div>
+    );
 }
-
-export default ModalFooter;

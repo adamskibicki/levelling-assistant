@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import "./UserCharacters.scss";
 import "./UserCharacter.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,21 +10,23 @@ import {
     PostUserCharacterRequestData,
     postUserCharacter,
 } from "./slice/thunks/postUserCharacter";
-import { AppDispatch, RootState } from "../store/store";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import { getNewestCharacterStatus } from "./getNewestCharacterStatus";
 import UserCharacterComponent from "./UserCharacter";
+import { fetchUserCategories } from "../CharacterPanel/slice/thunks/fetchUserCategories";
 
 export default function UserCharacters() {
-    const userCharacters = useSelector(
-        (state: RootState) => state.userCharacters.userCharacters
+    const userCharacters = useAppSelector(
+        (state) => state.userCharacters.userCharacters
     );
-    const loaded = useSelector((state: any) => state.userCharacters.loaded);
+    const loaded = useAppSelector((state) => state.userCharacters.loaded);
     const [showAddUserCharacterModal, setShowAddUserCharacterModal] =
         useState(false);
 
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(fetchUserCategories());
         dispatch(getUserCharacters());
     }, [dispatch]);
 

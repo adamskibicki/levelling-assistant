@@ -3,7 +3,6 @@ import { initialState } from "./state/CharacterPanelSliceState";
 import { getStatus } from "./thunks/getStatus";
 import { fetchUserCategories } from "./thunks/fetchUserCategories";
 import { addNewCategory } from "./thunks/addNewCategory";
-import { saveCharacterStatusChanges } from "./thunks/saveCharacterStatusChanges";
 import { CharacterClass } from "./state/CharacterClass";
 import { TierDescription } from "./state/TierDescription";
 import { Resource } from "./state/Resource";
@@ -126,13 +125,6 @@ export const characterPanelSlice = createSlice({
         builder.addCase(addNewCategory.fulfilled, (state, action) => {
             state.userCategories = [...state.userCategories, action.payload];
         });
-
-        builder.addCase(
-            saveCharacterStatusChanges.fulfilled,
-            (state, action) => {
-                action.meta.arg.navigate(`/character/${action.payload.id}`);
-            }
-        );
     },
 });
 

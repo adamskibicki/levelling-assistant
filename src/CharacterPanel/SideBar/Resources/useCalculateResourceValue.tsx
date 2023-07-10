@@ -1,15 +1,13 @@
-import { useSelector } from "react-redux";
 import { Resource } from "../../slice/state/Resource";
 import { useAllClassModifiers } from "../../useAllClassModifiers";
 import { useCalculateFinalStatValue } from "../../useCalculateFinalStatValue";
-import { RootState } from "../../../store/store";
+import { useAppSelector } from "../../../store/store";
 
 export function useCalculateResourceValue() {
     const { allClassModifiers } = useAllClassModifiers();
     const { calculateFinalStatValue } = useCalculateFinalStatValue();
-    const characterStatusStats = useSelector(
-        (state: RootState) =>
-            state.characterPanel.generalInformation.stats.stats
+    const characterStatusStats = useAppSelector(
+        (state) => state.characterPanel.generalInformation.stats.stats
     );
 
     const calculateResourceValue = (resource: Resource) => {
