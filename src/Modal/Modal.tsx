@@ -9,14 +9,11 @@ interface ModalProps {
 
 export default function Modal(props: ModalProps) {
     const wrapperRef = useRef<HTMLDivElement>(null);
-    console.log("render");
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
-        console.log("addEventListener");
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
-            console.log("removeEventListener");
         };
     }, []);
 

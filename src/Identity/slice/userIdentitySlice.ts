@@ -3,6 +3,7 @@ import { initialState } from "./state/UserIdentitySliceState";
 import { login } from "./thunks/login";
 import { register } from "./thunks/register";
 import { GetDefault } from "./state/UserData";
+import { validateStoredToken } from "./thunks/validateStoredToken";
 
 export const PROGRESS_API_TOKEN_STORAGE_KEY = "PROGRESS_API_TOKEN";
 
@@ -28,7 +29,7 @@ export const userIdentitySlice = createSlice({
                 state.userData = {
                     email: action.payload.email,
                     id: action.payload.id,
-                    userName: action.payload.userName
+                    userName: action.payload.userName,
                 };
 
                 localStorage.setItem(
@@ -49,6 +50,21 @@ export const userIdentitySlice = createSlice({
             })
             .addCase(register.rejected, (state, action) => {
                 state.registeredSuccessfully = false;
+            });
+
+        builder
+            .addCase(validateStoredToken.pending, (state, action) => {
+                state.loggedIn = false;
+            })
+            .addCase(validateStoredToken.fulfilled, (state, action) => {
+                state.loggedIn = true;
+
+                state.userData = action.payload;
+            })
+            .addCase(validateStoredToken.rejected, (state, action) => {
+                state.loggedIn = false;
+                
+                localStorage.removeItem(PROGRESS_API_TOKEN_STORAGE_KEY);
             });
     },
 });

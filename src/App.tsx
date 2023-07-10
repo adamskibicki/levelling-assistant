@@ -11,7 +11,6 @@ import Register from "./Identity/Register/Register";
 function App() {
     const loggedIn = useAppSelector((state) => state.userIdentity.loggedIn);
 
-    //TODO: add register, add auto login with token auto check (need api endpoint)
     return (
         <div className={scss.app}>
             <BrowserRouter>

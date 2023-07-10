@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { login } from "./slice/thunks/login";
 import { Button } from "../components/common/Buttons";
@@ -7,6 +7,7 @@ import InputText from "../Inputs/InputText";
 import InputPassword from "../Inputs/InputPassword";
 import { logout } from "./slice/userIdentitySlice";
 import { useNavigate } from "react-router-dom";
+import { validateStoredToken } from "./slice/thunks/validateStoredToken";
 
 export default function Login(props: {
     loginButtonClassName?: string;
@@ -22,6 +23,10 @@ export default function Login(props: {
     );
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(validateStoredToken());
+    }, [dispatch]);
 
     const onLoginModalAccept = () => {
         setShowLoginModal(false);

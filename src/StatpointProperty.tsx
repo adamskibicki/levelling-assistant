@@ -20,7 +20,7 @@ function StatpointProperty(props: {
                 <TooltipText text={`Final value: ${Math.round(props.calculatedValue)}`} />
             </div>
             <IconButton icon={faPlus} disabled={!props.increaseEnabled} onClick={() => {console.log("stat increased")}} />            
-            <IconButton icon={faMinus} disabled={!props.decreaseEnabled} onClick={() => {console.log("stat increased")}} />            
+            <IconButton icon={faMinus} disabled={!props.decreaseEnabled} onClick={() => {console.log("stat decreased")}} />            
         </div>
     );
 }

@@ -22,7 +22,6 @@ export default function Register(props: { registerButtonClassName?: string }) {
     };
 
     const isValid = (userRegister: UserRegister) => {
-        //TODO: handle validation better and in reusable way using input components
         if (userRegister.password !== userRegister.confirmPassword) {
             alert("Passwords do not match.");
             return false;
